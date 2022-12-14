@@ -1,6 +1,6 @@
 import { Line } from 'react-chartjs-2';
 
-function Dashboard({ price, data }) {
+function Chart({ price, data }) {
   const opts = {
     tooltips: {
       intersect: true,
@@ -17,16 +17,17 @@ function Dashboard({ price, data }) {
         </h2>
       </div>
     );
-  }
-  return (
-    <div className="dashboard">
-      <h2 className="py-2 text-center text-3xl">{`$${price}`}</h2>
+  } else {
+    return (
+      <div className="hart">
+        <h2 className="py-2 text-center text-3xl">{`$${price}`}</h2>
 
-      <div className="chart-container">
-        <Line data={data} options={opts} />
+        <div className="chart-container">
+          <Line data={data} options={opts} />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
-export default Dashboard;
+export default Chart;
