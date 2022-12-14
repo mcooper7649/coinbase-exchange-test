@@ -15,12 +15,13 @@ function App() {
   const [bestAskSize, setBestAskSize] = useState(0.0);
   const [bestBidSize, setBestBidSize] = useState(0.0);
 
-  const [price, setprice] = useState('0.00');
+  const [price, setprice] = useState(0.0);
   const [pastData, setpastData] = useState({});
+  const [firstLoadToggle, setFirstLoadToggle] = useState(true);
 
   // const [orderBook, setOrderBook] = useState([]);
 
-  const [depth, setDepth] = useState(20);
+  const [depth, setDepth] = useState(14);
   const [ob, setOb] = useState({
     bids: [],
     asks: [],
@@ -110,24 +111,72 @@ function App() {
               ? -1
               : 0
           );
+
           return {
             ...prevOB,
             asks: data.asks.slice(0, depth),
             bids: data.bids.slice(0, depth),
           };
         });
-      }
-      if (data.type !== 'ticker') {
-        return;
-      }
-
-      if (data.product_id === pair) {
+      } else if (data.type === 'l2update') {
+        const removedItems = data.changes.filter((el) => Number(el[2]) === 0);
+        const removedAsks = removedItems
+          .filter((el) => el[0] === 'sell')
+          .map((el) => el[1]);
+        const removedBuys = removedItems
+          .filter((el) => el[0] === 'buy')
+          .map((el) => el[1]);
+        const addedItems = data.changes.filter((el) => Number(el[2]) !== 0);
+        const addedAsks = addedItems
+          .filter((el) => el[0] === 'sell')
+          .map((el) => el.slice(1));
+        const addedBuys = addedItems
+          .filter((el) => el[0] === 'buy')
+          .map((el) => el.slice(1));
+        setOb((prevOB) => {
+          const asks = [...prevOB.asks]
+            .filter((ask) => !removedAsks.includes(ask[0]))
+            .concat(addedAsks);
+          const buys = [...prevOB.bids]
+            .filter((buy) => !removedBuys.includes(buy[0]))
+            .concat(addedBuys);
+          asks.sort((a, b) =>
+            Number(a[0]) < Number(b[0])
+              ? -1
+              : Number(a[0]) > Number(b[0])
+              ? 1
+              : 0
+          );
+          buys.sort((a, b) =>
+            Number(a[0]) < Number(b[0])
+              ? 1
+              : Number(a[0]) > Number(b[0])
+              ? -1
+              : 0
+          );
+          //console.log("setting from update");
+          //console.log(prevOB);
+          //console.log({...prevOB, asks: asks, buys: buys });
+          return {
+            ...prevOB,
+            asks: asks.slice(0, depth),
+            bids: buys.slice(0, depth),
+          };
+        });
+      } else if (data.type === 'subscriptions') {
+      } else if (data.product_id === pair) {
         setBestAskSize(data.best_ask_size);
         setBestBidSize(data.best_bid_size);
         setBestBid(data.best_bid);
         setBestAsk(data.best_ask);
         setprice(data.price);
+      } else {
+        console.log('not correct data');
       }
+    };
+    return () => {
+      //console.log('unmounted');
+      // ws.current.close();
     };
   }, [pair, granularity, depth]);
 
@@ -135,7 +184,7 @@ function App() {
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [pair],
-      channels: ['ticker', 'level2'],
+      channels: ['ticker', 'level2', 'subscriptions', 'l2update'],
     };
     let unsub = JSON.stringify(unsubMsg);
 
@@ -148,20 +197,24 @@ function App() {
       <div className="grid overflow-hidden grid-cols-3 grid-rows-6 gap-1.5 w-auto h-[98vh] body">
         <div className="flex box row-start-1 row-span-1 col-start-1 col-end-4">
           {
-            <select
-              className="bg-gray-800 text-xl rounded"
-              name="currency"
-              value={pair}
-              onChange={handleSelect}
-            >
-              {currencies.map((cur, idx) => {
-                return (
-                  <option key={idx} value={cur.id}>
-                    {cur.display_name}
-                  </option>
-                );
-              })}
-            </select>
+            <div className="flex flex-col my-auto px-2">
+              <label for="cur-select">Choose a token:</label>
+              <select
+                id="cur-select"
+                className="bg-gray-800 text-xl rounded"
+                name="currency"
+                value={pair}
+                onChange={handleSelect}
+              >
+                {currencies.map((cur, idx) => {
+                  return (
+                    <option key={idx} value={cur.id}>
+                      {cur.display_name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
           }
         </div>
         <div className="box p-3 border-double border-4 border-sky-500">

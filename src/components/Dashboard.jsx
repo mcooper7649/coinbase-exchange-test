@@ -9,7 +9,7 @@ function Dashboard({ price, data }) {
     responsive: true,
     maintainAspectRatio: true,
   };
-  if (price === '0.00') {
+  if (price === 0.0) {
     return (
       <div className="flex flex-col justify-center items-center h-screen">
         <h2 className="text-3xl font-bold underline ">

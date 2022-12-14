@@ -4,6 +4,8 @@
 
 @import 'tailwindcss/utilities';
 
+@import url('https://fonts.googleapis.com/css2?family=PT+Mono&family=PT+Sans:wght@400;700&display=swap');
+
 body {
   @apply p-2 bg-slate-200;
 }
@@ -15,14 +17,6 @@ body {
 		h-32
 		min-h-full
 		rounded;
-}
-
-@import url('https://fonts.googleapis.com/css2?family=PT+Mono&family=PT+Sans:wght@400;700&display=swap');
-
-body {
-  background-color: #191919;
-  color: #dddddd;
-  margin: 0;
 }
 
 #root {
@@ -47,7 +41,7 @@ body {
   top: 0;
   width: 100%;
   text-align: center;
-  background-color: #191919;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity));
   border-bottom: 1px solid #929292;
 }
 
@@ -95,12 +89,12 @@ body {
 }
 
 .OBP--sell {
-  color: green;
+  color: skyblue;
   flex-direction: column;
 }
 
 .OBP--ask {
-  color: red;
+  color: orange;
   flex-direction: column-reverse;
 }
 
@@ -131,9 +125,9 @@ body {
 }
 
 .OBP--sell .OBP__bar {
-  background-color: green;
+  background-color: skyblue;
 }
 
 .OBP--ask .OBP__bar {
-  background-color: red;
+  background-color: orange;
 }
