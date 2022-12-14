@@ -18,7 +18,6 @@ function App() {
 
   const [price, setprice] = useState(0.0);
   const [pastData, setpastData] = useState({});
-
   const [depth, setDepth] = useState(14);
   const [ob, setOb] = useState({
     bids: [],
@@ -192,14 +191,30 @@ function App() {
 
     setpair(e.target.value);
   };
+
+  const handleChart = (e) => {
+    let unsubMsg = {
+      type: 'unsubscribe',
+      product_ids: [pair],
+      channels: ['ticker', 'level2', 'subscriptions', 'l2update'],
+    };
+    let unsub = JSON.stringify(unsubMsg);
+
+    ws.current.send(unsub);
+
+    setGranularity(e.target.value);
+  };
   return (
     <div className="App">
       <div className="grid overflow-hidden grid-cols-3 grid-rows-6 gap-1.5 w-auto h-[98vh] body">
         <div className="flex box row-start-1 row-span-1 col-start-1 col-end-4">
           <Header
             pair={pair}
+            handleChart={handleChart}
             handleSelect={handleSelect}
             currencies={currencies}
+            granularity={granularity}
+            setGranularity={setGranularity}
           />
         </div>
         <div className="box p-3 border-double border-4 border-sky-500">
