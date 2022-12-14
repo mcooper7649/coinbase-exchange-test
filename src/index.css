@@ -19,12 +19,6 @@ body {
 		rounded;
 }
 
-#root {
-  padding: 1em 0;
-  box-sizing: border-box;
-  height: 100vh;
-}
-
 .OB {
   position: relative;
   height: 100%;

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Dashboard from './components/Dashboard';
+import Chart from './components/Chart';
 import { formatData } from './utils/utils';
 import './index.css';
+import Header from './components/Header';
 import BestBid from './components/BestBid';
 import BestAsk from './components/BestAsk';
 import OrderBookWrapper from './components/OrderBook';
@@ -17,9 +18,6 @@ function App() {
 
   const [price, setprice] = useState(0.0);
   const [pastData, setpastData] = useState({});
-  const [firstLoadToggle, setFirstLoadToggle] = useState(true);
-
-  // const [orderBook, setOrderBook] = useState([]);
 
   const [depth, setDepth] = useState(14);
   const [ob, setOb] = useState({
@@ -72,7 +70,7 @@ function App() {
     let msg = {
       type: 'subscribe',
       product_ids: [pair],
-      channels: ['ticker', 'level2'],
+      channels: ['ticker', 'level2', 'subscriptions', 'l2update'],
     };
 
     let jsonMsg = JSON.stringify(msg);
@@ -97,26 +95,28 @@ function App() {
       let data = JSON.parse(e.data);
       if (data.type === 'snapshot') {
         setOb((prevOB) => {
-          data.asks.sort((a, b) =>
-            Number(a[0]) < Number(b[0])
-              ? -1
-              : Number(a[0]) > Number(b[0])
-              ? 1
-              : 0
-          );
-          data.bids.sort((a, b) =>
-            Number(a[0]) < Number(b[0])
-              ? 1
-              : Number(a[0]) > Number(b[0])
-              ? -1
-              : 0
-          );
+          if (data.asks.length > 14 && data.bids.length > 14) {
+            data.asks.sort((a, b) =>
+              Number(a[0]) < Number(b[0])
+                ? -1
+                : Number(a[0]) > Number(b[0])
+                ? 1
+                : 0
+            );
+            data.bids.sort((a, b) =>
+              Number(a[0]) < Number(b[0])
+                ? 1
+                : Number(a[0]) > Number(b[0])
+                ? -1
+                : 0
+            );
 
-          return {
-            ...prevOB,
-            asks: data.asks.slice(0, depth),
-            bids: data.bids.slice(0, depth),
-          };
+            return {
+              ...prevOB,
+              asks: data.asks.slice(0, depth),
+              bids: data.bids.slice(0, depth),
+            };
+          }
         });
       } else if (data.type === 'l2update') {
         const removedItems = data.changes.filter((el) => Number(el[2]) === 0);
@@ -196,26 +196,11 @@ function App() {
     <div className="App">
       <div className="grid overflow-hidden grid-cols-3 grid-rows-6 gap-1.5 w-auto h-[98vh] body">
         <div className="flex box row-start-1 row-span-1 col-start-1 col-end-4">
-          {
-            <div className="flex flex-col my-auto px-2">
-              <label for="cur-select">Choose a token:</label>
-              <select
-                id="cur-select"
-                className="bg-gray-800 text-xl rounded"
-                name="currency"
-                value={pair}
-                onChange={handleSelect}
-              >
-                {currencies.map((cur, idx) => {
-                  return (
-                    <option key={idx} value={cur.id}>
-                      {cur.display_name}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-          }
+          <Header
+            pair={pair}
+            handleSelect={handleSelect}
+            currencies={currencies}
+          />
         </div>
         <div className="box p-3 border-double border-4 border-sky-500">
           <BestBid bestBid={bestBid} bestBidSize={bestBidSize} />
@@ -228,7 +213,7 @@ function App() {
           <OrderBookWrapper ob={ob} pair={pair} />
         </div>
         <div className="box row-start-3 row-end-7 col-start-1 col-end-3">
-          <Dashboard price={price} data={pastData} />
+          <Chart price={price} data={pastData} />
         </div>
       </div>
     </div>
