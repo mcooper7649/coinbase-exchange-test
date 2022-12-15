@@ -1,4 +1,5 @@
 import React from 'react';
+import { USDollar } from '../utils/utils';
 
 const OBP = ({ orders, type, pair, depth = 16 }) => {
   //console.log("OBP");
@@ -16,7 +17,7 @@ const OBP = ({ orders, type, pair, depth = 16 }) => {
               ></div>
               {order[1]}
             </div>
-            <div className="OBP__price">{order[0]}</div>
+            <div className="OBP__price">{USDollar.format(order[0])}</div>
           </div>
         );
       })}

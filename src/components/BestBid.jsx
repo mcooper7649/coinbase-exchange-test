@@ -1,3 +1,4 @@
+import { USDollar } from '../utils/utils';
 function BestBid({ bestBid, bestBidSize }) {
   return (
     <div className="grid overflow-hidden grid-cols-2 grid-rows-2 gap-2.5 w-auto h-auto">
@@ -7,7 +8,7 @@ function BestBid({ bestBid, bestBidSize }) {
 
       <div className="">
         {/* {BidAmount} */}
-        {bestBid}
+        {USDollar.format(bestBid)}
         <p className="">Bid Price</p>
       </div>
       <div>

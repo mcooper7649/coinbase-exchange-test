@@ -8,12 +8,15 @@ function Header({
 }) {
   granularity = [60, 300, 900, 3600, 21600, 86400];
   return (
-    <div className="flex flex-row">
-      <div className="flex flex-col my-auto px-2">
-        <label for="cur-select">Token Options</label>
+    <div className="grid overflow-hidden grid-cols-2 grid-rows-2 gap-2.5 w-auto h-auto">
+      <div className="row-start-1 row-span-1 col-start-1 col-end-3 ">
+        <h1 className="text-green-300">User Options:</h1>
+      </div>
+      <div className="">
+        <label for="cur-select">Currency Pair</label>
         <select
           id="cur-select"
-          className="py-4 bg-gray-800 text-xl rounded"
+          className="py-2 bg-gray-800 text-xl rounded border border-orange-500 focus:outline-none"
           name="currency"
           // value={pair}
           onChange={handleSelect}
@@ -28,12 +31,12 @@ function Header({
           })}
         </select>
       </div>
-      <div className="flex flex-col my-auto px-2">
-        <label for="cur-select">Chart Granularity</label>
+      <div className="">
+        <label for="chart-select">Chart Granularity</label>
         <select
-          id="cur-select"
-          className="py-4 bg-gray-800 text-xl rounded"
-          name="currency"
+          id="chart-select"
+          className="py-2 bg-gray-800 text-xl border-none rounded border focus:outline-none"
+          name="chart"
           // value={value}
           onChange={handleChart}
         >
