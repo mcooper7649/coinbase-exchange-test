@@ -18,7 +18,7 @@ function App() {
 
   const [price, setprice] = useState(0.0);
   const [pastData, setPastData] = useState({});
-  const [depth, setDepth] = useState(75);
+  const [depth] = useState(75);
   const [ob, setOb] = useState({
     bids: [],
     asks: [],

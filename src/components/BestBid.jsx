@@ -9,12 +9,12 @@ function BestBid({ bestBid, bestBidSize }) {
       </div>
 
       {/* {BidAmount} */}
-      {USDollar.format(bestBid)}
       <p className="text-xs md:text-lg">Bid Price</p>
+      {USDollar.format(bestBid)}
 
       {/* <h2>{BidQuantity}</h2> */}
-      {bestBidSize}
       <p className="text-xs md:text-lg">Bid Quantity</p>
+      {bestBidSize}
     </div>
   );
 }

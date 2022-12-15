@@ -10,12 +10,13 @@ function BestAsk({ bestAsk, bestAskSize }) {
       </div>
 
       {/* {AskAmount} */}
-      {USDollar.format(bestAsk)}
+
       <p className="text-xs md:text-lg">Ask Price</p>
+      {USDollar.format(bestAsk)}
 
       {/* <h2>{AskQuantity}</h2> */}
-      {bestAskSize}
       <p className="text-xs md:text-lg">Ask Quantity</p>
+      {bestAskSize}
     </div>
   );
 }
