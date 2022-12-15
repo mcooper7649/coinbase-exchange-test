@@ -9,11 +9,11 @@ function Chart({ price, data, pair, granularity }) {
     },
     title: {
       display: true,
-      text: `${pair} every tick ${granularity} minutes Chart`,
+      text: `${pair} ${granularity} minutes Chart`,
     },
     responsive: true,
     aspectRatio: 2,
-    // maintainAspectRatio: true,
+    maintainAspectRatio: false,
   };
   if (price === 0.0) {
     return (
@@ -30,8 +30,9 @@ function Chart({ price, data, pair, granularity }) {
           price
         )}`}</h2>
 
-        <div className="chart-container">
-          <Line data={data} options={opts} />
+        <div className="chart-container h-[75vh]">
+          <Line data={data} options={opts} setPastData />
+          {console.log(data)}
         </div>
       </div>
     );
