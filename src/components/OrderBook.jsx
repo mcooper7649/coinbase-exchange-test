@@ -16,7 +16,7 @@ function OrderBookWrapper({ ob }) {
   }, [ob, spread]);
 
   return (
-    <div className="OB flex relative h-screen flex-col border border-sky-500 rounded">
+    <div className="OB flex relative h-screen flex-col rounded">
       <div>
         <OBP type="ask" orders={ob.asks} pair={ob.pair} />
       </div>
