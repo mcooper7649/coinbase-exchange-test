@@ -1,3 +1,5 @@
+import { USDollar } from '../utils/utils';
+
 function BestAsk({ bestAsk, bestAskSize }) {
   return (
     <div className="grid overflow-hidden grid-cols-2 grid-rows-2 gap-2.5 w-auto h-auto">
@@ -6,7 +8,7 @@ function BestAsk({ bestAsk, bestAskSize }) {
       </div>
       <div className="">
         {/* {AskAmount} */}
-        {bestAsk}
+        {USDollar.format(bestAsk)}
         <p>Ask Price</p>
       </div>
       <div className="">

@@ -34,3 +34,8 @@ export const formatData = (data) => {
 
   return finalData;
 };
+
+export const USDollar = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
