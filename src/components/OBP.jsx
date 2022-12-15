@@ -1,7 +1,7 @@
 import React from 'react';
 import { USDollar } from '../utils/utils';
 
-const OBP = ({ orders, type, pair, depth = 16 }) => {
+const OBP = ({ orders, type, pair, depth = 14 }) => {
   //console.log("OBP");
   //console.log(type);
   //console.log(orders);
