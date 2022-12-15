@@ -1,4 +1,4 @@
-function Header({
+function UserOptions({
   pair,
   handleSelect,
   currencies,
@@ -10,7 +10,7 @@ function Header({
   return (
     <div className="grid overflow-hidden grid-cols-2 grid-rows-2 gap-2.5 w-auto h-auto">
       <div className="row-start-1 row-span-1 col-start-1 col-end-3 text-xs md:text-lg">
-        <h1 className="text-green-300 border-b-4 border-gray-300">
+        <h1 className="text-sky-300 border-b-4 border-gray-300">
           User Options:
         </h1>
       </div>
@@ -20,7 +20,7 @@ function Header({
       </label>
       <select
         id="cur-select"
-        className="bg-gray-800 text-xs rounded border border-orange-500 focus:outline-none"
+        className="cursor-pointer md:pl-2 bg-gray-800 text-xs rounded border border-orange-500 focus:outline-none"
         name="currency"
         // value={pair}
         onChange={handleSelect}
@@ -40,7 +40,7 @@ function Header({
       </label>
       <select
         id="chart-select"
-        className=" bg-gray-800 text-xs border-none rounded border focus:outline-none"
+        className="cursor-pointer md:pl-2 bg-gray-800 text-xs border-none rounded border focus:outline-none"
         name="chart"
         // value={value}
         onChange={handleChart}
@@ -58,4 +58,4 @@ function Header({
   );
 }
 
-export default Header;
+export default UserOptions;

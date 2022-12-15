@@ -1,12 +1,21 @@
-export const formatData = (data) => {
+export const formatData = (data, pair) => {
+  function findColor() {
+    return pair === 'ETH-USD'
+      ? 'rgb(67, 73, 83)'
+      : pair === 'BTC-USD'
+      ? 'rgb(242, 169, 0, 0.8)'
+      : pair === 'LTC-USD'
+      ? 'rgb(211, 211, 211, 0.8)'
+      : 'rgb(238, 140, 40, 0.8)';
+  }
   let finalData = {
     labels: [],
     datasets: [
       {
-        label: 'Price',
+        label: `${pair}`,
         data: [],
         backgroundColor: 'rgb(255, 99, 132, 0.8)',
-        borderColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: `${findColor()}`,
         fill: false,
       },
     ],

@@ -83,12 +83,12 @@ body {
 }
 
 .OBP--sell {
-  color: skyblue;
+  color: white;
   flex-direction: column;
 }
 
 .OBP--ask {
-  color: orange;
+  color: white;
   flex-direction: column-reverse;
 }
 
@@ -119,9 +119,9 @@ body {
 }
 
 .OBP--sell .OBP__bar {
-  background-color: skyblue;
+  background-color: #10b981;
 }
 
 .OBP--ask .OBP__bar {
-  background-color: orange;
+  background-color: #ef4444;
 }

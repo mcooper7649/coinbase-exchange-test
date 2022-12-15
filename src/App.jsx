@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import Chart from './components/Chart';
 import { formatData } from './utils/utils';
 import './index.css';
-import Header from './components/Header';
+import UserOptions from './components/UserOptions';
 import BestBid from './components/BestBid';
 import BestAsk from './components/BestAsk';
-import OrderBookWrapper from './components/OrderBook';
+import OrderBook from './components/OrderBook';
 
 function App() {
   const [currencies, setCurrencies] = useState([]);
@@ -18,7 +18,7 @@ function App() {
 
   const [price, setprice] = useState(0.0);
   const [pastData, setPastData] = useState({});
-  const [depth, setDepth] = useState(100);
+  const [depth, setDepth] = useState(75);
   const [ob, setOb] = useState({
     bids: [],
     asks: [],
@@ -78,8 +78,6 @@ function App() {
     let jsonMsg = JSON.stringify(msg);
     ws.current.send(jsonMsg);
 
-    // Granularity Options {60, 300, 900, 3600, 21600, 86400}
-
     let historicalDataURL = `${url}/products/${pair}/candles?granularity=${granularity}`;
     const fetchHistoricalData = async () => {
       let dataArr = [];
@@ -87,7 +85,7 @@ function App() {
         .then((res) => res.json())
         .then((data) => (dataArr = data));
 
-      let formattedData = formatData(dataArr);
+      let formattedData = formatData(dataArr, pair);
       setPastData(formattedData);
     };
 
@@ -97,8 +95,6 @@ function App() {
       let data = JSON.parse(e.data);
       if (data.type === 'snapshot') {
         setOb((prevOB) => {
-          console.log(prevOB);
-
           data.asks.sort((a, b) =>
             Number(a[0]) < Number(b[0])
               ? -1
@@ -211,8 +207,8 @@ function App() {
   return (
     <div className="App">
       <div className="grid overflow-hidden grid-cols-3 grid-rows-6 gap-1.5 w-auto h-[98vh] body">
-        <div className="box pl-3 pt-3 pr-3 border-double border-4 border-green-500">
-          <Header
+        <div className="box pl-3 pt-3 pr-3 border-double border-4 border-sky-500">
+          <UserOptions
             pair={pair}
             handleChart={handleChart}
             handleSelect={handleSelect}
@@ -221,15 +217,15 @@ function App() {
             setGranularity={setGranularity}
           />
         </div>
-        <div className="box pl-3 pt-3 pr-3 border-double border-4 border-sky-500">
+        <div className="box pl-3 pt-3 pr-3 border-double border-4 border-green-500">
           <BestBid bestBid={bestBid} bestBidSize={bestBidSize} />
         </div>
-        <div className="box pl-3 pt-3 pr-3 border-double border-4 border-orange-400">
+        <div className="box pl-3 pt-3 pr-3 border-double border-4 border-red-400">
           <BestAsk bestAsk={bestAsk} bestAskSize={bestAskSize} />
         </div>
 
         <div className="box row-start-2 row-end-7 col-start-3 col-end-3">
-          <OrderBookWrapper ob={ob} pair={pair} />
+          <OrderBook ob={ob} pair={pair} />
         </div>
         <div className="box row-start-2 row-end-7 col-start-1 col-end-3">
           <Chart
