@@ -32,7 +32,6 @@ function Chart({ price, data, pair, granularity }) {
 
         <div className="chart-container h-[75vh]">
           <Line data={data} options={opts} setPastData />
-          {console.log(data)}
         </div>
       </div>
     );

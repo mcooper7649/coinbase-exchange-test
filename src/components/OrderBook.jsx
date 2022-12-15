@@ -6,12 +6,12 @@ function OrderBookWrapper({ ob }) {
 
   useEffect(() => {
     // console.log(ob);
-    const interval = setInterval(() => {
-      let { bids, asks } = ob;
-      if (asks[0] && bids[0]) {
-        setSpread((Number(asks[0][0]) - Number(bids[0][0])).toFixed(2));
-      }
-    }, 1000);
+
+    let { bids, asks } = ob;
+    if (asks[0] && bids[0]) {
+      setSpread((Number(asks[0][0]) - Number(bids[0][0])).toFixed(2));
+    }
+
     // return () => clearInterval(interval);
   }, [ob, spread]);
 
@@ -22,7 +22,7 @@ function OrderBookWrapper({ ob }) {
       </div>
 
       <div className="OB__S">
-        <div className="OB__SL">USD Spread:</div>
+        <div className="OB__SL">USD Spread: </div>
         <div className="OB__SP">{spread}</div>
       </div>
 

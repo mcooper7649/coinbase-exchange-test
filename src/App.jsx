@@ -18,7 +18,7 @@ function App() {
 
   const [price, setprice] = useState(0.0);
   const [pastData, setPastData] = useState({});
-  const [depth, setDepth] = useState(14);
+  const [depth, setDepth] = useState(100);
   const [ob, setOb] = useState({
     bids: [],
     asks: [],
@@ -31,6 +31,9 @@ function App() {
 
   useEffect(() => {
     ws.current = new WebSocket('wss://ws-feed.pro.coinbase.com');
+    ws.current.onopen = () => {
+      console.log('Connection Established!');
+    };
 
     let pairs = [];
 
@@ -163,6 +166,7 @@ function App() {
           };
         });
       } else if (data.type === 'subscriptions') {
+        console.log('subscriptions');
       } else if (data.product_id === pair) {
         setBestAskSize(data.best_ask_size);
         setBestBidSize(data.best_bid_size);
