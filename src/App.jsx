@@ -207,7 +207,7 @@ function App() {
   return (
     <div className="App">
       <div className="grid overflow-hidden grid-cols-3 grid-rows-6 gap-1.5 w-auto h-[98vh] body">
-        <div className="box p-3 border-double border-4 border-green-500">
+        <div className="box pl-3 pt-3 pr-3 border-double border-4 border-green-500">
           <Header
             pair={pair}
             handleChart={handleChart}
@@ -217,10 +217,10 @@ function App() {
             setGranularity={setGranularity}
           />
         </div>
-        <div className="box p-3 border-double border-4 border-sky-500">
+        <div className="box pl-3 pt-3 pr-3 border-double border-4 border-sky-500">
           <BestBid bestBid={bestBid} bestBidSize={bestBidSize} />
         </div>
-        <div className="box p-3 border-double border-4 border-orange-400">
+        <div className="box pl-3 pt-3 pr-3 border-double border-4 border-orange-400">
           <BestAsk bestAsk={bestAsk} bestAskSize={bestAskSize} />
         </div>
 
@@ -228,7 +228,12 @@ function App() {
           <OrderBookWrapper ob={ob} pair={pair} />
         </div>
         <div className="box row-start-2 row-end-7 col-start-1 col-end-3">
-          <Chart pair={pair} price={price} data={pastData} />
+          <Chart
+            granularity={granularity}
+            pair={pair}
+            price={price}
+            data={pastData}
+          />
         </div>
       </div>
     </div>
