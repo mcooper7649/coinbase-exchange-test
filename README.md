@@ -17,8 +17,8 @@
 In the main App file we have stateful logic and the base layout of our application.
 
 1. In our App we connect to our WS Stream and filter by pairs.
-2. Then we subscribe tot he channels ticker, level2, subscriptions, l2update for our filtered pair.
-3. fetch historical data, formate the data with utils, and setPastData and send it to our Chart.
+2. Then we subscribe to the channels ticker, level2, subscriptions, l2update for our filtered pair.
+3. fetch historical data, format the data with utils, and setPastData and send it to our Chart.
 4. Next we configured the WS stream to listen for event messages and sort via prevOB data and specified depth.
 5. We also set stateful Values for our BestBid and BestAsk components and pass that data via props
 6. HandleSelect handler function for unsubscribing our websockets, which we pass our pair, and active channels. We also set the value of the handler to be our active pair

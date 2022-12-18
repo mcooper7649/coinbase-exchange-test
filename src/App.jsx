@@ -6,17 +6,29 @@ import UserOptions from './components/UserOptions';
 import BestBid from './components/BestBid';
 import BestAsk from './components/BestAsk';
 import OrderBook from './components/OrderBook';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { setActivePair, setGranularity } from './store/pairSlice';
 
 function App() {
+  // const coinList = ['BTC/USD', 'ETH/USD', 'LTC/USD', 'BCH/USD'];
+  const dispatch = useDispatch();
+
+  const activePair = useSelector((state) => state.pairer.activePair);
+  const granularity = useSelector((state) => state.pairer.granularity);
+
+  // const currencies = useSelector((state) => state.pairer.filteredCurrencies);
+
   const [currencies, setCurrencies] = useState([]);
-  const [pair, setPair] = useState('Select');
-  const [granularity, setGranularity] = useState(60);
+  // const [pair, setPair] = useState('Select');
+  // const [granularity, setGranularity] = useState(60);
+
   const [bestAsk, setBestAsk] = useState(0.0);
   const [bestBid, setBestBid] = useState(0.0);
   const [bestAskSize, setBestAskSize] = useState(0.0);
   const [bestBidSize, setBestBidSize] = useState(0.0);
 
-  const [price, setprice] = useState(0.0);
+  const [price, setPrice] = useState(0);
   const [pastData, setPastData] = useState({});
   const [depth] = useState(75);
   const [ob, setOb] = useState({
@@ -53,11 +65,9 @@ function App() {
         }
         return '';
       });
-
+      first.current = true;
       console.log(filtered);
       setCurrencies(filtered);
-
-      first.current = true;
     };
 
     apiCall();
@@ -65,27 +75,29 @@ function App() {
 
   useEffect(() => {
     if (!first.current) {
-      console.log('returning on the first render');
+      console.log(
+        'returning on the first render, this is a method to get the socket connection online before our 2nd useEffect logic begins'
+      );
       return;
     }
 
     let msg = {
       type: 'subscribe',
-      product_ids: [pair],
+      product_ids: [activePair],
       channels: ['ticker', 'level2', 'subscriptions', 'l2update'],
     };
 
     let jsonMsg = JSON.stringify(msg);
     ws.current.send(jsonMsg);
 
-    let historicalDataURL = `${url}/products/${pair}/candles?granularity=${granularity}`;
+    let historicalDataURL = `${url}/products/${activePair}/candles?granularity=${granularity}`;
     const fetchHistoricalData = async () => {
       let dataArr = [];
       await fetch(historicalDataURL)
         .then((res) => res.json())
         .then((data) => (dataArr = data));
 
-      let formattedData = formatData(dataArr, pair);
+      let formattedData = formatData(dataArr, activePair);
       setPastData(formattedData);
     };
 
@@ -163,12 +175,12 @@ function App() {
         });
       } else if (data.type === 'subscriptions') {
         console.log('subscriptions');
-      } else if (data.product_id === pair) {
-        setBestAskSize(data.best_ask_size);
-        setBestBidSize(data.best_bid_size);
-        setBestBid(data.best_bid);
-        setBestAsk(data.best_ask);
-        setprice(data.price);
+      } else if (data.product_id === activePair) {
+        setBestAskSize(Number(data.best_ask_size));
+        setBestBidSize(Number(data.best_bid_size));
+        setBestBid(Number(data.best_bid));
+        setBestAsk(Number(data.best_ask));
+        setPrice(Number(data.price));
       } else {
         console.log('not correct data');
       }
@@ -177,39 +189,39 @@ function App() {
       //console.log('unmounted');
       // ws.current.close();
     };
-  }, [pair, granularity, depth]);
+  }, [activePair, granularity, depth]);
 
   const handleSelect = (e) => {
     let unsubMsg = {
       type: 'unsubscribe',
-      product_ids: [pair],
+      product_ids: [activePair],
       channels: ['ticker', 'level2', 'subscriptions', 'l2update'],
     };
     let unsub = JSON.stringify(unsubMsg);
 
     ws.current.send(unsub);
 
-    setPair(e.target.value);
+    dispatch(setActivePair(e.target.value));
   };
 
   const handleChart = (e) => {
     let unsubMsg = {
       type: 'unsubscribe',
-      product_ids: [pair],
+      product_ids: [activePair],
       channels: ['ticker', 'level2', 'subscriptions', 'l2update'],
     };
     let unsub = JSON.stringify(unsubMsg);
 
     ws.current.send(unsub);
 
-    setGranularity(e.target.value);
+    dispatch(setGranularity(e.target.value));
   };
   return (
     <div className="App">
       <div className="grid overflow-hidden grid-cols-3 grid-rows-6 gap-1.5 w-auto h-[98vh] body">
         <div className="box pl-3 pt-3 pr-3 border-double border-4 border-sky-500">
           <UserOptions
-            pair={pair}
+            pair={activePair}
             handleChart={handleChart}
             handleSelect={handleSelect}
             currencies={currencies}
@@ -225,13 +237,13 @@ function App() {
         </div>
 
         <div className="box row-start-2 row-end-7 col-start-3 col-end-3">
-          <OrderBook ob={ob} pair={pair} />
+          <OrderBook ob={ob} pair={activePair} />
         </div>
         <div className="box row-start-2 row-end-7 col-start-1 col-end-3">
           <Chart
             granularity={granularity}
-            pair={pair}
-            price={price}
+            pair={activePair}
+            price={price === isNaN ? null : price}
             data={pastData}
           />
         </div>
