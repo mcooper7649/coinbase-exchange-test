@@ -83,8 +83,8 @@ function App() {
 
     let msg = {
       type: 'subscribe',
-      product_ids: [activePair],
-      channels: ['ticker', 'level2', 'subscriptions', 'l2update'],
+      product_ids: activePair === 'Select' ? ['BTC/USD'] : [activePair],
+      channels: ['ticker', 'level2', 'l2update'],
     };
 
     let jsonMsg = JSON.stringify(msg);
@@ -173,8 +173,6 @@ function App() {
             bids: buys.slice(0, depth),
           };
         });
-      } else if (data.type === 'subscriptions') {
-        console.log('subscriptions');
       } else if (data.product_id === activePair) {
         setBestAskSize(Number(data.best_ask_size));
         setBestBidSize(Number(data.best_bid_size));
@@ -182,7 +180,7 @@ function App() {
         setBestAsk(Number(data.best_ask));
         setPrice(Number(data.price));
       } else {
-        console.log('not correct data');
+        console.log('not correct data', data);
       }
     };
     return () => {
@@ -195,7 +193,7 @@ function App() {
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2', 'subscriptions', 'l2update'],
+      channels: ['ticker', 'level2', 'l2update'],
     };
     let unsub = JSON.stringify(unsubMsg);
 
@@ -208,7 +206,7 @@ function App() {
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2', 'subscriptions', 'l2update'],
+      channels: ['ticker', 'level2', 'l2update'],
     };
     let unsub = JSON.stringify(unsubMsg);
 
