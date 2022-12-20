@@ -1,13 +1,13 @@
 import React from 'react';
 import { USDollar } from '../utils/utils';
 
-const OBP = ({ orders, type, pair, depth = 14 }) => {
+const OBP = ({ orders, type, viewSize = 14 }) => {
   //console.log("OBP");
   //console.log(type);
   //console.log(orders);
   return (
     <div className={type === 'ask' ? 'OBP OBP--ask' : 'OBP OBP--sell'}>
-      {orders?.slice(0, depth).map((order, index) => {
+      {orders?.slice(0, viewSize).map((order, index) => {
         return (
           <div className="OBP__order" key={index}>
             <div className="OBP__size">
