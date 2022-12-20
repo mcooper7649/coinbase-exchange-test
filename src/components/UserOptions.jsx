@@ -4,9 +4,9 @@ function UserOptions({
   currencies,
   granularity,
   handleChart,
+  options,
 }) {
   granularity = [60, 300, 900, 3600, 21600, 86400];
-
   function checkPair(pair) {
     if (pair === 'Select') {
       return true;

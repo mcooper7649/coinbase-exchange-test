@@ -11,17 +11,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setActivePair, setGranularity } from './store/pairSlice';
 
 function App() {
-  // const coinList = ['BTC/USD', 'ETH/USD', 'LTC/USD', 'BCH/USD'];
   const dispatch = useDispatch();
 
   const activePair = useSelector((state) => state.pairer.activePair);
   const granularity = useSelector((state) => state.pairer.granularity);
 
-  // const currencies = useSelector((state) => state.pairer.filteredCurrencies);
-
   const [currencies, setCurrencies] = useState([]);
-  // const [pair, setPair] = useState('Select');
-  // const [granularity, setGranularity] = useState(60);
 
   const [bestAsk, setBestAsk] = useState(0.0);
   const [bestBid, setBestBid] = useState(0.0);
@@ -181,6 +176,7 @@ function App() {
         console.log('not correct data', data);
       }
     };
+    console.log();
     return () => {
       //console.log('unmounted');
       // ws.current.close();
