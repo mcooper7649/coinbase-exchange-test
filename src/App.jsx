@@ -75,9 +75,6 @@ function App() {
 
   useEffect(() => {
     if (!first.current) {
-      console.log(
-        'returning on the first render, this is a method to get the socket connection online before our 2nd useEffect logic begins'
-      );
       return;
     }
 
@@ -105,6 +102,7 @@ function App() {
 
     ws.current.onmessage = (e) => {
       let data = JSON.parse(e.data);
+
       if (data.type === 'snapshot') {
         setOb((prevOB) => {
           data.asks.sort((a, b) =>
