@@ -30,17 +30,17 @@ In the main App file we have stateful logic and the base layout of our applicati
 ![User-Options](https://img001.prntscr.com/file/img001/wxy2b1OPSpKQMwLFhcBqbw.png)
 
 1. UserOptions
-
    1. import and destructure our props. Pass our granularity options.
    2. ternirary logic for choosing pair first time
    3. map through currencies, set a default value
    4. Style and make it responsive
 
-![Best-Bid](https://img001.prntscr.com/file/img001/k-qUqtQySFa_eRHKNWD_dw.png) 2. BestBid
+![Best-Bid](https://img001.prntscr.com/file/img001/k-qUqtQySFa_eRHKNWD_dw.png)
 
-1.  import utils for dollar conversion
-2.  import props and destructure
-3.  Style and make it responsive
+1. BestBid
+   1. import utils for dollar conversion
+   2. import props and destructure
+   3. Style and make it responsive
 
 ![Best-Ask](https://img001.prntscr.com/file/img001/AMy_UHMHQQyGzZTMe5pYpw.png)
 
@@ -49,28 +49,31 @@ In the main App file we have stateful logic and the base layout of our applicati
    2. import props and destructure
    3. Style and make it responsive
 
-![Chart](https://img001.prntscr.com/file/img001/1fbW8kEURhaXv9FSE0Pt6A.png) 2. Chart
+![Chart](https://img001.prntscr.com/file/img001/1fbW8kEURhaXv9FSE0Pt6A.png)
 
-1.  import react-chartjs2 package and read documenation
-2.  import props and desctructure
-3.  configure options
-4.  add dynamic styles off project RGBA
+1. Chart
+   1. import react-chartjs2 package and read documenation
+   2. import props and desctructure
+   3. configure options
+   4. add dynamic styles off project RGBA
 
-![OrderBook](https://img001.prntscr.com/file/img001/cayNCMaZRiKJbSnRZ38lzQ.png) 3. Orderbook
+![OrderBook](https://img001.prntscr.com/file/img001/cayNCMaZRiKJbSnRZ38lzQ.png)
 
-1.  import props and destructure
-2.  configure useEffect for spread
-3.  pass asks and bids to OBP components
-    1. OBP component
-    2. Format currency
-4.  Create Loader
+1. Orderbook
+   1. import props and destructure
+   2. configure useEffect for spread
+   3. pass asks and bids to OBP components
+      1. OBP component
+      2. Format currency
+   4. Create Loader
 
-![RTK-Store](https://img001.prntscr.com/file/img001/MqkkjAlESde1Lw_ueCXXrw.png) 4. Redux ToolKit (State Management)
+![RTK-Store](https://img001.prntscr.com/file/img001/MqkkjAlESde1Lw_ueCXXrw.png)
 
-1.  Configure Store
-2.  Add pairSlice
-    1. create setActivePair and setGranularity Actions
-    2. create reduce
-3.  Remove old useState and add actions with dispatch
+1. Redux ToolKit (State Management)
+   1. Configure Store
+   2. Add pairSlice
+      1. create setActivePair and setGranularity Actions
+      2. create reduce
+   3. Remove old useState and add actions with dispatch
 
 ![RTK-Slice](https://img001.prntscr.com/file/img001/PNZR84FKQaGQ9bfBdNGjug.png)
