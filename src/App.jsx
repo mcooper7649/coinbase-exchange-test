@@ -80,15 +80,15 @@ function App() {
     let msg = {
       type: 'subscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2', 'l2update'],
+      channels: ['ticker', 'level2', 'heartbeat', 'l2update'],
     };
 
     let jsonMsg = JSON.stringify(msg);
     ws.current.send(jsonMsg);
 
-    let historicalDataURL = `${url}/products/${activePair}/candles?granularity=${
-      granularity === 'Minutes' ? 60 : granularity
-    }`;
+    let historicalDataURL = `${url}/products/${
+      activePair === 'Select' ? 'BTC/USD' : activePair
+    }/candles?granularity=${granularity === 'Minutes' ? 60 : granularity}`;
     const fetchHistoricalData = async () => {
       let dataArr = [];
       await fetch(historicalDataURL)
@@ -109,6 +109,7 @@ function App() {
         setBestBid(Number(data.best_bid));
         setBestAsk(Number(data.best_ask));
         setPrice(Number(data.price));
+        return;
       } else if (data.type === 'snapshot') {
         setOb((prevOB) => {
           let aggData = {
@@ -217,16 +218,6 @@ function App() {
           const buys = [...prevOB.bids]
             .filter((buy) => !removedBuys.includes(buy[0]))
             .concat(addedBuys);
-          // let secondRun = true;
-          // for (let i = 0; i <= depth; i++) {
-          //   let askStartRange = secondRun
-          //     ? Number(asks[i][0])
-          //     : prevAskEndRange;
-          //   let bidStartRange = secondRun
-          //     ? Number(buys[i][0])
-          //     : prevBidEndRange;
-          //   let askEndRange = (askStartRange += aggregate);
-          //   let bidEndRange = (bidStartRange -= aggregate);
           asks.sort((a, b) =>
             Number(a[0]) < Number(b[0])
               ? -1
@@ -241,40 +232,24 @@ function App() {
               ? -1
               : 0
           );
-          // let asksRange = [];
-          // let bidsRange = [];
-          // asks.forEach((el) => {
-          // console.log(el[0]);
-          //   if (Number(el[i]) > askEndRange) {
-          //     asksRange.push(el);
-          //   }
-          // });
-          // console.log(asksRange);
-          // buys.forEach((el) => {
-          //   if (Number(el[i]) < bidEndRange) {
-          //     bidsRange.push(el);
-          //   }
-          // });
+
+          let aggData = {
+            asks,
+            buys,
+          };
+
           // let aggData = {
-          //   asks: [],
-          //   bids: [],
+          //   asks: asks.slice(0, depth),
+          //   bids: buys.slice(0, depth),
           // };
-          //console.log("setting from update");
-          //console.log(prevOB);
-          //console.log({...prevOB, asks: asks, buys: buys });
-          // aggData.asks = asksRange;
-          // aggData.bids = bidsRange;
-          // console.log(aggData);
-          // secondRun = false;
           return {
             ...prevOB,
-            asks: asks.slice(0, depth),
-            bids: buys.slice(0, depth),
+            asks: aggData.asks.slice(0, depth),
+            bids: aggData.buys.slice(0, depth),
           };
-          // }
         });
       } else {
-        console.log('not correct data', data);
+        console.log(ob);
       }
     };
     return () => {
@@ -282,6 +257,7 @@ function App() {
       // ws.current.close();
     };
   }, [
+    ob,
     activePair,
     granularity,
     aggregate,
@@ -294,7 +270,7 @@ function App() {
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2', 'l2update'],
+      channels: ['ticker', 'level2', 'heartbeat', 'l2update'],
     };
     let unsub = JSON.stringify(unsubMsg);
 
@@ -304,14 +280,14 @@ function App() {
   };
 
   const handleChart = (e) => {
-    let unsubMsg = {
-      type: 'unsubscribe',
-      product_ids: [activePair],
-      channels: ['ticker', 'level2', 'l2update'],
-    };
-    let unsub = JSON.stringify(unsubMsg);
+    // let unsubMsg = {
+    //   type: 'unsubscribe',
+    //   product_ids: [activePair],
+    //   channels: ['ticker', 'level2', 'heartbeat', 'l2update'],
+    // };
+    // let unsub = JSON.stringify(unsubMsg);
 
-    ws.current.send(unsub);
+    // ws.current.send(unsub);
 
     dispatch(setGranularity(e.target.value));
   };

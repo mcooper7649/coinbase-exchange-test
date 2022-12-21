@@ -6,13 +6,11 @@ function OrderBookWrapper({ ob }) {
   const [spread, setSpread] = useState(0);
 
   useEffect(() => {
-    if (ob) {
-      let { bids, asks } = ob;
-      console.log(ob);
+    let { bids, asks } = ob;
+    // console.log(ob);
 
-      if (asks[1] && bids[1]) {
-        setSpread((Number(asks[0][0]) - Number(bids[0][0])).toFixed(2));
-      }
+    if (asks[1] && bids[1]) {
+      setSpread((Number(asks[0][0]) - Number(bids[0][0])).toFixed(2));
     }
 
     // return () => clearInterval(interval);
@@ -20,7 +18,7 @@ function OrderBookWrapper({ ob }) {
 
   return (
     <div className="OB flex relative h-screen flex-col rounded">
-      {ob?.asks?.length || ob?.bids.length ? (
+      {ob?.asks.length && ob?.bids.length ? (
         <>
           <div>
             <OBP type="ask" orders={ob.asks} pair={ob.pair} />

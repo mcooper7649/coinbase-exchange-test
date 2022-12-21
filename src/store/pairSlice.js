@@ -10,7 +10,7 @@ export const pairSlice = createSlice({
   initialState,
   reducers: {
     setActivePair: (state, action) => {
-      console.log(state);
+      // console.log(state);
       state.activePair = action.payload;
     },
     setGranularity: (state, action) => {
