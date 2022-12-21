@@ -15,8 +15,10 @@ function App() {
 
   const activePair = useSelector((state) => state.pairer.activePair);
   const granularity = useSelector((state) => state.pairer.granularity);
+  const [prevEndRange, setPrevEndRange] = useState(0);
 
   const [currencies, setCurrencies] = useState([]);
+  const [aggregate, setAggregate] = useState(0.5);
 
   const [bestAsk, setBestAsk] = useState(0.0);
   const [bestBid, setBestBid] = useState(0.0);
@@ -60,9 +62,10 @@ function App() {
         }
         return '';
       });
-      first.current = true;
+
       console.log(filtered);
       setCurrencies(filtered);
+      first.current = true;
     };
 
     apiCall();
@@ -97,23 +100,59 @@ function App() {
 
     ws.current.onmessage = (e) => {
       let data = JSON.parse(e.data);
+      let aggData = {
+        asks: [],
+      };
 
       if (data.type === 'snapshot') {
         setOb((prevOB) => {
-          data.asks.sort((a, b) =>
-            Number(a[0]) < Number(b[0])
-              ? -1
-              : Number(a[0]) > Number(b[0])
-              ? 1
-              : 0
-          );
-          data.bids.sort((a, b) =>
-            Number(a[0]) < Number(b[0])
-              ? 1
-              : Number(a[0]) > Number(b[0])
-              ? -1
-              : 0
-          );
+          // let prevEndRange = 0;
+          let firstRun = false;
+          for (let i = 0; i <= depth; i++) {
+            let startRange = firstRun ? Number(data.asks[i][0]) : prevEndRange;
+            firstRun = true;
+            console.log(startRange);
+            let endRange = (startRange += aggregate);
+            console.log(endRange);
+            // console.log(newData);
+            data.asks.sort((a, b) =>
+              Number(a[0]) < Number(b[0])
+                ? -1
+                : Number(a[0]) > Number(b[0])
+                ? 1
+                : 0
+            );
+            data.bids.sort((a, b) =>
+              Number(a[0]) < Number(b[0])
+                ? 1
+                : Number(a[0]) > Number(b[0])
+                ? -1
+                : 0
+            );
+
+            let asksRange = [];
+
+            data.asks.forEach((el) => {
+              if (Number(el[i]) < endRange) {
+                asksRange.push(el);
+              }
+            });
+
+            asksRange.forEach((el) => {
+              let totalAskAmount = Number();
+              // console.log(el);
+              let totalledEl = Number(el[1]);
+
+              totalAskAmount += totalledEl;
+              console.log(endRange);
+              endRange = endRange += aggregate;
+              aggData.asks.push(endRange, totalAskAmount);
+            });
+
+            console.log(aggData);
+
+            setPrevEndRange(endRange);
+          }
 
           return {
             ...prevOB,
@@ -181,7 +220,7 @@ function App() {
       //console.log('unmounted');
       // ws.current.close();
     };
-  }, [activePair, granularity, depth]);
+  }, [activePair, granularity, aggregate, depth]);
 
   const handleSelect = (e) => {
     let unsubMsg = {
