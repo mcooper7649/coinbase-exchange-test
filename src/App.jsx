@@ -15,7 +15,8 @@ function App() {
 
   const activePair = useSelector((state) => state.pairer.activePair);
   const granularity = useSelector((state) => state.pairer.granularity);
-  const [prevEndRange, setPrevEndRange] = useState(0);
+  const [prevAskEndRange, setPrevAskEndRange] = useState(0);
+  const [prevBidEndRange, setPrevBidEndRange] = useState(0);
 
   const [currencies, setCurrencies] = useState([]);
   const [aggregate, setAggregate] = useState(0.5);
@@ -102,18 +103,26 @@ function App() {
       let data = JSON.parse(e.data);
       let aggData = {
         asks: [],
+        bids: [],
       };
 
       if (data.type === 'snapshot') {
         setOb((prevOB) => {
           // let prevEndRange = 0;
-          let firstRun = false;
+          let firstRun = true;
           for (let i = 0; i <= depth; i++) {
-            let startRange = firstRun ? Number(data.asks[i][0]) : prevEndRange;
+            let askStartRange = firstRun
+              ? Number(data.asks[i][0])
+              : prevAskEndRange;
+            let bidStartRange = firstRun
+              ? Number(data.bids[i][0])
+              : prevBidEndRange;
             firstRun = true;
-            console.log(startRange);
-            let endRange = (startRange += aggregate);
-            console.log(endRange);
+            // console.log(startRange);
+            let askEndRange = (askStartRange += aggregate);
+            let bidEndRange = (bidStartRange += aggregate);
+
+            // console.log(endRange);
             // console.log(newData);
             data.asks.sort((a, b) =>
               Number(a[0]) < Number(b[0])
@@ -131,10 +140,17 @@ function App() {
             );
 
             let asksRange = [];
+            let bidsRange = [];
 
             data.asks.forEach((el) => {
-              if (Number(el[i]) < endRange) {
+              if (Number(el[i]) < askEndRange) {
                 asksRange.push(el);
+              }
+            });
+
+            data.bids.forEach((el) => {
+              if (Number(el[i]) < bidEndRange) {
+                bidsRange.push(el);
               }
             });
 
@@ -144,20 +160,31 @@ function App() {
               let totalledEl = Number(el[1]);
 
               totalAskAmount += totalledEl;
-              console.log(endRange);
-              endRange = endRange += aggregate;
-              aggData.asks.push(endRange, totalAskAmount);
+              // console.log(endRange);
+              askEndRange = askEndRange += aggregate;
+              aggData.asks.push([askEndRange, totalAskAmount]);
             });
 
-            console.log(aggData);
+            bidsRange.forEach((el) => {
+              let totalBidAmount = Number();
+              // console.log(el);
+              let totalledEl = Number(el[1]);
 
-            setPrevEndRange(endRange);
+              totalBidAmount += totalledEl;
+              // console.log(endRange);
+              bidEndRange = bidEndRange += aggregate;
+              aggData.bids.push([bidEndRange, totalBidAmount]);
+            });
+
+            setPrevBidEndRange(bidEndRange);
+            setPrevAskEndRange(askEndRange);
+            console.log(aggData);
           }
 
           return {
             ...prevOB,
-            asks: data.asks.slice(0, depth),
-            bids: data.bids.slice(0, depth),
+            asks: aggData.asks.slice(0, depth),
+            bids: aggData.bids.slice(0, depth),
           };
         });
       } else if (data.type === 'l2update') {
@@ -215,12 +242,18 @@ function App() {
         console.log('not correct data', data);
       }
     };
-    console.log();
     return () => {
       //console.log('unmounted');
       // ws.current.close();
     };
-  }, [activePair, granularity, aggregate, depth]);
+  }, [
+    activePair,
+    granularity,
+    aggregate,
+    depth,
+    prevBidEndRange,
+    prevAskEndRange,
+  ]);
 
   const handleSelect = (e) => {
     let unsubMsg = {
