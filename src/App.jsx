@@ -15,7 +15,7 @@ function App() {
 
   const activePair = useSelector((state) => state.pairer.activePair);
   const granularity = useSelector((state) => state.pairer.granularity);
-  const [prevAskEndRange, setPrevAskEndRange] = useState(0);
+  const [prevAskEndRange, setPrevAskEndRange] = useState();
   const [prevBidEndRange, setPrevBidEndRange] = useState(0);
 
   const [currencies, setCurrencies] = useState([]);
@@ -28,7 +28,7 @@ function App() {
 
   const [price, setPrice] = useState(0);
   const [pastData, setPastData] = useState({});
-  const [depth] = useState(75);
+  const [depth] = useState(175);
   const [ob, setOb] = useState({
     bids: [],
     asks: [],
@@ -79,7 +79,7 @@ function App() {
 
     let msg = {
       type: 'subscribe',
-      product_ids: activePair === 'Select' ? ['BTC/USD'] : [activePair],
+      product_ids: [activePair],
       channels: ['ticker', 'level2', 'l2update'],
     };
 
@@ -101,26 +101,27 @@ function App() {
 
     ws.current.onmessage = (e) => {
       let data = JSON.parse(e.data);
-      let aggData = {
-        asks: [],
-        bids: [],
-      };
 
       if (data.type === 'snapshot') {
         setOb((prevOB) => {
+          let aggData = {
+            asks: [],
+            bids: [],
+          };
           // let prevEndRange = 0;
           let firstRun = true;
           for (let i = 0; i <= depth; i++) {
+            console.log(data.bids[i][0]);
             let askStartRange = firstRun
               ? Number(data.asks[i][0])
               : prevAskEndRange;
             let bidStartRange = firstRun
               ? Number(data.bids[i][0])
               : prevBidEndRange;
-            firstRun = true;
+            firstRun = false;
             // console.log(startRange);
             let askEndRange = (askStartRange += aggregate);
-            let bidEndRange = (bidStartRange += aggregate);
+            let bidEndRange = (bidStartRange -= aggregate);
 
             // console.log(endRange);
             // console.log(newData);
@@ -178,7 +179,7 @@ function App() {
 
             setPrevBidEndRange(bidEndRange);
             setPrevAskEndRange(askEndRange);
-            console.log(aggData);
+            // console.log(aggData);
           }
 
           return {
@@ -187,52 +188,90 @@ function App() {
             bids: aggData.bids.slice(0, depth),
           };
         });
-      } else if (data.type === 'l2update') {
-        const removedItems = data.changes.filter((el) => Number(el[2]) === 0);
-        const removedAsks = removedItems
-          .filter((el) => el[0] === 'sell')
-          .map((el) => el[1]);
-        const removedBuys = removedItems
-          .filter((el) => el[0] === 'buy')
-          .map((el) => el[1]);
-        const addedItems = data.changes.filter((el) => Number(el[2]) !== 0);
-        const addedAsks = addedItems
-          .filter((el) => el[0] === 'sell')
-          .map((el) => el.slice(1));
-        const addedBuys = addedItems
-          .filter((el) => el[0] === 'buy')
-          .map((el) => el.slice(1));
-        setOb((prevOB) => {
-          const asks = [...prevOB.asks]
-            .filter((ask) => !removedAsks.includes(ask[0]))
-            .concat(addedAsks);
-          const buys = [...prevOB.bids]
-            .filter((buy) => !removedBuys.includes(buy[0]))
-            .concat(addedBuys);
-          asks.sort((a, b) =>
-            Number(a[0]) < Number(b[0])
-              ? -1
-              : Number(a[0]) > Number(b[0])
-              ? 1
-              : 0
-          );
-          buys.sort((a, b) =>
-            Number(a[0]) < Number(b[0])
-              ? 1
-              : Number(a[0]) > Number(b[0])
-              ? -1
-              : 0
-          );
-          //console.log("setting from update");
-          //console.log(prevOB);
-          //console.log({...prevOB, asks: asks, buys: buys });
-          return {
-            ...prevOB,
-            asks: asks.slice(0, depth),
-            bids: buys.slice(0, depth),
-          };
-        });
-      } else if (data.product_id === activePair) {
+      }
+
+      // if (data.type === 'l2update') {
+      //   const removedItems = data.changes.filter((el) => Number(el[2]) === 0);
+      //   const removedAsks = removedItems
+      //     .filter((el) => Number(el[0]) === 'sell')
+      //     .map((el) => Number(el[1]));
+      //   const removedBuys = removedItems
+      //     .filter((el) => Number(el[0]) === 'buy')
+      //     .map((el) => Number(el[1]));
+      //   const addedItems = data.changes.filter((el) => Number(el[2]) !== 0);
+      //   const addedAsks = addedItems
+      //     .filter((el) => Number(el[0]) === 'sell')
+      //     .map((el) => Number(el.slice(1)));
+      //   const addedBuys = addedItems
+      //     .filter((el) => Number(el[0]) === 'buy')
+      //     .map((el) => Number(el.slice(1)));
+
+      //   // console.log(addedAsks);
+      //   setOb((prevOB) => {
+      //     const asks = [...prevOB.asks]
+      //       .filter((ask) => !removedAsks.includes(ask[0]))
+      //       .concat(addedAsks);
+      //     const buys = [...prevOB.bids]
+      //       .filter((buy) => !removedBuys.includes(buy[0]))
+      //       .concat(addedBuys);
+
+      //     for (let i = 0; i <= depth; i++) {
+      //       let askStartRange = i === 0 ? Number(asks[i][0]) : prevAskEndRange;
+      //       let bidStartRange = i === 0 ? Number(buys[i][0]) : prevBidEndRange;
+      //       let askEndRange = (askStartRange += aggregate);
+      //       let bidEndRange = (bidStartRange -= aggregate);
+
+      //       asks.sort((a, b) =>
+      //         Number(a[0]) < Number(b[0])
+      //           ? -1
+      //           : Number(a[0]) > Number(b[0])
+      //           ? 1
+      //           : 0
+      //       );
+
+      //       buys.sort((a, b) =>
+      //         Number(a[0]) > Number(b[0])
+      //           ? 1
+      //           : Number(a[0]) > Number(b[0])
+      //           ? -1
+      //           : 0
+      //       );
+      //       let asksRange = [];
+      //       let bidsRange = [];
+      //       asks.forEach((el) => {
+      //         console.log(el[0]);
+      //         if (Number(el[0]) < askEndRange) {
+      //           asksRange.push(el);
+      //         }
+      //       });
+      //       console.log(asksRange);
+
+      //       buys.forEach((el) => {
+      //         if (Number(el[i]) < bidEndRange) {
+      //           bidsRange.push(el);
+      //         }
+      //       });
+      //       let aggData = {
+      //         asks: [],
+      //         bids: [],
+      //       };
+
+      //       //console.log("setting from update");
+      //       //console.log(prevOB);
+      //       //console.log({...prevOB, asks: asks, buys: buys });
+
+      //       // aggData.asks.push(asksRange);
+      //       // aggData.bids.push(bidsRange);
+      //       // console.log(asksRange);
+      //       return {
+      //         ...prevOB,
+      //         asks: aggData.asks.slice(0, depth),
+      //         bids: aggData.bids.slice(0, depth),
+      //       };
+      //     }
+      //   });
+      // }
+      else if (data.product_id === activePair) {
         setBestAskSize(Number(data.best_ask_size));
         setBestBidSize(Number(data.best_bid_size));
         setBestBid(Number(data.best_bid));
@@ -307,7 +346,7 @@ function App() {
           <Chart
             granularity={granularity}
             pair={activePair}
-            price={price === isNaN ? null : price}
+            price={price}
             data={pastData}
           />
         </div>
