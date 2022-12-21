@@ -59,27 +59,27 @@ function Chart({ price, data, pair, granularity }) {
       </div>
     );
   }
-  if (granularity === 'Minutes') {
-    return (
-      <div className="flex flex-col justify-center items-center h-screen">
-        <h2 className="text-3xl font-bold underline ">
-          Please Set Granularity
-        </h2>
-      </div>
-    );
-  } else {
-    return (
-      <div className="chart">
-        <h2 className="py-2 text-center text-3xl">{`${USDollar.format(
-          price
-        )}`}</h2>
+  // if (granularity === 'Minutes') {
+  //   return (
+  //     <div className="flex flex-col justify-center items-center h-screen">
+  //       <h2 className="text-3xl font-bold underline ">
+  //         Please Set Granularity
+  //       </h2>
+  //     </div>
+  //   );
+  // } else {
+  return (
+    <div className="chart">
+      <h2 className="py-2 text-center text-3xl">{`${USDollar.format(
+        price
+      )}`}</h2>
 
-        <div className="chart-container h-[75vh]">
-          <Line data={data} options={opts} setPastData />
-        </div>
+      <div className="chart-container h-[75vh]">
+        <Line data={data} options={opts} setPastData />
       </div>
-    );
-  }
+    </div>
+  );
+  // }
 }
 
 export default Chart;
