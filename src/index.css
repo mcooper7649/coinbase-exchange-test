@@ -43,6 +43,16 @@ body {
   display: flex;
 }
 
+.OB__header3 {
+  display: flex;
+  place-content: space-evenly;
+}
+
+.OB__header3 > * {
+  /* border: 1px solid #929292; */
+  flex-direction: row;
+}
+
 .OB__header2 > * {
   flex-basis: 50%;
   border-top: 1px solid #929292;

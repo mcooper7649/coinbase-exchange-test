@@ -38,7 +38,6 @@ function App() {
 
   let first = useRef(false);
   const url = 'https://api.pro.coinbase.com';
-
   useEffect(() => {
     ws.current = new WebSocket('wss://ws-feed.pro.coinbase.com');
     ws.current.onopen = () => {
@@ -80,7 +79,7 @@ function App() {
     let msg = {
       type: 'subscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2', 'heartbeat', 'l2update'],
+      channels: ['ticker', 'level2', 'heartbeat'],
     };
 
     let jsonMsg = JSON.stringify(msg);
@@ -249,7 +248,11 @@ function App() {
           };
         });
       } else {
-        console.log(ob);
+        if (data.type === 'subscriptions') {
+          // console.log('nothing important');
+        } else {
+          // console.log(data);
+        }
       }
     };
     return () => {
@@ -277,6 +280,19 @@ function App() {
     ws.current.send(unsub);
 
     dispatch(setActivePair(e.target.value));
+  };
+
+  const handleAgg = (e) => {
+    let amounts = [0.5, 0.1, 0.5, 1];
+    if (Number(e.target.value) === 0.5) {
+      setAggregate(amounts[0]);
+    } else if (Number(e.target.value) === 0.1) {
+      setAggregate(amounts[1]);
+    } else if (Number(e.target.value) === 0.5) {
+      setAggregate(amounts[2]);
+    } else if (Number(e.target.value) === 1) {
+      setAggregate(amounts[3]);
+    }
   };
 
   const handleChart = (e) => {
@@ -312,7 +328,13 @@ function App() {
         </div>
 
         <div className="box row-start-2 row-end-7 col-start-3 col-end-3">
-          <OrderBook ob={ob} pair={activePair} />
+          <OrderBook
+            aggregate={aggregate}
+            handleAgg={handleAgg}
+            ob={ob}
+            setAggregate={setAggregate}
+            pair={activePair}
+          />
         </div>
         <div className="box row-start-2 row-end-7 col-start-1 col-end-3">
           <Chart
