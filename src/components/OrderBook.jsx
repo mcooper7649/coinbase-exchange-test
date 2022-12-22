@@ -7,7 +7,6 @@ function OrderBookWrapper({ ob, setAggregate, handleAgg, pair, aggregate }) {
 
   useEffect(() => {
     let { bids, asks } = ob;
-
     if (asks[1] && bids[1]) {
       setSpread((Number(asks[0][0]) - Number(bids[0][0])).toFixed(2));
     }
@@ -32,12 +31,12 @@ function OrderBookWrapper({ ob, setAggregate, handleAgg, pair, aggregate }) {
 
           <div className="OB__header">
             <div className="OB__header1">Order Book</div>
+            <div className="OB__header1">Select USD Spread Below</div>
             <div className="OB__header3">
               <div
                 className="flex flex-col"
                 onClick={(e) => {
                   setAggregate(Number(e.target.innerHTML));
-                  console.log(Number(e.target.innerHTML));
                   console.log(aggregate);
                 }}
               >
@@ -47,7 +46,6 @@ function OrderBookWrapper({ ob, setAggregate, handleAgg, pair, aggregate }) {
                 className="flex flex-col"
                 onClick={(e) => {
                   setAggregate(Number(e.target.innerHTML));
-                  console.log(Number(e.target.innerHTML));
                   console.log(aggregate);
                 }}
               >
@@ -57,7 +55,6 @@ function OrderBookWrapper({ ob, setAggregate, handleAgg, pair, aggregate }) {
                 className="flex flex-col"
                 onClick={(e) => {
                   setAggregate(Number(e.target.innerHTML));
-                  console.log(Number(e.target.innerHTML));
                   console.log(aggregate);
                 }}
               >
@@ -68,7 +65,6 @@ function OrderBookWrapper({ ob, setAggregate, handleAgg, pair, aggregate }) {
                 className="flex flex-col"
                 onClick={(e) => {
                   setAggregate(Number(e.target.innerHTML));
-                  console.log(Number(e.target.innerHTML));
                   console.log(aggregate);
                 }}
               >

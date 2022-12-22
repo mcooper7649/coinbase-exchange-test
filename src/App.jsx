@@ -15,8 +15,6 @@ function App() {
 
   const activePair = useSelector((state) => state.pairer.activePair);
   const granularity = useSelector((state) => state.pairer.granularity);
-  const [prevAskEndRange, setPrevAskEndRange] = useState();
-  const [prevBidEndRange, setPrevBidEndRange] = useState(0);
 
   const [currencies, setCurrencies] = useState([]);
   const [aggregate, setAggregate] = useState(0.5);
@@ -28,7 +26,7 @@ function App() {
 
   const [price, setPrice] = useState(0);
   const [pastData, setPastData] = useState({});
-  const [depth] = useState(200);
+  const [depth] = useState(14);
   const [ob, setOb] = useState({
     bids: [],
     asks: [],
@@ -63,7 +61,7 @@ function App() {
         return '';
       });
 
-      console.log(filtered);
+      console.log('useeffect1 render, currencies set');
       setCurrencies(filtered);
       first.current = true;
     };
@@ -76,6 +74,7 @@ function App() {
       return;
     }
 
+    console.log('useEffect2 render');
     let msg = {
       type: 'subscribe',
       product_ids: [activePair],
@@ -110,7 +109,10 @@ function App() {
         setPrice(Number(data.price));
         return;
       } else if (data.type === 'snapshot') {
-        setOb((prevOB) => {
+        console.log('snapshot hit');
+        let prevAskEndRange = 0;
+        let prevBidEndRange = 0;
+        setOb((prevOb) => {
           let aggData = {
             asks: [],
             bids: [],
@@ -118,11 +120,13 @@ function App() {
           // let prevEndRange = 0;
           let firstRun = true;
           for (let i = 0; i <= depth; i++) {
+            let startAsk = Number(data.asks[i][0]);
+            let startBid = Number(data.asks[i][0]);
             let askStartRange = firstRun
-              ? Number(data.asks[i][0])
+              ? startAsk - aggregate
               : prevAskEndRange;
             let bidStartRange = firstRun
-              ? Number(data.bids[i][0])
+              ? startBid + aggregate
               : prevBidEndRange;
             let askEndRange = (askStartRange += aggregate);
             let bidEndRange = (bidStartRange -= aggregate);
@@ -183,70 +187,80 @@ function App() {
               aggData.bids.push([bidEndRange, totalBidAmount]);
             });
 
-            setPrevBidEndRange(bidEndRange);
-            setPrevAskEndRange(askEndRange);
+            prevBidEndRange = bidEndRange;
+            prevAskEndRange = askEndRange;
             // console.log(aggData);
           }
 
           return {
-            ...prevOB,
+            ...prevOb,
             asks: aggData.asks.slice(0, depth),
             bids: aggData.bids.slice(0, depth),
           };
         });
       } else if (data.type === 'l2update') {
-        const removedItems = data.changes.filter((el) => Number(el[2]) === 0);
-        const removedAsks = removedItems
-          .filter((el) => Number(el[0]) === 'sell')
-          .map((el) => Number(el[1]));
-        const removedBuys = removedItems
-          .filter((el) => Number(el[0]) === 'buy')
-          .map((el) => Number(el[1]));
-        const addedItems = data.changes.filter((el) => Number(el[2]) !== 0);
-        const addedAsks = addedItems
-          .filter((el) => Number(el[0]) === 'sell')
-          .map((el) => Number(el.slice(1)));
-        const addedBuys = addedItems
-          .filter((el) => Number(el[0]) === 'buy')
-          .map((el) => Number(el.slice(1)));
-        // console.log(addedAsks);
-        setOb((prevOB) => {
-          const asks = [...prevOB.asks]
-            .filter((ask) => !removedAsks.includes(ask[0]))
-            .concat(addedAsks);
-          const buys = [...prevOB.bids]
-            .filter((buy) => !removedBuys.includes(buy[0]))
-            .concat(addedBuys);
-          asks.sort((a, b) =>
-            Number(a[0]) < Number(b[0])
-              ? -1
-              : Number(a[0]) > Number(b[0])
-              ? 1
-              : 0
-          );
-          buys.sort((a, b) =>
-            Number(a[0]) > Number(b[0])
-              ? 1
-              : Number(a[0]) > Number(b[0])
-              ? -1
-              : 0
-          );
+        // console.log('l2update hit');
+        // console.log(ob);
 
-          let aggData = {
-            asks,
-            buys,
-          };
+        const updatedData = new Map();
+        updatedData.set(data);
+        const iterator = updatedData.keys();
 
-          // let aggData = {
-          //   asks: asks.slice(0, depth),
-          //   bids: buys.slice(0, depth),
-          // };
-          return {
-            ...prevOB,
-            asks: aggData.asks.slice(0, depth),
-            bids: aggData.buys.slice(0, depth),
-          };
-        });
+        // console.log(iterator.next().value);
+
+        // const removedItems = data.changes.filter((el) => Number(el[2]) === 0);
+        // const removedAsks = removedItems
+        //   .filter((el) => Number(el[0]) === 'sell')
+        //   .map((el) => Number(el[1]));
+        // const removedBuys = removedItems
+        //   .filter((el) => Number(el[0]) === 'buy')
+        //   .map((el) => Number(el[1]));
+        // const addedItems = data.changes.filter((el) => Number(el[2]) !== 0);
+        // const addedAsks = addedItems
+        //   .filter((el) => Number(el[0]) === 'sell')
+        //   .map((el) => Number(el.slice(1)));
+        // const addedBuys = addedItems
+        //   .filter((el) => Number(el[0]) === 'buy')
+        //   .map((el) => Number(el.slice(1)));
+        // // console.log(addedAsks);
+        // setOb((prevOb) => {
+        //   const asks = [...prevOb.asks]
+        //     .filter((ask) => !removedAsks.includes(ask[0]))
+        //     .concat(addedAsks);
+        //   const buys = [...prevOb.bids]
+        //     .filter((buy) => !removedBuys.includes(buy[0]))
+        //     .concat(addedBuys);
+        //   asks.sort((a, b) =>
+        //     Number(a[0]) < Number(b[0])
+        //       ? -1
+        //       : Number(a[0]) > Number(b[0])
+        //       ? 1
+        //       : 0
+        //   );
+        //   buys.sort((a, b) =>
+        //     Number(a[0]) > Number(b[0])
+        //       ? 1
+        //       : Number(a[0]) > Number(b[0])
+        //       ? -1
+        //       : 0
+        //   );
+
+        //   //   let aggData = {
+        //   //     asks,
+        //   //     buys,
+        //   //   };
+
+        //   let aggData = {
+        //     asks: asks.slice(0, depth),
+        //     bids: buys.slice(0, depth),
+        //   };
+        //   updatedData.set(aggData);
+        //   return {
+        //     ...prevOB,
+        //     asks: aggData.asks.slice(0, depth),
+        //     bids: aggData.buys.slice(0, depth),
+        //   };
+        // });
       } else {
         if (data.type === 'subscriptions') {
           // console.log('nothing important');
@@ -259,15 +273,7 @@ function App() {
       //console.log('unmounted');
       // ws.current.close();
     };
-  }, [
-    ob,
-    activePair,
-    granularity,
-    aggregate,
-    depth,
-    prevBidEndRange,
-    prevAskEndRange,
-  ]);
+  }, [ob, activePair, granularity, aggregate, depth]);
 
   const handleSelect = (e) => {
     let unsubMsg = {
