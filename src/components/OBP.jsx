@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { USDollar } from '../utils/utils';
 
 const OBP = ({ orders, type, viewSize = 14 }) => {
+  useEffect(() => {
+    console.log(orders);
+  }, [orders]);
+
   return (
     <div className={type === 'ask' ? 'OBP OBP--ask' : 'OBP OBP--sell'}>
       {orders.slice(0, viewSize).map((order, index) => {
