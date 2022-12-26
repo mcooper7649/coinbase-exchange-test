@@ -6,11 +6,15 @@ import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
 
+import { SocketProvider } from './utils/SocketProvider';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <SocketProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </SocketProvider>
   </React.StrictMode>
 );

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { USDollar } from '../utils/utils';
+import Loader from './Loader';
 
 const OBP = ({ orders, type, viewSize = 14 }) => {
   useEffect(() => {
@@ -8,19 +9,23 @@ const OBP = ({ orders, type, viewSize = 14 }) => {
 
   return (
     <div className={type === 'ask' ? 'OBP OBP--ask' : 'OBP OBP--sell'}>
-      {orders.slice(0, viewSize).map((order, index) => {
-        return (
-          <div className="OBP__order" key={index}>
-            <div className="OBP__size">
-              <div
-                className="OBP__bar"
-                style={{ width: Math.min((order[1] / 5) * 25, 25) }}
-              ></div>
-              {order[1]}
+      {orders?.slice(0, viewSize).map((order, index) => {
+        if (order[1]) {
+          return (
+            <div className="OBP__order" key={index}>
+              <div className="OBP__size">
+                <div
+                  className="OBP__bar"
+                  style={{ width: Math.min((order[1] / 5) * 25, 25) }}
+                ></div>
+                {order[1]}
+              </div>
+              <div className="OBP__price">{USDollar.format(order[0])}</div>
             </div>
-            <div className="OBP__price">{USDollar.format(order[0])}</div>
-          </div>
-        );
+          );
+        } else {
+          return <Loader />;
+        }
       })}
     </div>
   );

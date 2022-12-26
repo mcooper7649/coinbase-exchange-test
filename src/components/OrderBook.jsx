@@ -13,7 +13,7 @@ function OrderBookWrapper({ ob, setAggregate, handleAgg, pair, aggregate }) {
 
   return (
     <div className="OB flex relative h-screen flex-col rounded">
-      {console.log(typeof ob.bids[0])}(
+      {console.log(bids[0])}(
       <>
         <div>
           <OBP key={ob.asks} type="ask" orders={asks} pair={pair} />
