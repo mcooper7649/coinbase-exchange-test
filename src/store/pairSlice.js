@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  activePair: 'Select',
+  activePair: 'BTC-USD',
   granularity: 'Minutes',
   newOb: {
     bestAsk: null,
