@@ -3,9 +3,7 @@ import { USDollar } from '../utils/utils';
 import Loader from './Loader';
 
 const OBP = ({ orders, type, viewSize = 14 }) => {
-  useEffect(() => {
-    console.log(orders);
-  }, [orders]);
+  useEffect(() => {}, [orders]);
 
   return (
     <div className={type === 'ask' ? 'OBP OBP--ask' : 'OBP OBP--sell'}>

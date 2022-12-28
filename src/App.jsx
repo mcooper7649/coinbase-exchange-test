@@ -32,7 +32,7 @@ function App() {
 
   const [price, setPrice] = useState(0);
   const [pastData, setPastData] = useState({});
-  const [depth] = useState(60);
+  const [depth] = useState(20);
   const [ob, setOb] = useState({
     bids: [],
     asks: [],
@@ -40,66 +40,70 @@ function App() {
 
   const handleUpdate = useCallback(
     (data) => {
-      console.log('update hit');
-      const removedItems = data.changes.filter((el) => Number(el[2]) === 0);
+      let aggData = {
+        asks: [],
+        bids: [],
+      };
+      // console.log(data);
+      // console.log('update hit');
+      const removedItems = data.changes.filter(
+        (el) => Number(el[2]) === 0 || Number(el) === isNaN || Number(el) === 0
+      );
       const removedAsks = removedItems
         .filter((el) => el[0] === 'sell')
-        .map((el) => el[1]);
+        .map((el) => +el[1]);
       const removedBuys = removedItems
         .filter((el) => el[0] === 'buy')
-        .map((el) => el[1]);
-      const addedItems = data.changes.filter((el) => Number(el[2]) !== 0);
+        .map((el) => +el[1]);
+      const addedItems = data.changes.filter(
+        (el) => Number(el[2]) !== 0 || el === isNaN || el === 0
+      );
       const addedAsks = addedItems
         .filter((el) => el[0] === 'sell')
-        .map((el) => el.slice(1));
+        .map((el) => +el[1]);
       const addedBuys = addedItems
         .filter((el) => el[0] === 'buy')
-        .map((el) => el.slice(1));
+        .map((el) => +el[1]);
 
-      let prevAskEndRange = 0;
-      let prevBidEndRange = 0;
       setOb((prevOB) => {
-        let aggData = {
-          asks: [],
-          bids: [],
-        };
         const asks = [...prevOB.asks]
           .filter((ask) => !removedAsks.includes(ask[0]))
-          .concat(+addedAsks);
+          .concat(addedAsks);
         const buys = [...prevOB.bids]
           .filter((bid) => !removedBuys.includes(bid[0]))
-          .concat(+addedBuys);
+          .concat(addedBuys);
 
         asks.sort((a, b) =>
-          Number(a[0]) < Number(b[0]) ? 1 : Number(a[0]) > Number(b[0]) ? -1 : 0
+          Number(a[0]) < Number(b[0]) ? -1 : Number(a[0]) > Number(b[0]) ? 1 : 0
         );
         buys.sort((a, b) =>
-          Number(a[0]) > Number(b[0]) ? 1 : Number(a[0]) > Number(b[0]) ? -1 : 0
+          Number(a[0]) < Number(b[0]) ? 1 : Number(a[0]) > Number(b[0]) ? -1 : 0
         );
+
         aggData.bids = buys;
         aggData.asks = asks;
-        let firstRun = true;
         // console.log(data);
+        // console.log(aggData.bids, aggData.asks);
         for (let i = 0; i <= depth; i++) {
           let startAsk = aggData.asks[i][0];
           let startBid = aggData.bids[i][0];
-          let askStartRange = firstRun ? startAsk - aggregate : prevAskEndRange;
-          let bidStartRange = firstRun ? startBid + aggregate : prevBidEndRange;
+          let askStartRange = startAsk - aggregate;
+          let bidStartRange = startBid + aggregate;
           let askEndRange = (askStartRange += aggregate);
           let bidEndRange = (bidStartRange -= aggregate);
-          firstRun = false;
 
           let asksRange = [];
           let bidsRange = [];
 
           aggData.asks.forEach((el) => {
-            if (Number(el[i]) < askEndRange) {
+            // console.log(el);
+            if (Number(el[i]) <= askEndRange) {
               asksRange.push(el);
             }
           });
 
           aggData.bids.forEach((el) => {
-            if (Number(el[i]) > bidEndRange) {
+            if (Number(el[i]) >= bidEndRange) {
               bidsRange.push(el);
             }
           });
@@ -111,8 +115,8 @@ function App() {
 
             totalAskAmount += totalledEl;
             // console.log(endRange);
-            askEndRange = askEndRange += aggregate;
-            aggData.asks.push([+askEndRange, +totalAskAmount]);
+            askEndRange = askStartRange -= aggregate;
+            aggData.asks.push([askEndRange, totalAskAmount]);
           });
 
           bidsRange.forEach((el) => {
@@ -122,65 +126,11 @@ function App() {
 
             totalBidAmount += totalledEl;
             // console.log(endRange);
-            bidEndRange = bidEndRange += aggregate;
-            aggData.bids.push([+bidEndRange, +totalBidAmount]);
+            bidEndRange = bidStartRange += aggregate;
+            aggData.bids.push([bidEndRange, totalBidAmount]);
           });
-
-          prevBidEndRange = bidEndRange;
-          prevAskEndRange = askEndRange;
-          //   // console.log(data);
-          //   // setOb(data);
-
-          //   const removedItems = data.changes.filter((el) => Number(el[2]) === 0);
-          //   const removedAsks = removedItems
-          //     .filter((el) => Number(el[0]) === 'sell')
-          //     .map((el) => Number(el[1]));
-          //   const removedBuys = removedItems
-          //     .filter((el) => Number(el[0]) === 'buy')
-          //     .map((el) => Number(el[1]));
-          //   const addedItems = data.changes.filter((el) => Number(el[2]) !== 0);
-          //   const addedAsks = addedItems
-          //     .filter((el) => Number(el[0]) === 'sell')
-          //     .map((el) => Number(el.slice(1)));
-          //   const addedBuys = addedItems
-          //     .filter((el) => Number(el[0]) === 'buy')
-          //     .map((el) => Number(el.slice(1)));
-          //   // console.log(addedAsks);
-          //   setOb((prevOB) => {
-          //     if (prevOB) {
-          //       // console.log(prevOB);
-          //       const asks = [...prevOB.asks]
-          //         .filter((ask) => !removedAsks.includes(ask[0]))
-          //         .concat(addedAsks);
-          //       const buys = [...prevOB.bids]
-          //         .filter((buy) => !removedBuys.includes(buy[0]))
-          //         .concat(addedBuys);
-          //       asks.sort((a, b) =>
-          //         Number(a[0]) < Number(b[0])
-          //           ? -1
-          //           : Number(a[0]) > Number(b[0])
-          //           ? 1
-          //           : 0
-          //       );
-          //       buys.sort((a, b) =>
-          //         Number(a[0]) > Number(b[0])
-          //           ? 1
-          //           : Number(a[0]) > Number(b[0])
-          //           ? -1
-          //           : 0
-          //       );
-
-          //       //   let aggData = {
-          //       //     asks,
-          //       //     buys,
-          //       //   };
-
-          //       setAggData({
-          //         asks: asks.slice(0, depth),
-          //         bids: buys.slice(0, depth),
-          //       });
         }
-        console.log(aggData);
+
         return {
           ...prevOB,
           asks: aggData.asks.slice(0, depth),
@@ -197,30 +147,17 @@ function App() {
 
       if (data.type === 'snapshot') {
         console.log('snapshot hit');
-        let prevAskEndRange = 0;
-        let prevBidEndRange = 0;
+        let prevAskEndRange = Number();
+        let prevBidEndRange = Number();
         setOb((prevOB) => {
           let aggData = {
             asks: [],
             bids: [],
           };
           // let prevEndRange = 0;
-          let firstRun = true;
+          // let firstRun = true;
           // console.log(data);
           for (let i = 0; i <= depth; i++) {
-            let startAsk = +data.asks[i][0];
-            let startBid = +data.bids[i][0];
-            let askStartRange = firstRun
-              ? startAsk - aggregate
-              : prevAskEndRange;
-            let bidStartRange = firstRun
-              ? startBid - aggregate
-              : prevBidEndRange;
-            let askEndRange = (askStartRange += aggregate);
-            let bidEndRange = (bidStartRange -= aggregate);
-            firstRun = false;
-            // console.log(bidStartRange);
-
             data.asks.sort((a, b) =>
               Number(a[0]) < Number(b[0])
                 ? -1
@@ -235,6 +172,14 @@ function App() {
                 ? -1
                 : 0
             );
+
+            let startAsk = +data.asks[i][0];
+            let startBid = +data.bids[i][0];
+            let askStartRange = startAsk;
+            let bidStartRange = startBid;
+            let askEndRange = (askStartRange += aggregate);
+            let bidEndRange = (bidStartRange -= aggregate);
+            // console.log(bidStartRange);
 
             let asksRange = [];
             let bidsRange = [];
@@ -275,7 +220,7 @@ function App() {
             prevBidEndRange = bidEndRange;
             prevAskEndRange = askEndRange;
 
-            // console.log(aggData);
+            console.log(aggData.bids[0], aggData.asks[0]);
           }
           return {
             ...prevOB,
@@ -291,7 +236,8 @@ function App() {
         setPrice(Number(data.price));
         // return;
       } else if (data.type === 'l2update') {
-        handleUpdate(data);
+        // console.log(data);
+        // handleUpdate(data);
       }
     },
     [aggregate, depth, handleUpdate]
@@ -347,7 +293,7 @@ function App() {
     let msg = {
       type: 'subscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2', 'snapshot', 'heartbeat'],
+      channels: ['ticker', 'level2'],
     };
 
     let jsonMsg = JSON.stringify(msg);
@@ -390,7 +336,7 @@ function App() {
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2', 'heartbeat', 'l2update'],
+      channels: ['ticker', 'level2'],
     };
     let unsub = JSON.stringify(unsubMsg);
 
@@ -413,6 +359,14 @@ function App() {
   };
 
   const handleChart = (e) => {
+    let unsubMsg = {
+      type: 'unsubscribe',
+      product_ids: [activePair],
+      channels: ['ticker', 'level2'],
+    };
+    let unsub = JSON.stringify(unsubMsg);
+
+    socket.send(unsub);
     dispatch(setGranularity(e.target.value));
   };
   return (
@@ -436,7 +390,6 @@ function App() {
         </div>
 
         <div className="box row-start-2 row-end-7 col-start-3 col-end-3">
-          {console.log(ob)}
           <OrderBook
             aggregate={aggregate}
             handleAgg={handleAgg}

@@ -9,7 +9,7 @@ function OrderBookWrapper({ ob, setAggregate, handleAgg, pair, aggregate }) {
     if (asks[1] && bids[1]) {
       setSpread((Number(asks[0][0]) - Number(bids[0][0])).toFixed(2));
     }
-  }, [ob, asks, bids, spread, aggregate]);
+  }, [ob, asks, bids, spread]);
 
   return (
     <div className="OB flex relative h-screen flex-col rounded">
