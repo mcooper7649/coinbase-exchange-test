@@ -73,12 +73,28 @@ function App() {
           .filter((bid) => !removedBuys.includes(bid[0]))
           .concat(addedBuys);
 
-        asks.sort((a, b) =>
-          Number(a[0]) < Number(b[0]) ? -1 : Number(a[0]) > Number(b[0]) ? 1 : 0
-        );
-        buys.sort((a, b) =>
-          Number(a[0]) < Number(b[0]) ? 1 : Number(a[0]) > Number(b[0]) ? -1 : 0
-        );
+        // asks.sort((a, b) =>
+        //   Number(a[0]) < Number(b[0]) ? -1 : Number(a[0]) > Number(b[0]) ? 1 : 0
+        // );
+        // buys.sort((a, b) =>
+        //   Number(a[0]) < Number(b[0]) ? 1 : Number(a[0]) > Number(b[0]) ? -1 : 0
+        // );
+
+        // asks.sort((a, b) =>
+        //   Number(a[0]) <= Number(b[0])
+        //     ? -1
+        //     : Number(a[0]) >= Number(b[0])
+        //     ? 1
+        //     : 0
+        // );
+        // buys.sort((a, b) =>
+        //   Number(a[0]) >= Number(b[0])
+        //     ? 1
+        //     : Number(a[0]) >= Number(b[0])
+        //     ? -1
+        //     : 0
+        // );
+        console.log(asks, buys);
 
         aggData.bids = buys;
         aggData.asks = asks;
@@ -87,8 +103,8 @@ function App() {
         for (let i = 0; i <= depth; i++) {
           let startAsk = aggData.asks[i][0];
           let startBid = aggData.bids[i][0];
-          let askStartRange = startAsk - aggregate;
-          let bidStartRange = startBid + aggregate;
+          let askStartRange = startAsk;
+          let bidStartRange = startBid;
           let askEndRange = (askStartRange += aggregate);
           let bidEndRange = (bidStartRange -= aggregate);
 
@@ -155,32 +171,33 @@ function App() {
             bids: [],
           };
           // let prevEndRange = 0;
-          // let firstRun = true;
+          // let firstRun = true
           // console.log(data);
           for (let i = 0; i <= depth; i++) {
             data.asks.sort((a, b) =>
-              Number(a[0]) < Number(b[0])
-                ? -1
-                : Number(a[0]) > Number(b[0])
+              Number(a[0]) > Number(b[0])
                 ? 1
+                : Number(a[0]) < Number(b[0])
+                ? -1
                 : 0
             );
             data.bids.sort((a, b) =>
-              Number(a[0]) > Number(b[0])
+              Number(a[0]) < Number(b[0])
                 ? 1
                 : Number(a[0]) > Number(b[0])
                 ? -1
                 : 0
             );
 
-            let startAsk = +data.asks[i][0];
-            let startBid = +data.bids[i][0];
+            let startAsk = bestAsk;
+            let startBid = bestBid;
             let askStartRange = startAsk;
             let bidStartRange = startBid;
             let askEndRange = (askStartRange += aggregate);
             let bidEndRange = (bidStartRange -= aggregate);
             // console.log(bidStartRange);
 
+            // firstRun = false;
             let asksRange = [];
             let bidsRange = [];
 
@@ -220,8 +237,9 @@ function App() {
             prevBidEndRange = bidEndRange;
             prevAskEndRange = askEndRange;
 
-            console.log(aggData.bids[0], aggData.asks[0]);
+            // console.log(aggData.bids[0], aggData.asks[0]);
           }
+
           return {
             ...prevOB,
             asks: aggData.asks.slice(0, depth),
@@ -229,6 +247,7 @@ function App() {
           };
         });
       } else if (data.type === 'ticker') {
+        // console.log(data);
         setBestAskSize(Number(data.best_ask_size));
         setBestBidSize(Number(data.best_bid_size));
         setBestBid(Number(data.best_bid));
@@ -240,7 +259,7 @@ function App() {
         // handleUpdate(data);
       }
     },
-    [aggregate, depth, handleUpdate]
+    [aggregate, depth, handleUpdate, activePair, bestAsk, bestBid]
   );
 
   // const [aggData, setAggData] = useState({});
@@ -394,6 +413,8 @@ function App() {
             aggregate={aggregate}
             handleAgg={handleAgg}
             ob={ob}
+            bestAsk={bestAsk}
+            bestBid={bestBid}
             setAggregate={setAggregate}
             pair={activePair}
           />

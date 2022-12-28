@@ -2,14 +2,24 @@ import { useEffect, useState } from 'react';
 import OBP from './OBP';
 import Loader from './Loader';
 
-function OrderBookWrapper({ ob, setAggregate, handleAgg, pair, aggregate }) {
+function OrderBookWrapper({
+  bestAsk,
+  bestBid,
+  ob,
+  setAggregate,
+  handleAgg,
+  pair,
+  aggregate,
+}) {
   const [spread, setSpread] = useState(0);
   let { bids, asks } = ob;
   useEffect(() => {
     if (asks[1] && bids[1]) {
-      setSpread((Number(asks[0][0]) - Number(bids[0][0])).toFixed(2));
+      setSpread((Number(bestAsk) - Number(bestBid)).toFixed(2));
     }
-  }, [ob, asks, bids, spread]);
+  }, [ob, asks, bids, spread, bestAsk, bestBid]);
+
+  console.log(asks, bids);
 
   return (
     <div className="OB flex relative h-screen flex-col rounded">
