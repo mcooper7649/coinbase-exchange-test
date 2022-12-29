@@ -32,7 +32,6 @@ function App() {
     bids: [],
     asks: [],
   });
-  const [rawData, setRawData] = useState();
 
   const handleStats = useCallback((data) => {
     setBestAskSize(Number(data.best_ask_size));
@@ -44,7 +43,6 @@ function App() {
 
   const handleUpdate = useCallback(
     (data) => {
-      setRawData(data);
       // console.log(rawData);
       let aggData = {
         asks: [],
