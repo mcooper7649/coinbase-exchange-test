@@ -19,7 +19,7 @@ function OrderBookWrapper({
     }
   }, [ob, asks, bids, spread, bestAsk, bestBid]);
 
-  console.log(asks, bids);
+  // console.log(asks, bids);
 
   return (
     <div className="OB flex relative h-screen flex-col rounded">
