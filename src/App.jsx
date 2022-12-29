@@ -20,11 +20,6 @@ function App() {
   const [currencies, setCurrencies] = useState([]);
   const [aggregate, setAggregate] = useState(0.5);
 
-  const [aggData, setAggData] = useState({
-    bids: [],
-    asks: [],
-  });
-
   const [bestAsk, setBestAsk] = useState(null);
   const [bestBid, setBestBid] = useState(null);
   const [bestAskSize, setBestAskSize] = useState(null);
@@ -57,8 +52,8 @@ function App() {
       };
       // console.log(data);
       // console.log('update hit');
-      if (rawData.changes !== undefined) {
-        const removedItems = rawData.changes.filter(
+      if (data.changes !== undefined) {
+        const removedItems = data.changes.filter(
           (el) =>
             Number(el[2]) === 0 ||
             Number(el) === isNaN ||
@@ -71,7 +66,7 @@ function App() {
         const removedBuys = removedItems
           .filter((el) => el[0] === 'buy')
           .map((el) => +el[1]);
-        const addedItems = rawData.changes.filter(
+        const addedItems = data.changes.filter(
           (el) =>
             Number(el[2]) !== 0 || el === isNaN || el === 0 || el === undefined
         );
@@ -97,28 +92,28 @@ function App() {
 
           for (let i = 0; i <= depth; i++) {
             if (
-              aggData.asks[i][0] !== undefined ||
-              aggData.bids[i][0] !== undefined
+              aggData.asks[i] !== undefined ||
+              aggData.bids[i] !== undefined
             ) {
               let startAsk = aggData.asks[0];
               let startBid = aggData.bids[0];
               let askStartRange = startAsk;
               let bidStartRange = startBid;
-              let askEndRange = (askStartRange += aggregate);
-              let bidEndRange = (bidStartRange -= aggregate);
+              let askEndRange = askStartRange - aggregate;
+              let bidEndRange = bidStartRange > aggregate;
 
               let asksRange = [];
               let bidsRange = [];
 
               aggData.asks.forEach((el) => {
                 // console.log(el);
-                if (Number(el[i]) <= askEndRange) {
+                if (Number(el[i]) > askEndRange) {
                   asksRange.push(el);
                 }
               });
 
               aggData.bids.forEach((el) => {
-                if (Number(el[i]) >= bidEndRange) {
+                if (Number(el[i]) < bidEndRange) {
                   bidsRange.push(el);
                 }
               });
@@ -155,7 +150,7 @@ function App() {
         });
       }
     },
-    [aggregate, depth, rawData]
+    [aggregate, depth]
   );
 
   const onMessageLogic = useCallback(
@@ -164,84 +159,85 @@ function App() {
 
       if (data.type === 'snapshot') {
         console.log('snapshot hit');
-        let prevAskEndRange = Number();
-        let prevBidEndRange = Number();
-        setOb((prevOB) => {
-          let aggData = {
-            asks: [],
-            bids: [],
-          };
-          // let prevEndRange = 0;
-          // let firstRun = true
-          // console.log(data);
-          for (let i = 0; i <= depth; i++) {
-            if (data.asks[i][0] !== undefined || data.bids[i][0] !== undefined)
-              data.asks.sort((a, b) =>
-                Number(a[0]) > Number(b[0])
-                  ? 1
-                  : Number(a[0]) < Number(b[0])
-                  ? -1
-                  : 0
-              );
-            data.bids.sort((a, b) =>
-              Number(a[0]) < Number(b[0])
+
+        let aggData = {
+          asks: [],
+          bids: [],
+        };
+        // let prevEndRange = 0;
+        let firstRun = true;
+        // console.log(data);
+        for (let i = 0; i <= depth; i++) {
+          if (data.asks[i][0] !== undefined || data.bids[i][0] !== undefined)
+            data.asks.sort((a, b) =>
+              Number(a[0]) > Number(b[0])
                 ? 1
-                : Number(a[0]) > Number(b[0])
+                : Number(a[0]) < Number(b[0])
                 ? -1
                 : 0
             );
+          data.bids.sort((a, b) =>
+            Number(a[0]) < Number(b[0])
+              ? 1
+              : Number(a[0]) > Number(b[0])
+              ? -1
+              : 0
+          );
 
-            let startAsk = bestAsk;
-            let startBid = bestBid;
-            let askStartRange = startAsk;
-            let bidStartRange = startBid;
-            let askEndRange = (askStartRange += aggregate);
-            let bidEndRange = (bidStartRange -= aggregate);
-            // console.log(bidStartRange);
+          let prevAskEndRange = Number();
+          let prevBidEndRange = Number();
+          let startAsk = firstRun ? bestAsk : prevAskEndRange;
+          let startBid = firstRun ? bestBid : prevBidEndRange;
+          let askStartRange = startAsk;
+          let bidStartRange = startBid;
+          let askEndRange = (askStartRange += aggregate);
+          let bidEndRange = (bidStartRange -= aggregate);
+          // console.log(bidStartRange);
 
-            // firstRun = false;
-            let asksRange = [];
-            let bidsRange = [];
+          firstRun = false;
+          let asksRange = [];
+          let bidsRange = [];
 
-            data.asks.forEach((el) => {
-              if (Number(el[i]) > askEndRange) {
-                asksRange.push(el);
-              }
-            });
+          data.asks.forEach((el) => {
+            if (Number(el[i]) > askEndRange) {
+              asksRange.push(el);
+            }
+          });
 
-            data.bids.forEach((el) => {
-              if (Number(el[i]) < bidEndRange) {
-                bidsRange.push(el);
-              }
-            });
+          data.bids.forEach((el) => {
+            if (Number(el[i]) < bidEndRange) {
+              bidsRange.push(el);
+            }
+          });
 
-            asksRange.forEach((el) => {
-              let totalAskAmount = Number();
-              // console.log(el);
-              let totalledEl = Number(el[1]);
+          asksRange.forEach((el) => {
+            let totalAskAmount = Number();
+            // console.log(el);
+            let totalledEl = Number(el[1]);
 
-              totalAskAmount += totalledEl;
-              // console.log(endRange);
-              askEndRange = askStartRange -= aggregate;
-              aggData.asks.push([askEndRange, totalAskAmount]);
-            });
+            totalAskAmount += totalledEl;
+            // console.log(endRange);
+            askEndRange = askStartRange -= aggregate;
+            aggData.asks.push([askEndRange, totalAskAmount]);
+          });
 
-            bidsRange.forEach((el) => {
-              let totalBidAmount = Number();
-              // console.log(el);
-              let totalledEl = Number(el[1]);
+          bidsRange.forEach((el) => {
+            let totalBidAmount = Number();
+            // console.log(el);
+            let totalledEl = Number(el[1]);
 
-              totalBidAmount += totalledEl;
-              // console.log(endRange);
-              bidEndRange = bidStartRange += aggregate;
-              aggData.bids.push([bidEndRange, totalBidAmount]);
-            });
-            prevBidEndRange = bidEndRange;
-            prevAskEndRange = askEndRange;
+            totalBidAmount += totalledEl;
+            // console.log(endRange);
+            bidEndRange = bidStartRange += aggregate;
+            aggData.bids.push([bidEndRange, totalBidAmount]);
+          });
+          prevBidEndRange = bidEndRange;
+          prevAskEndRange = askEndRange;
 
-            // console.log(aggData.bids[0], aggData.asks[0]);
-          }
+          // console.log(aggData.bids[0], aggData.asks[0]);
+        }
 
+        setOb((prevOB) => {
           return {
             ...prevOB,
             asks: aggData.asks.slice(0, depth),
@@ -255,16 +251,11 @@ function App() {
       } else if (data.type === 'l2update') {
         // console.log(data);
         console.log('updatehit');
-        // handleUpdate(data);
+        handleUpdate(data);
       }
     },
     [aggregate, depth, handleUpdate, bestAsk, bestBid, handleStats]
   );
-
-  // const [aggData, setAggData] = useState({});
-
-  // const ws = useRef(null);
-  const firstRun = useRef(false);
 
   const socket = useSocket();
 
@@ -305,7 +296,6 @@ function App() {
 
   useEffect(() => {
     if (!first.current) {
-      console.log('2nd use effect');
       return;
     }
     let msg = {
