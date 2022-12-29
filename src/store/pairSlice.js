@@ -3,15 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   activePair: 'BTC-USD',
   granularity: 'Minutes',
-  newOb: {
-    bestAsk: null,
-    bestBid: null,
-    bestAskSize: null,
-    bestBidSize: null,
-    bids: [],
-    asks: [],
-    price: null,
-  },
+  aggregate: 0.5,
 };
 
 export const pairSlice = createSlice({
@@ -25,13 +17,15 @@ export const pairSlice = createSlice({
     setGranularity: (state, action) => {
       state.granularity = action.payload;
     },
-    setNewOb: (state, action) => {
-      state.newOb = action.payload;
+    setAggregate: (state, action) => {
+      console.log(action.payload);
+      state.aggregate = action.payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setActivePair, setGranularity, setNewOb } = pairSlice.actions;
+export const { setActivePair, setGranularity, setAggregate } =
+  pairSlice.actions;
 
 export default pairSlice.reducer;

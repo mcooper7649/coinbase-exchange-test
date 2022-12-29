@@ -45,8 +45,7 @@ function OrderBookWrapper({
             <div
               className="flex flex-col"
               onClick={(e) => {
-                setAggregate(Number(e.target.innerHTML));
-                console.log(aggregate);
+                handleAgg(e);
               }}
             >
               <button>.05</button>
@@ -54,8 +53,7 @@ function OrderBookWrapper({
             <div
               className="flex flex-col"
               onClick={(e) => {
-                setAggregate(Number(e.target.innerHTML));
-                console.log(aggregate);
+                handleAgg(e);
               }}
             >
               <button>.10</button>
@@ -63,8 +61,7 @@ function OrderBookWrapper({
             <div
               className="flex flex-col"
               onClick={(e) => {
-                setAggregate(Number(e.target.innerHTML));
-                console.log(aggregate);
+                handleAgg(e);
               }}
             >
               <button>.50</button>
@@ -73,8 +70,7 @@ function OrderBookWrapper({
               value="1"
               className="flex flex-col"
               onClick={(e) => {
-                setAggregate(Number(e.target.innerHTML));
-                console.log(aggregate);
+                handleAgg(e);
               }}
             >
               <button>1</button>

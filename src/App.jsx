@@ -9,16 +9,17 @@ import OrderBook from './components/OrderBook';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSocket } from './utils/useSocket';
 
-import { setActivePair, setGranularity } from './store/pairSlice';
+import { setActivePair, setGranularity, setAggregate } from './store/pairSlice';
 
 function App() {
   const dispatch = useDispatch();
 
   const activePair = useSelector((state) => state.pairer.activePair);
   const granularity = useSelector((state) => state.pairer.granularity);
+  const aggregate = useSelector((state) => state.pairer.aggregate);
 
   const [currencies, setCurrencies] = useState([]);
-  const [aggregate, setAggregate] = useState(0.5);
+  // const [aggregate, setAggregate] = useState(0.5);
 
   const [bestAsk, setBestAsk] = useState(null);
   const [bestBid, setBestBid] = useState(null);
@@ -352,15 +353,24 @@ function App() {
   };
 
   const handleAgg = (e) => {
-    let amounts = [0.5, 0.1, 0.5, 1];
-    if (Number(e.target.value) === 0.5) {
-      setAggregate(amounts[0]);
-    } else if (Number(e.target.value) === 0.1) {
-      setAggregate(amounts[1]);
-    } else if (Number(e.target.value) === 0.5) {
-      setAggregate(amounts[2]);
-    } else if (Number(e.target.value) === 1) {
-      setAggregate(amounts[3]);
+    let unsubMsg = {
+      type: 'unsubscribe',
+      product_ids: [activePair],
+      channels: ['ticker', 'level2'],
+    };
+    let unsub = JSON.stringify(unsubMsg);
+
+    socket.send(unsub);
+
+    // let amounts = [0.05, 0.1, 0.5, 1];
+    if (Number(e.target.innerHTML) === 0.05) {
+      dispatch(setAggregate(0.05));
+    } else if (Number(e.target.innerHTML) === 0.1) {
+      dispatch(setAggregate(0.1));
+    } else if (Number(e.target.innerHTML) === 0.5) {
+      dispatch(setAggregate(0.5));
+    } else if (Number(e.target.innerHTML) === 1) {
+      dispatch(setAggregate(1));
     }
   };
 
