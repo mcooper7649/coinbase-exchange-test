@@ -133,9 +133,9 @@ body {
 }
 
 .OBP--sell .OBP__bar {
-  background-color: #ef4444;
+  background-color: #10b981;
 }
 
 .OBP--ask .OBP__bar {
-  background-color: #10b981;
+  background-color: #ef4444;
 }
