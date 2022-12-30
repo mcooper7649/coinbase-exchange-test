@@ -315,7 +315,7 @@ function App() {
     };
 
     apiCall();
-  }, [socket]);
+  }, [socket, activePair]);
 
   useEffect(() => {
     if (!first.current) {
