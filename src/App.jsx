@@ -19,7 +19,6 @@ function App() {
   const aggregate = useSelector((state) => state.pairer.aggregate);
 
   const [currencies, setCurrencies] = useState([]);
-  // const [aggregate, setAggregate] = useState(0.5);
 
   const [bestAsk, setBestAsk] = useState(null);
   const [bestBid, setBestBid] = useState(null);
@@ -33,7 +32,7 @@ function App() {
     bids: [],
     asks: [],
   });
-
+  const socket = useSocket();
   const handleStats = useCallback((data) => {
     setBestAskSize(Number(data.best_ask_size));
     setBestBidSize(Number(data.best_bid_size));
@@ -44,13 +43,18 @@ function App() {
 
   const handleUpdate = useCallback(
     (data) => {
-      // console.log(rawData);
+      let unsubMsg = {
+        type: 'unsubscribe',
+        product_ids: [activePair],
+        channels: ['level2_batch'],
+      };
+      let unsub = JSON.stringify(unsubMsg);
+
+      socket.send(unsub);
       let aggData = {
         asks: [],
         bids: [],
       };
-      // console.log(data);
-      // console.log('update hit');
       if (data.changes !== undefined) {
         const removedItems = data.changes.filter(
           (el) =>
@@ -60,20 +64,20 @@ function App() {
             el === undefined
         );
         const removedAsks = removedItems
-          .filter((el) => el[0] === 'sell')
+          .filter((el) => el[0] === 'sell' && +el[2] > 0)
           .map((el) => +el[1]);
         const removedBuys = removedItems
-          .filter((el) => el[0] === 'buy')
+          .filter((el) => el[0] === 'buy' && +el[2] > 0)
           .map((el) => +el[1]);
         const addedItems = data.changes.filter(
           (el) =>
             Number(el[2]) !== 0 || el === isNaN || el === 0 || el === undefined
         );
         const addedAsks = addedItems
-          .filter((el) => el[0] === 'sell')
+          .filter((el) => el[0] === 'sell' && +el[2] > 0)
           .map((el) => +el[1]);
         const addedBuys = addedItems
-          .filter((el) => el[0] === 'buy')
+          .filter((el) => el[0] === 'buy' && +el[2] > 0)
           .map((el) => +el[1]);
 
         setOb((prevOB) => {
@@ -86,8 +90,6 @@ function App() {
 
           aggData.bids = buys;
           aggData.asks = asks;
-          // console.log(data);
-          // console.log(aggData.bids, aggData.asks);
 
           for (let i = 0; i <= depth; i++) {
             if (
@@ -105,7 +107,6 @@ function App() {
               let bidsRange = [];
 
               aggData.asks.forEach((el) => {
-                // console.log(el);
                 if (Number(el[i]) > askEndRange) {
                   asksRange.push(el);
                 }
@@ -119,25 +120,22 @@ function App() {
 
               asksRange.forEach((el) => {
                 let totalAskAmount = Number();
-                // console.log(el);
+
                 let totalledEl = Number(el[1]);
 
                 totalAskAmount += totalledEl;
-                // console.log(endRange);
                 aggData.asks.push([askEndRange, totalAskAmount]);
               });
 
               bidsRange.forEach((el) => {
                 let totalBidAmount = Number();
-                // console.log(el);
                 let totalledEl = Number(el[1]);
 
                 totalBidAmount += totalledEl;
-                // console.log(endRange);
                 aggData.bids.push([bidEndRange, totalBidAmount]);
               });
             } else {
-              console.log('error');
+              console.log('no change update');
             }
           }
 
@@ -149,7 +147,7 @@ function App() {
         });
       }
     },
-    [aggregate, depth]
+    [aggregate, depth, activePair, socket]
   );
 
   const onMessageLogic = useCallback(
@@ -157,8 +155,6 @@ function App() {
       let data = JSON.parse(e.data);
 
       if (data.type === 'snapshot') {
-        console.log('snapshot hit');
-
         let aggData = {
           asks: [],
           bids: [],
@@ -244,19 +240,31 @@ function App() {
           };
         });
       } else if (data.type === 'ticker') {
-        // console.log(data);
         handleStats(data);
-        // return;
       } else if (data.type === 'l2update') {
-        // console.log(data);
-        console.log('updatehit');
         handleUpdate(data);
+        let msg = {
+          type: 'subscribe',
+          product_ids: [activePair],
+          channels: ['level2_batch'],
+        };
+
+        let jsonMsg = JSON.stringify(msg);
+
+        socket.send(jsonMsg);
       }
     },
-    [aggregate, depth, handleUpdate, bestAsk, bestBid, handleStats]
+    [
+      aggregate,
+      depth,
+      handleUpdate,
+      bestAsk,
+      bestBid,
+      handleStats,
+      activePair,
+      socket,
+    ]
   );
-
-  const socket = useSocket();
 
   let first = useRef(false);
   const url = 'https://api.pro.coinbase.com';
@@ -300,10 +308,11 @@ function App() {
     let msg = {
       type: 'subscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2'],
+      channels: ['ticker', 'level2_batch'],
     };
 
     let jsonMsg = JSON.stringify(msg);
+
     socket.send(jsonMsg);
 
     console.log('useEffect2 render');
@@ -343,7 +352,7 @@ function App() {
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2'],
+      channels: ['ticker', 'level2_batch'],
     };
     let unsub = JSON.stringify(unsubMsg);
 
@@ -356,7 +365,7 @@ function App() {
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2'],
+      channels: ['ticker', 'level2_batch'],
     };
     let unsub = JSON.stringify(unsubMsg);
 
@@ -378,7 +387,7 @@ function App() {
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2'],
+      channels: ['ticker', 'level2_batch'],
     };
     let unsub = JSON.stringify(unsubMsg);
 

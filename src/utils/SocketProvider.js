@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-const ws = new WebSocket('wss://ws-feed.pro.coinbase.com');
+const ws = new WebSocket('wss://ws-feed.exchange.coinbase.com');
 
 export const SocketContext = createContext(ws);
 
