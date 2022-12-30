@@ -52,10 +52,10 @@ function UserOptions({
         onChange={handleChart}
       >
         <option defaultValue={true}>Minutes</option>
-        {granularity.map((cur, idx) => {
+        {granularity.map((gran, idx) => {
           return (
-            <option key={idx} value={cur}>
-              {cur}
+            <option key={idx} value={gran}>
+              {gran}
             </option>
           );
         })}

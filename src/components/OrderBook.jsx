@@ -40,7 +40,9 @@ function OrderBookWrapper({
 
         <div className="OB__header">
           <div className="OB__header1">Order Book</div>
-          <div className="OB__header1">Select USD Spread Below</div>
+          <div className="OB__header1">
+            Choose Aggregate Below: Default is .50 cents
+          </div>
           <div className="OB__header3">
             <div
               className="flex flex-col"
@@ -48,7 +50,7 @@ function OrderBookWrapper({
                 handleAgg(e);
               }}
             >
-              <button>.05</button>
+              .05
             </div>
             <div
               className="flex flex-col"
@@ -56,7 +58,7 @@ function OrderBookWrapper({
                 handleAgg(e);
               }}
             >
-              <button>.10</button>
+              .10
             </div>
             <div
               className="flex flex-col"
@@ -64,16 +66,15 @@ function OrderBookWrapper({
                 handleAgg(e);
               }}
             >
-              <button>.50</button>
+              .50
             </div>
             <div
-              value="1"
               className="flex flex-col"
               onClick={(e) => {
                 handleAgg(e);
               }}
             >
-              <button>1</button>
+              1
             </div>
           </div>
           <div className="OB__header2">

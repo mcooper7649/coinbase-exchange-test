@@ -1,9 +1,27 @@
-import { createContext } from 'react';
+import { useEffect, useState, createContext } from 'react';
 
-const ws = new WebSocket('wss://ws-feed.exchange.coinbase.com');
+const webSocket = new WebSocket('wss://ws-feed.exchange.coinbase.com');
 
-export const SocketContext = createContext(ws);
+export const SocketContext = createContext(webSocket);
 
-export const SocketProvider = (props) => (
-  <SocketContext.Provider value={ws}>{props.children}</SocketContext.Provider>
-);
+export const SocketProvider = (props) => {
+  const [ws, setWs] = useState(webSocket);
+
+  useEffect(() => {
+    const onClose = () => {
+      setTimeout(() => {
+        setWs(new WebSocket('wss://ws-feed.exchange.coinbase.com'));
+      }, 2000);
+    };
+
+    ws.addEventListener('close', onClose);
+
+    return () => {
+      ws.removeEventListener('close', onClose);
+    };
+  }, [ws, setWs]);
+
+  return (
+    <SocketContext.Provider value={ws}>{props.children}</SocketContext.Provider>
+  );
+};
