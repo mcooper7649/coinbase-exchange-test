@@ -18,7 +18,6 @@ export const pairSlice = createSlice({
       state.granularity = action.payload;
     },
     setAggregate: (state, action) => {
-      console.log(action.payload);
       state.aggregate = action.payload;
     },
   },
