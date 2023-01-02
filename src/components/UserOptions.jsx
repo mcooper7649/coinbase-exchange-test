@@ -5,7 +5,14 @@ function UserOptions({
   granularity,
   handleChart,
 }) {
-  granularity = [60, 300, 900, 3600, 21600, 86400];
+  granularity = [
+    [60, '~5 Hours'],
+    [300, '~24 Hours'],
+    [900, '~3 Days'],
+    [3600, '~11 Days'],
+    [21600, '~2.5 Months'],
+    [86400, '~10-Months'],
+  ];
   function checkPair(pair) {
     if (pair === 'Select') {
       return true;
@@ -51,11 +58,11 @@ function UserOptions({
         // value={value}
         onChange={handleChart}
       >
-        <option defaultValue={true}>Minutes</option>
+        <option defaultValue={true}>Granularity</option>
         {granularity.map((gran, idx) => {
           return (
-            <option key={idx} value={gran}>
-              {gran}
+            <option key={idx} value={gran[0]}>
+              {gran[1]}
             </option>
           );
         })}
