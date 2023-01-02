@@ -51,7 +51,7 @@ function App() {
       let unsubMsg = {
         type: 'unsubscribe',
         product_ids: [activePair],
-        channels: ['level2'],
+        channels: ['ticker', 'level2_batch'],
       };
       let unsub = JSON.stringify(unsubMsg);
 
@@ -140,7 +140,7 @@ function App() {
                 aggData.bids.push([bidEndRange, totalBidAmount]);
               });
             } else {
-              console.log('no change update');
+              // console.log('no change update');
             }
           }
 
@@ -282,7 +282,7 @@ function App() {
       let msg = {
         type: 'subscribe',
         product_ids: [activePair],
-        channels: ['ticker', 'level2'],
+        channels: ['ticker', 'level2_batch'],
       };
 
       let jsonMsg = JSON.stringify(msg);
@@ -324,7 +324,7 @@ function App() {
     let msg = {
       type: 'subscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2'],
+      channels: ['ticker', 'level2_batch'],
     };
 
     let jsonMsg = JSON.stringify(msg);
@@ -368,30 +368,29 @@ function App() {
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2'],
+      channels: ['ticker', 'level2_batch'],
     };
     let unsub = JSON.stringify(unsubMsg);
     if (!isOpen(socket)) return;
-    socket.send(unsub);
-
     dispatch(setActivePair(e.target.value));
+    socket.send(unsub);
   };
 
   const handleAgg = (e) => {
     // let amounts = [0.05, 0.1, 0.5, 1];
-    if (Number(e.target.innerHTML) === 0.05) {
+    if (Number(e.target.value) === 0.05) {
       dispatch(setAggregate(0.05));
-    } else if (Number(e.target.innerHTML) === 0.1) {
+    } else if (Number(e.target.value) === 0.1) {
       dispatch(setAggregate(0.1));
-    } else if (Number(e.target.innerHTML) === 0.5) {
+    } else if (Number(e.target.value) === 0.5) {
       dispatch(setAggregate(0.5));
-    } else if (Number(e.target.innerHTML) === 1) {
+    } else if (Number(e.target.value) === 1) {
       dispatch(setAggregate(1));
     }
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2'],
+      channels: ['ticker', 'level2_batch'],
     };
     let unsub = JSON.stringify(unsubMsg);
     if (!isOpen(socket)) return;
@@ -402,7 +401,7 @@ function App() {
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2'],
+      channels: ['ticker', 'level2_batch'],
     };
     let unsub = JSON.stringify(unsubMsg);
     if (!isOpen(socket)) return;

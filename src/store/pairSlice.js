@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  activePair: 'BTC-USD',
+  activePair: 'Select',
   granularity: 'Minutes',
   aggregate: 0.5,
 };

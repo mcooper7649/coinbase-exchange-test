@@ -28,13 +28,13 @@ function UserOptions({
           checkPair(pair) ? 'animate-bounce' : ''
         }`}
         name="currency"
-        // value={pair}
+        value={pair}
         onChange={handleSelect}
       >
         <option defaultValue={true}>Select</option>
         {currencies.map((cur, idx) => {
           return (
-            <option key={idx} value={cur.id}>
+            <option key={cur.id} value={cur.id}>
               {cur.display_name}
             </option>
           );

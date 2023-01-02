@@ -12,14 +12,15 @@ const OBP = ({ orders, type, viewSize = 14 }) => {
         if (order[1]) {
           return (
             <div className="OBP__order" key={uuidv4()}>
-              <div className="OBP__size">
+              <div className="OBP__size" key={uuidv4()}>
                 <div
+                  key={uuidv4()}
                   className="OBP__bar"
                   style={{ width: Math.min((order[1] / 3.5) * 25, 25) }}
                 ></div>
                 {order[1]}
               </div>
-              <div key={index} className="OBP__price">
+              <div key={uuidv4()} className="OBP__price">
                 {USDollar.format(order[0])}
               </div>
             </div>
