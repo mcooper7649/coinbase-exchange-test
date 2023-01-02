@@ -1,4 +1,4 @@
-export const formatData = (data, pair) => {
+export const formatData = (data, pair, day) => {
   function findColor() {
     return pair === 'ETH-USD'
       ? 'rgb(67, 73, 83)'
@@ -24,12 +24,17 @@ export const formatData = (data, pair) => {
   let dates = data.map((val) => {
     const ts = val[0];
     let date = new Date(ts * 1000);
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
+    // let day = date.getDate();
+    // let month = date.getMonth() + 1;
+    // let year = date.getFullYear();
+    // var yesterday = date.getTime() - 24 * 60 * 60;
+    // yesterday = new Date(yesterday);
 
-    let final = `${month}-${day}-${year}`;
-    return final;
+    let time =
+      date.getHours() > 12
+        ? `${date.getHours() - 12}:${date.getMinutes()} PM`
+        : `${date.getHours()}:${date.getMinutes()} AM`;
+    return day === 1 ? time : date.toLocaleDateString();
   });
 
   let priceArr = data.map((val) => {

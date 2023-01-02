@@ -28,6 +28,7 @@ function App() {
   const [price, setPrice] = useState(0);
   const [pastData, setPastData] = useState({});
   const [depth] = useState(20);
+  const [day, setDay] = useState(1);
   const [ob, setOb] = useState({
     bids: [],
     asks: [],
@@ -51,7 +52,7 @@ function App() {
       let unsubMsg = {
         type: 'unsubscribe',
         product_ids: [activePair],
-        channels: ['ticker', 'level2_batch'],
+        channels: ['level2'],
       };
       let unsub = JSON.stringify(unsubMsg);
 
@@ -140,7 +141,7 @@ function App() {
                 aggData.bids.push([bidEndRange, totalBidAmount]);
               });
             } else {
-              // console.log('no change update');
+              console.log('no change update');
             }
           }
 
@@ -282,7 +283,7 @@ function App() {
       let msg = {
         type: 'subscribe',
         product_ids: [activePair],
-        channels: ['ticker', 'level2_batch'],
+        channels: ['ticker', 'level2'],
       };
 
       let jsonMsg = JSON.stringify(msg);
@@ -324,12 +325,8 @@ function App() {
     let msg = {
       type: 'subscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2_batch'],
+      channels: ['ticker', 'level2'],
     };
-
-    let jsonMsg = JSON.stringify(msg);
-    if (!isOpen(socket)) return;
-    socket.send(jsonMsg);
 
     console.log('useEffect2 render');
 
@@ -342,11 +339,15 @@ function App() {
         .then((res) => res.json())
         .then((data) => (dataArr = data));
 
-      setPastData(formatData(dataArr, activePair));
+      setPastData(formatData(dataArr, activePair, day));
     };
 
+    console.log('updating charts');
     fetchHistoricalData();
-  }, [activePair, granularity, socket]);
+    let jsonMsg = JSON.stringify(msg);
+    if (!isOpen(socket)) return;
+    socket.send(jsonMsg);
+  }, [activePair, granularity, socket, day]);
 
   useEffect(() => {
     socket.onmessage = (e) => {
@@ -365,32 +366,24 @@ function App() {
   // });
 
   const handleSelect = (e) => {
+    dispatch(setActivePair(e.target.value));
+
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2_batch'],
+      channels: ['ticker', 'level2'],
     };
     let unsub = JSON.stringify(unsubMsg);
     if (!isOpen(socket)) return;
-    dispatch(setActivePair(e.target.value));
     socket.send(unsub);
   };
 
   const handleAgg = (e) => {
-    // let amounts = [0.05, 0.1, 0.5, 1];
-    if (Number(e.target.value) === 0.05) {
-      dispatch(setAggregate(0.05));
-    } else if (Number(e.target.value) === 0.1) {
-      dispatch(setAggregate(0.1));
-    } else if (Number(e.target.value) === 0.5) {
-      dispatch(setAggregate(0.5));
-    } else if (Number(e.target.value) === 1) {
-      dispatch(setAggregate(1));
-    }
+    dispatch(setAggregate(Number(e.target.value)));
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2_batch'],
+      channels: ['ticker', 'level2'],
     };
     let unsub = JSON.stringify(unsubMsg);
     if (!isOpen(socket)) return;
@@ -398,15 +391,20 @@ function App() {
   };
 
   const handleChart = (e) => {
+    dispatch(setGranularity(e.target.value));
+    if (e.target.value > 899) {
+      setDay(0);
+    } else {
+      setDay(1);
+    }
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2_batch'],
+      channels: ['ticker', 'level2'],
     };
     let unsub = JSON.stringify(unsubMsg);
     if (!isOpen(socket)) return;
     socket.send(unsub);
-    dispatch(setGranularity(e.target.value));
   };
   return (
     <div className="App">
