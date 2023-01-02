@@ -41,42 +41,28 @@ function OrderBookWrapper({
         <div className="OB__header">
           <div className="OB__header1">Order Book</div>
           <div className="OB__header1">
-            Choose Aggregate Below: Default is .50 cents
+            <label className="px-3" htmlFor="cur-select">
+              Choose Aggregate:
+            </label>
+            <select
+              id="cur-select"
+              className={`cursor-pointer md:pl-2 bg-gray-800 text-xs rounded border border-orange-500`}
+              name="currency"
+              onChange={(e) => {
+                handleAgg(e);
+              }}
+            >
+              <option defaultValue={true}>In USD</option>
+              {[0.05, 0.1, 0.5, 1.0].map((agg, idx) => {
+                return (
+                  <option key={agg} value={agg}>
+                    {agg}
+                  </option>
+                );
+              })}
+            </select>
           </div>
-          <div className="OB__header3">
-            <div
-              className="flex flex-col"
-              onClick={(e) => {
-                handleAgg(e);
-              }}
-            >
-              .05
-            </div>
-            <div
-              className="flex flex-col"
-              onClick={(e) => {
-                handleAgg(e);
-              }}
-            >
-              .10
-            </div>
-            <div
-              className="flex flex-col"
-              onClick={(e) => {
-                handleAgg(e);
-              }}
-            >
-              .50
-            </div>
-            <div
-              className="flex flex-col"
-              onClick={(e) => {
-                handleAgg(e);
-              }}
-            >
-              1
-            </div>
-          </div>
+
           <div className="OB__header2">
             <div>Size</div>
             <div>Price</div>

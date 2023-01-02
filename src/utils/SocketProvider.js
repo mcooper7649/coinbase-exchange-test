@@ -11,13 +11,14 @@ export const SocketProvider = (props) => {
     const onClose = () => {
       setTimeout(() => {
         setWs(new WebSocket('wss://ws-feed.exchange.coinbase.com'));
-      }, 2000);
+      }, 3000);
     };
 
     ws.addEventListener('close', onClose);
 
     return () => {
       ws.removeEventListener('close', onClose);
+      console.log('removing EL');
     };
   }, [ws, setWs]);
 
