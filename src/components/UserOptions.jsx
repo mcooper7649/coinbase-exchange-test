@@ -7,7 +7,7 @@ function UserOptions({
   granularity,
   handleChart,
 }) {
-  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
+  const { isDarkMode } = useContext(ThemeContext);
   granularity = [
     [60, '~5 Hours'],
     [300, '~24 Hours'],

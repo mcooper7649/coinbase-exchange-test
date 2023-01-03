@@ -3,7 +3,7 @@ import { ThemeContext } from '../utils/ThemeContext';
 import { useContext } from 'react';
 
 function BestBid({ bestBid, bestBidSize }) {
-  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
+  const { isDarkMode } = useContext(ThemeContext);
   return (
     <div className="grid overflow-hidden grid-cols-2 grid-rows-2 gap-1.5 w-auto h-auto">
       <div className="row-start-1 row-span-1 col-start-1 col-end-3 text-xs md:text-lg">

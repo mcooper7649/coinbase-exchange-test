@@ -4,7 +4,7 @@ import { ThemeContext } from '../utils/ThemeContext';
 import { useContext } from 'react';
 
 function Chart({ price, data, pair, granularity }) {
-  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
+  const { isDarkMode } = useContext(ThemeContext);
 
   function findColor() {
     return pair === 'ETH-USD'
