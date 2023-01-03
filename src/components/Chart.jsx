@@ -1,9 +1,10 @@
 import { Line } from 'react-chartjs-2';
 import { USDollar } from '../utils/utils';
 import { ThemeContext } from '../utils/ThemeContext';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 function Chart({ price, data, pair, granularity }) {
+  const [pointStyle, setPointStyle] = useState('circle');
   const { isDarkMode } = useContext(ThemeContext);
 
   function findColor() {
@@ -37,15 +38,14 @@ function Chart({ price, data, pair, granularity }) {
     elements: {
       point: {
         radius: 3,
-        pointStyle: 'circle',
-        backgroundColor: findColor(),
+        pointStyle: pointStyle,
+        pointBackgroundColor: findColor(),
       },
       line: {
         stepped: true,
         // borderColor: findColor(),
         borderWidth: 0.5,
         // backgroundColor: findColor(),
-        fill: true,
       },
     },
     responsive: true,
@@ -73,34 +73,39 @@ function Chart({ price, data, pair, granularity }) {
       </div>
     );
   }
-  // if (granularity === 'Minutes') {
-  //   return (
-  //     <div className="flex flex-col justify-center items-center h-screen">
-  //       <h2 className="text-3xl font-bold underline ">
-  //         Please Set Granularity
-  //       </h2>
-  //     </div>
-  //   );
-  // } else {
-
-  return (
-    <div className={`chart ${isDarkMode ? 'bg-gray-800' : 'bg-sky-100'}`}>
-      <h2
-        className={`py-2 text-center text-3xl ${
-          !isDarkMode ? 'bg-gray-800 text-gray-100' : 'text-gray-600 bg-sky-100'
-        }`}
-      >{`${USDollar.format(price)}`}</h2>
-
-      <div
-        className={`chart-container h-[75vh] ${
-          isDarkMode ? 'bg-sky-100' : 'bg-gray-800'
-        }`}
-      >
-        <Line data={data} options={opts} />
+  if (granularity === 'Granularity' || granularity === 'Minutes') {
+    return (
+      <div className="flex flex-col justify-center items-center h-screen">
+        <h2
+          className={`text-3xl font-bold underline ${
+            !isDarkMode ? 'text-gray-100' : ''
+          }`}
+        >
+          Please Set Granularity
+        </h2>
       </div>
-    </div>
-  );
-  // }
+    );
+  } else {
+    return (
+      <div className={`chart ${isDarkMode ? 'bg-gray-800' : 'bg-sky-100'}`}>
+        <h2
+          className={`py-2 text-center text-3xl ${
+            !isDarkMode
+              ? 'bg-gray-800 text-gray-100'
+              : 'text-gray-600 bg-sky-100'
+          }`}
+        >{`${USDollar.format(price)}`}</h2>
+
+        <div
+          className={`chart-container h-[75vh] ${
+            isDarkMode ? 'bg-sky-100' : 'bg-gray-800'
+          }`}
+        >
+          <Line data={data} options={opts} />
+        </div>
+      </div>
+    );
+  }
 }
 
 export default Chart;
