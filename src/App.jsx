@@ -20,7 +20,7 @@ import { setActivePair, setGranularity, setAggregate } from './store/pairSlice';
 
 function App() {
   const dispatch = useDispatch();
-  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
+  const { isDarkMode } = useContext(ThemeContext);
 
   const activePair = useSelector((state) => state.pairer.activePair);
   const granularity = useSelector((state) => state.pairer.granularity);
