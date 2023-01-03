@@ -1,7 +1,11 @@
 import { Line } from 'react-chartjs-2';
 import { USDollar } from '../utils/utils';
+import { ThemeContext } from '../utils/ThemeContext';
+import { useContext } from 'react';
 
 function Chart({ price, data, pair, granularity }) {
+  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
+
   function findColor() {
     return pair === 'ETH-USD'
       ? 'rgb(67, 73, 83)'
@@ -69,12 +73,18 @@ function Chart({ price, data, pair, granularity }) {
   //   );
   // } else {
   return (
-    <div className="chart">
-      <h2 className="py-2 text-center text-3xl">{`${USDollar.format(
-        price
-      )}`}</h2>
+    <div className={`chart {isDarkMode ? 'bg-gray-400' : '' }`}>
+      <h2
+        className={`py-2 text-center text-3xl ${
+          isDarkMode ? 'bg-gray-300' : 'text-gray-100'
+        }`}
+      >{`${USDollar.format(price)}`}</h2>
 
-      <div className="chart-container h-[75vh]">
+      <div
+        className={`chart-container h-[75vh] ${
+          isDarkMode ? 'bg-gray-300' : ''
+        }`}
+      >
         <Line data={data} options={opts} setPastData />
       </div>
     </div>

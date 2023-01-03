@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useContext,
+} from 'react';
+import { ThemeContext } from './utils/ThemeContext';
 import Chart from './components/Chart';
 import { formatData } from './utils/utils';
 import './index.css';
@@ -13,6 +20,7 @@ import { setActivePair, setGranularity, setAggregate } from './store/pairSlice';
 
 function App() {
   const dispatch = useDispatch();
+  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 
   const activePair = useSelector((state) => state.pairer.activePair);
   const granularity = useSelector((state) => state.pairer.granularity);
@@ -409,7 +417,13 @@ function App() {
   return (
     <div className="App">
       <div className="grid overflow-hidden grid-cols-3 grid-rows-6 gap-1.5 w-auto h-[98vh] body">
-        <div className="box pl-3 pt-3 pr-3 border-double border-4 border-sky-500">
+        <div
+          className={`box pl-3 pt-3 pr-3 border-double border-4 ${
+            isDarkMode
+              ? 'border-sky-500 bg-sky-300 text-gray-800'
+              : 'bg-gray-800 border-sky-500 text-gray-100'
+          }`}
+        >
           <UserOptions
             pair={activePair}
             handleChart={handleChart}
@@ -419,14 +433,30 @@ function App() {
             setGranularity={setGranularity}
           />
         </div>
-        <div className="box pl-3 pt-3 pr-3 border-double border-4 border-green-500">
+        <div
+          className={`box pl-3 pt-3 pr-3 border-double border-4 ${
+            isDarkMode
+              ? 'border-green-500 bg-green-300 text-gray-800'
+              : 'bg-gray-800 border-green-500 text-gray-100'
+          }`}
+        >
           <BestBid bestBid={bestBid} bestBidSize={bestBidSize} />
         </div>
-        <div className="box pl-3 pt-3 pr-3 border-double border-4 border-red-400">
+        <div
+          className={`box pl-3 pt-3 pr-3 border-double border-4 ${
+            isDarkMode
+              ? 'border-red-500 bg-red-300 text-gray-800'
+              : 'bg-gray-800 border-red-500 text-gray-100'
+          }`}
+        >
           <BestAsk bestAsk={bestAsk} bestAskSize={bestAskSize} />
         </div>
 
-        <div className="box row-start-2 row-end-7 col-start-3 col-end-3">
+        <div
+          className={`box row-start-2 row-end-7 col-start-3 col-end-3 ${
+            isDarkMode ? 'bg-gray-500' : 'bg-gray-800'
+          }`}
+        >
           <OrderBook
             aggregate={aggregate}
             handleAgg={handleAgg}
@@ -437,7 +467,11 @@ function App() {
             pair={activePair}
           />
         </div>
-        <div className="box row-start-2 row-end-7 col-start-1 col-end-3">
+        <div
+          className={`box row-start-2 row-end-7 col-start-1 col-end-3 bg-gray-800 ${
+            isDarkMode ? 'bg-gray-300' : 'bg-gray-800'
+          }`}
+        >
           <Chart
             granularity={granularity}
             pair={activePair}

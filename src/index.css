@@ -11,9 +11,7 @@ body {
 }
 
 .box {
-  @apply bg-gray-800 
-		text-gray-100
-		min-w-full
+  @apply min-w-full
 		h-32
 		min-h-full
 		rounded;
@@ -30,12 +28,11 @@ body {
 }
 
 .OB__header {
-  font-family: 'PT Sans', sans-serif;
   position: absolute;
   top: 0;
   width: 100%;
   text-align: center;
-  background-color: rgb(31 41 55 / var(--tw-bg-opacity));
+  background-color: rgba(31, 41, 55, var(--tw-text-opacity));
   border-bottom: 1px solid #929292;
 }
 
