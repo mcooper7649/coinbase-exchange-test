@@ -31,9 +31,13 @@ function OrderBookWrapper({
           <OBP key={ob.asks} type="ask" orders={asks} pair={pair} />
         </div>
 
-        <div className="OB__S">
-          <div className="OB__SL text-gray-100">USD Spread: </div>
-          <div className="OB__SP text-gray-100">{spread}</div>
+        <div
+          className={`OB__S ${
+            isDarkMode ? 'bg-yellow-200 text-gray-500' : 'text-gray-100'
+          }`}
+        >
+          <div className="OB__SL">USD Spread: </div>
+          <div className="OB__SP">{spread}</div>
         </div>
 
         <div>
@@ -42,28 +46,28 @@ function OrderBookWrapper({
 
         <div
           className={`OB__header ${
-            isDarkMode ? 'text-gray-800 bg-gray-300' : 'text-gray-100'
+            isDarkMode ? 'text-gray-100 bg-gray-500' : 'text-gray-100'
           }`}
         >
           <div
             className={`OB__header1 ${
-              isDarkMode ? 'text-gray-800 bg-gray-300' : 'text-gray-100'
+              isDarkMode ? 'text-gray-100 bg-gray-500' : 'text-gray-100'
             }`}
           >
             Order Book
           </div>
           <div
             className={`OB__header1 flex inline-flex w-max ${
-              isDarkMode ? 'text-gray-800 bg-gray-300' : 'text-gray-100'
+              isDarkMode ? 'text-gray-100 bg-gray-500' : 'text-gray-100'
             }`}
           >
-            <label className="px-3 py-1" htmlFor="cur-select">
+            <label className="mx-12 px-3 py-1 " htmlFor="cur-select">
               Choose Aggregate:
             </label>
             <select
               id="cur-select"
               className={`my-1 mr-5 cursor-pointer md:pl-2 bg-gray-800 text-xs rounded border border-orange-500 ${
-                isDarkMode ? 'text-gray-800 bg-gray-300' : 'text-gray-100'
+                isDarkMode ? 'text-gray-100 bg-gray-500' : 'text-gray-100'
               }`}
               name="currency"
               onChange={(e) => {
@@ -121,7 +125,7 @@ function OrderBookWrapper({
 
           <div
             className={`OB__header2 ${
-              isDarkMode ? 'text-gray-800 bg-gray-300' : 'text-gray-100'
+              isDarkMode ? 'text-gray-100 bg-gray-500' : 'text-gray-100'
             }`}
           >
             <div>Size</div>

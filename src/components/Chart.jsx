@@ -12,7 +12,9 @@ function Chart({ price, data, pair, granularity }) {
       : pair === 'BTC-USD'
       ? 'rgb(242, 169, 0, 0.8)'
       : pair === 'LTC-USD'
-      ? 'rgb(211, 211, 211, 0.8)'
+      ? 'rgb(67, 73, 83)'
+      : pair === 'BCH-USD'
+      ? 'rgb(238, 140, 40, 0.8)'
       : 'rgb(238, 140, 40, 0.8)';
   }
 
@@ -23,23 +25,26 @@ function Chart({ price, data, pair, granularity }) {
       titleFontSize: 12,
       bodyFontSize: 16,
     },
+
     title: {
       display: true,
       position: 'bottom',
       fontSize: 16,
-      fontColor: 'rgb(255,255,255)',
+      fontColor: `${isDarkMode ? findColor() : findColor()}`,
       fontFamily: 'Verdana',
       text: `${pair} ${granularity} minutes Chart`,
     },
     elements: {
       point: {
         radius: 3,
-        pointStyle: 'cross',
+        pointStyle: 'circle',
+        backgroundColor: findColor(),
       },
       line: {
-        // stepped: true,
-        borderColor: 'rgba(0, 0, 0, 0.1)',
-        borderWidth: 1.5,
+        stepped: true,
+        // borderColor: findColor(),
+        borderWidth: 0.5,
+        // backgroundColor: findColor(),
         fill: true,
       },
     },
@@ -49,15 +54,20 @@ function Chart({ price, data, pair, granularity }) {
     legend: {
       display: true,
       labels: {
-        fontColor: `${findColor()}`,
+        fontColor: `${isDarkMode ? findColor() : findColor()}`,
         fontFamily: 'Verdana',
       },
     },
   };
+
   if (pair === 'Select') {
     return (
       <div className="flex flex-col justify-center items-center h-screen">
-        <h2 className="text-3xl font-bold underline ">
+        <h2
+          className={`text-3xl font-bold underline ${
+            !isDarkMode ? 'text-gray-100' : 'text-gray-800'
+          }`}
+        >
           Please Select A Currency Pair
         </h2>
       </div>
@@ -72,20 +82,21 @@ function Chart({ price, data, pair, granularity }) {
   //     </div>
   //   );
   // } else {
+
   return (
-    <div className={`chart {isDarkMode ? 'bg-gray-400' : '' }`}>
+    <div className={`chart ${isDarkMode ? 'bg-gray-800' : ''}`}>
       <h2
         className={`py-2 text-center text-3xl ${
-          isDarkMode ? 'bg-gray-300' : 'text-gray-100'
+          isDarkMode ? 'bg-sky-100 text-gray-600' : 'text-gray-300'
         }`}
       >{`${USDollar.format(price)}`}</h2>
 
       <div
         className={`chart-container h-[75vh] ${
-          isDarkMode ? 'bg-gray-300' : ''
+          isDarkMode ? 'bg-sky-100' : 'bg-gray-800'
         }`}
       >
-        <Line data={data} options={opts} setPastData />
+        <Line data={data} options={opts} />
       </div>
     </div>
   );
