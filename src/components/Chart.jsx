@@ -37,7 +37,7 @@ function Chart({ price, data, pair, granularity }) {
     elements: {
       point: {
         radius: 3,
-        pointStyle: pointStyle,
+        pointStyle: 'circle',
         pointBackgroundColor: findColor(),
       },
       line: {
