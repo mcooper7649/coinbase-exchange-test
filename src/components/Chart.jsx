@@ -84,10 +84,10 @@ function Chart({ price, data, pair, granularity }) {
   // } else {
 
   return (
-    <div className={`chart ${isDarkMode ? 'bg-gray-800' : ''}`}>
+    <div className={`chart ${isDarkMode ? 'bg-gray-800' : 'bg-sky-100'}`}>
       <h2
         className={`py-2 text-center text-3xl ${
-          isDarkMode ? 'bg-sky-100 text-gray-600' : 'text-gray-300'
+          !isDarkMode ? 'bg-gray-800 text-gray-100' : 'text-gray-600 bg-sky-100'
         }`}
       >{`${USDollar.format(price)}`}</h2>
 

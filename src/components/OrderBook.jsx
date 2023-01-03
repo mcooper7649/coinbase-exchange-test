@@ -61,12 +61,12 @@ function OrderBookWrapper({
               isDarkMode ? 'text-gray-100 bg-gray-500' : 'text-gray-100'
             }`}
           >
-            <label className="mx-12 px-3 py-1 " htmlFor="cur-select">
+            <label className="ml-12 pl-3 py-1 " htmlFor="cur-select">
               Choose Aggregate:
             </label>
             <select
               id="cur-select"
-              className={`my-1 mr-5 cursor-pointer md:pl-2 bg-gray-800 text-xs rounded border border-orange-500 ${
+              className={`my-1 mx-5 cursor-pointer md:pl-2 bg-gray-800 text-xs rounded border border-orange-500 ${
                 isDarkMode ? 'text-gray-100 bg-gray-500' : 'text-gray-100'
               }`}
               name="currency"
@@ -88,7 +88,7 @@ function OrderBookWrapper({
               aria-checked={isDarkMode ? 'true' : 'false'}
               tabIndex={0}
               onClick={toggleTheme}
-              className={`self-center cursor-pointer w-11 line h-5 rounded-full relative px-1.5 flex items-center${
+              className={`mx-36 self-center cursor-pointer w-11 line h-5 rounded-full relative px-1.5 flex items-center${
                 isDarkMode ? '' : ' justify-end'
               }`}
             >
