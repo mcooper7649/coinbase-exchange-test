@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   activePair: 'Select',
-  granularity: 'Minutes',
+  granularity: 'Granularity',
   aggregate: 0.5,
 };
 

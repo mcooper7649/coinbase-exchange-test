@@ -430,7 +430,6 @@ function App() {
             handleSelect={handleSelect}
             currencies={currencies}
             granularity={granularity}
-            setGranularity={setGranularity}
           />
         </div>
         <div
