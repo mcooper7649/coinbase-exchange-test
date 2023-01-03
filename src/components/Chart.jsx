@@ -1,10 +1,9 @@
 import { Line } from 'react-chartjs-2';
 import { USDollar } from '../utils/utils';
 import { ThemeContext } from '../utils/ThemeContext';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 
 function Chart({ price, data, pair, granularity }) {
-  const [pointStyle, setPointStyle] = useState('circle');
   const { isDarkMode } = useContext(ThemeContext);
 
   function findColor() {
