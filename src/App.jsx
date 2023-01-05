@@ -60,7 +60,7 @@ function App() {
       let unsubMsg = {
         type: 'unsubscribe',
         product_ids: [activePair],
-        channels: ['level2'],
+        channels: ['level2_batch'],
       };
       let unsub = JSON.stringify(unsubMsg);
 
@@ -260,7 +260,7 @@ function App() {
         let msg = {
           type: 'subscribe',
           product_ids: [activePair],
-          channels: ['level2'],
+          channels: ['level2_batch'],
         };
 
         let jsonMsg = JSON.stringify(msg);
@@ -291,7 +291,7 @@ function App() {
       let msg = {
         type: 'subscribe',
         product_ids: [activePair],
-        channels: ['ticker', 'level2'],
+        channels: ['ticker', 'level2_batch'],
       };
 
       let jsonMsg = JSON.stringify(msg);
@@ -333,7 +333,7 @@ function App() {
     let msg = {
       type: 'subscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2'],
+      channels: ['ticker', 'level2_batch'],
     };
 
     console.log('useEffect2 render');
@@ -379,7 +379,7 @@ function App() {
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2'],
+      channels: ['ticker', 'level2_batch'],
     };
     let unsub = JSON.stringify(unsubMsg);
     if (!isOpen(socket)) return;
@@ -391,7 +391,7 @@ function App() {
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2'],
+      channels: ['ticker', 'level2_batch'],
     };
     let unsub = JSON.stringify(unsubMsg);
     if (!isOpen(socket)) return;
@@ -408,7 +408,7 @@ function App() {
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2'],
+      channels: ['ticker', 'level2_batch'],
     };
     let unsub = JSON.stringify(unsubMsg);
     if (!isOpen(socket)) return;
