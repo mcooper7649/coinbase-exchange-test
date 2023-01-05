@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import OBP from './OBP';
 import Loader from './Loader';
-import { ThemeContext } from '../utils/ThemeContext';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 function OrderBookWrapper({ bestAsk, bestBid, ob, handleAgg, pair }) {
   const [spread, setSpread] = useState(0);

@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useContext,
 } from 'react';
-import { ThemeContext } from './utils/ThemeContext';
+import { ThemeContext } from './contexts/ThemeContext';
 import Chart from './components/Chart';
 import { formatData } from './utils/utils';
 import './index.css';
@@ -14,7 +14,7 @@ import BestBid from './components/BestBid';
 import BestAsk from './components/BestAsk';
 import OrderBook from './components/OrderBook';
 import { useSelector, useDispatch } from 'react-redux';
-import { useSocket } from './utils/useSocket';
+import { useSocket } from './hooks/useSocket';
 
 import { setActivePair, setGranularity, setAggregate } from './store/pairSlice';
 
