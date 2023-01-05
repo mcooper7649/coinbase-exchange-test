@@ -33,12 +33,15 @@ function UserOptions({
         </h1>
       </div>
 
-      <label className="text-md font-bold md:text-md" htmlFor="cur-select">
+      <label
+        className="font-bold text-sm md:text-md sm:hidden md:block"
+        htmlFor="cur-select"
+      >
         Currency Pair
       </label>
       <select
         id="cur-select"
-        className={`font-mono font-bold cursor-pointer md:pl-2 text-gray-800 text-xs rounded border border-orange-500 focus:outline-none ${
+        className={`cursor-pointer md:pl-2 text-gray-800 text-xs rounded border border-orange-500 focus:outline-none ${
           checkPair(pair) ? 'animate-bounce' : ''
         }`}
         name="currency"
@@ -55,12 +58,15 @@ function UserOptions({
         })}
       </select>
 
-      <label className="text-md font-bold md:text-md" htmlFor="chart-select">
+      <label
+        className="font-bold text-sm md:text-md sm:hidden md:block"
+        htmlFor="chart-select"
+      >
         Chart Granularity
       </label>
       <select
         id="chart-select"
-        className="font-mono font-bold py-1.5 cursor-pointer md:pl-2 text-gray-800 text-xs border-none rounded border focus:outline-none"
+        className="py-1.5 cursor-pointer md:pl-2 text-gray-800 text-xs border-none rounded border focus:outline-none"
         name="chart"
         // value={value}
         onChange={handleChart}

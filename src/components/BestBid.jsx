@@ -19,12 +19,17 @@ function BestBid({ bestBid, bestBidSize }) {
         </div>
 
         {/* {BidAmount} */}
-        <p className="text-xs md:text-lg">Bid Price</p>
-        <p className="">{USDollar.format(bestBid)}</p>
+        <p className="text-xs md:text-lg font-bold">Bid Price</p>
+        <p key={bestBid} className="roll-out">
+          {USDollar.format(bestBid)}
+        </p>
 
         {/* <h2>{BidQuantity}</h2> */}
-        <p className="text-xs md:text-lg">Bid Quantity</p>
-        {bestBidSize}
+        <p className="text-xs md:text-lg font-bold">Bid Quantity</p>
+        <p key={bestBidSize} className="roll-out">
+          {' '}
+          {bestBidSize}
+        </p>
       </div>
     );
   } else {

@@ -20,12 +20,16 @@ function BestAsk({ bestAsk, bestAskSize }) {
 
         {/* {AskAmount} */}
 
-        <p className="text-xs md:text-lg">Ask Price</p>
-        {USDollar.format(bestAsk)}
+        <p className="font-bold text-xs md:text-lg">Ask Price</p>
+        <p key={bestAsk} className="roll-out">
+          {USDollar.format(bestAsk)}
+        </p>
 
         {/* <h2>{AskQuantity}</h2> */}
-        <p className="text-xs md:text-lg ">Ask Quantity</p>
-        {bestAskSize}
+        <p className="text-xs md:text-lg font-bold ">Ask Quantity</p>
+        <p key={bestAskSize} className=" roll-out">
+          {bestAskSize}
+        </p>
       </div>
     );
   } else {
