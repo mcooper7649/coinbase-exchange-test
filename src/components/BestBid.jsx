@@ -1,5 +1,5 @@
 import { USDollar } from '../utils/utils';
-import { ThemeContext } from '../utils/ThemeContext';
+import { ThemeContext } from '../contexts/ThemeContext';
 import { useContext } from 'react';
 import Loader from './Loader';
 

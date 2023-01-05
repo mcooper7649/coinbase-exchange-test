@@ -1,6 +1,6 @@
 import { Line } from 'react-chartjs-2';
 import { USDollar } from '../utils/utils';
-import { ThemeContext } from '../utils/ThemeContext';
+import { ThemeContext } from '../contexts/ThemeContext';
 import { useContext } from 'react';
 
 function Chart({ price, data, pair, granularity }) {
