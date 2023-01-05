@@ -42,22 +42,27 @@ function OrderBookWrapper({ bestAsk, bestBid, ob, handleAgg, pair }) {
           }`}
         >
           <div
-            className={`OB__header1 font-bold ${
+            className={`OB__header1 pt-1 font-bold flex flex-col text-xs md:text-lg ${
               isDarkMode ? ' text-gray-100 bg-gray-500' : 'text-gray-100'
             }`}
           >
             Advanced Settings
+          </div>
+          <div className="flex flex-row justify-center">
             <div
-              className={`OB__header1 flex inline-flex w-max font-thin ${
+              className={`OB__header1 flex flex-row justify-center md:space-x-3 font-thin text-xs lg:text-md ${
                 isDarkMode ? 'text-gray-100 bg-gray-500' : 'text-gray-100'
               }`}
             >
-              <label className="pl-3 py-1 " htmlFor="cur-select">
+              <label
+                className="my-3 pl-1 ml-1 align-baseline hidden md:block"
+                htmlFor="cur-select"
+              >
                 Aggregate:
               </label>
               <select
                 id="cur-select"
-                className={`my-1 mr-3 cursor-pointer bg-gray-800 text-md rounded focus:outline-none ${
+                className={`my-1 mr-3 cursor-pointer md:ml-2 bg-gray-800 text-md rounded focus:outline-none ${
                   isDarkMode ? 'text-gray-100 bg-gray-500' : 'text-gray-100'
                 }`}
                 name="currency"
@@ -74,7 +79,10 @@ function OrderBookWrapper({ bestAsk, bestBid, ob, handleAgg, pair }) {
                   );
                 })}
               </select>
-              <label className="pr-3 py-1 " htmlFor="cur-select">
+              <label
+                className="mt-3 align-baseline hidden md:block"
+                htmlFor="cur-select"
+              >
                 Dark Mode:
               </label>
               <div
@@ -82,7 +90,7 @@ function OrderBookWrapper({ bestAsk, bestBid, ob, handleAgg, pair }) {
                 aria-checked={isDarkMode ? 'true' : 'false'}
                 tabIndex={0}
                 onClick={toggleTheme}
-                className={`self-center cursor-pointer w-11 line h-5 rounded-full relative px-1.5 flex items-center${
+                className={`mr-1 pr-1 self-center cursor-pointer w-11 line h-5 rounded-full relative flex items-center${
                   isDarkMode ? '' : ' justify-end'
                 }`}
               >
