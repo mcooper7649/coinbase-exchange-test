@@ -467,8 +467,10 @@ function App() {
           />
         </div>
         <div
-          className={`box row-start-2 row-end-7 col-start-1 col-end-3 bg-gray-800 ${
-            isDarkMode ? 'bg-gray-300' : 'bg-gray-800'
+          className={`box row-start-2 row-end-7 col-start-1 col-end-3 ${
+            isDarkMode
+              ? 'bg-gray-300 text-gray-100'
+              : 'bg-gray-800 text-gray-800'
           }`}
         >
           <Chart
