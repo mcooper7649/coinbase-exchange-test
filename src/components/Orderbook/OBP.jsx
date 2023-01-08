@@ -7,7 +7,7 @@ import { Tooltip } from '../../utils/Tooltip/Tooltip';
 import { ThemeContext } from '../../contexts/ThemeContext';
 
 const OBP = ({ orders, type, viewSize = 14 }) => {
-  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
+  const { isDarkMode } = useContext(ThemeContext);
   return (
     <div className={type === 'ask' ? 'OBP OBP--ask' : 'OBP OBP--sell'}>
       {orders?.slice(0, viewSize).map((order, index) => {
@@ -43,7 +43,7 @@ const OBP = ({ orders, type, viewSize = 14 }) => {
 
               <div key={uuidv4()} className="OBP__price ">
                 <Tooltip
-                  text={`Total Order  ${capitalizeFirstLetter(totalOrder)}`}
+                  text={`Total Order ${capitalizeFirstLetter(totalOrder)}`}
                 >
                   {USDollar.format(order[0])}
                 </Tooltip>
