@@ -57,17 +57,17 @@ function OrderBookWrapper({
           }`}
         >
           <div
-            className={`OB__header1 pt-1 font-bold flex flex-col text-xs md:text-lg  ${
+            className={`OB__header1 pt-1 mb-1 font-bold flex flex-col text-xs md:text-lg  ${
               isDarkMode
                 ? ' text-gray-800 bg-gray-300 hover:text-gray-700'
                 : 'text-gray-100 hover:text-gray-300'
             }`}
           >
-            Advanced Settings
+            Additional Settings
           </div>
           <div className="flex flex-row justify-center">
             <div
-              className={`OB__header1 flex flex-row justify-center md:space-x-3 font-thin text-xs lg:text-md ${
+              className={`OB__header1 flex flex-row justify-center md:space-x-3 font-bold text-xs lg:text-md px-3 ${
                 isDarkMode
                   ? 'text-gray-800 bg-gray-300 hover:text-gray-700'
                   : 'text-gray-100 hover:text-gray-300'
@@ -83,12 +83,12 @@ function OrderBookWrapper({
               </Tooltip>
               <select
                 id="cur-select"
-                className={`my-1 mr-3 cursor-pointer md:ml-2 bg-gray-800 text-md rounded focus:outline-none ${
+                className={`my-1 mr-3 cursor-pointer md:ml-2 text-md rounded focus:outline-none ${
                   isDarkMode
                     ? 'text-gray-800 bg-gray-300 hover:text-gray-700'
-                    : 'text-gray-200 hover:text-gray-100'
+                    : 'text-gray-200 bg-gray-800 hover:text-gray-100'
                 }`}
-                name="currency"
+                name="aggregate"
                 onChange={(e) => {
                   handleAgg(e);
                 }}
@@ -150,11 +150,11 @@ function OrderBookWrapper({
           </div>
 
           <div
-            className={`OB__header1 ${
+            className={`OB__header1 text-xs hidden md:text-lg md:inline px-3 ${
               isDarkMode ? 'text-gray-800 bg-gray-300' : 'text-gray-100'
             }`}
           >
-            Orderbook
+            Live Coinbase Orderbook
           </div>
 
           <div
