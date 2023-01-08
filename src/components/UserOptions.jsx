@@ -25,8 +25,8 @@ function UserOptions({
     <div className="grid overflow-hidden grid-cols-2 grid-rows-2 gap-2.5 w-auto h-auto">
       <div className="row-start-1 row-span-1 col-start-1 col-end-3 text-xs md:text-lg">
         <h1
-          className={`border-b-4 border-gray-300 ${
-            isDarkMode ? '' : 'text-sky-300'
+          className={`border-b-4  ${
+            isDarkMode ? 'border-gray-800' : 'text-sky-300 border-gray-300'
           }`}
         >
           User Options:
@@ -34,7 +34,7 @@ function UserOptions({
       </div>
 
       <label
-        className="font-bold text-sm md:text-md sm:hidden md:block"
+        className="font-bold text-sm md:text-md hidden md:block"
         htmlFor="cur-select"
       >
         Currency Pair
@@ -59,7 +59,7 @@ function UserOptions({
       </select>
 
       <label
-        className="font-bold text-sm md:text-md sm:hidden md:block"
+        className="font-bold text-sm md:text-md hidden md:inline"
         htmlFor="chart-select"
       >
         Chart Granularity

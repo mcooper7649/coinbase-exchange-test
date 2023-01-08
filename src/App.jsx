@@ -6,13 +6,13 @@ import React, {
   useContext,
 } from 'react';
 import { ThemeContext } from './contexts/ThemeContext';
-import Chart from './components/Chart';
+import Chart from './components/Chart/Chart';
 import { formatData } from './utils/utils';
 import './index.css';
 import UserOptions from './components/UserOptions';
 import BestBid from './components/BestBid';
 import BestAsk from './components/BestAsk';
-import OrderBook from './components/OrderBook';
+import Orderbook from './components/Orderbook/Orderbook';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSocket } from './hooks/useSocket';
 
@@ -60,7 +60,7 @@ function App() {
       let unsubMsg = {
         type: 'unsubscribe',
         product_ids: [activePair],
-        channels: ['level2'],
+        channels: ['level2_batch'],
       };
       let unsub = JSON.stringify(unsubMsg);
 
@@ -260,7 +260,7 @@ function App() {
         let msg = {
           type: 'subscribe',
           product_ids: [activePair],
-          channels: ['level2'],
+          channels: ['level2_batch'],
         };
 
         let jsonMsg = JSON.stringify(msg);
@@ -291,7 +291,7 @@ function App() {
       let msg = {
         type: 'subscribe',
         product_ids: [activePair],
-        channels: ['ticker', 'level2'],
+        channels: ['ticker', 'level2_batch'],
       };
 
       let jsonMsg = JSON.stringify(msg);
@@ -333,7 +333,7 @@ function App() {
     let msg = {
       type: 'subscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2'],
+      channels: ['ticker', 'level2_batch'],
     };
 
     console.log('useEffect2 render');
@@ -379,7 +379,7 @@ function App() {
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2'],
+      channels: ['ticker', 'level2_batch'],
     };
     let unsub = JSON.stringify(unsubMsg);
     if (!isOpen(socket)) return;
@@ -391,7 +391,7 @@ function App() {
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2'],
+      channels: ['ticker', 'level2_batch'],
     };
     let unsub = JSON.stringify(unsubMsg);
     if (!isOpen(socket)) return;
@@ -408,7 +408,7 @@ function App() {
     let unsubMsg = {
       type: 'unsubscribe',
       product_ids: [activePair],
-      channels: ['ticker', 'level2'],
+      channels: ['ticker', 'level2_batch'],
     };
     let unsub = JSON.stringify(unsubMsg);
     if (!isOpen(socket)) return;
@@ -456,7 +456,7 @@ function App() {
             isDarkMode ? 'bg-gray-500' : 'bg-gray-800'
           }`}
         >
-          <OrderBook
+          <Orderbook
             aggregate={aggregate}
             handleAgg={handleAgg}
             ob={ob}
