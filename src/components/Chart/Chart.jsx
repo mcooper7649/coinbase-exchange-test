@@ -89,7 +89,9 @@ function Chart({ price, data, pair, granularity }) {
           <BsChevronDoubleDown />
         </IconContext.Provider>
         <h2
-          className={`text-3xl font-bold ${!isDarkMode ? 'text-gray-100' : ''}`}
+          className={`text-3xl font-bold ${
+            !isDarkMode ? 'text-gray-100' : 'text-gray-800'
+          }`}
         >
           Please Set Granularity
         </h2>
