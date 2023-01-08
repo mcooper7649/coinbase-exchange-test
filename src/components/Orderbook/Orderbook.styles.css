@@ -50,6 +50,8 @@
   display: flex;
   align-items: center;
   border: 1px solid #929292;
+  font-size: large;
+  font-weight: bold;
 }
 
 .OB__SP,
@@ -92,6 +94,10 @@
 
 .OBP__order:nth-child(2n) {
   background-color: #111111;
+}
+
+.test:nth-child(odd) {
+  color: #111111;
 }
 
 .OBP__order > * {

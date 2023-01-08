@@ -418,9 +418,9 @@ function App() {
     <div className="App">
       <div className="grid overflow-hidden grid-cols-3 grid-rows-6 gap-1.5 w-auto h-[98vh] body">
         <div
-          className={`box pl-3 pt-3 pr-3 border-double border-4 ${
+          className={`box pl-3 pt-3 pr-3 border border-8 ${
             isDarkMode
-              ? 'border-sky-500 bg-sky-300 text-gray-800'
+              ? 'border-sky-500 bg-gray-300 text-gray-800'
               : 'bg-gray-800 border-sky-500 text-gray-100'
           }`}
         >
@@ -433,18 +433,18 @@ function App() {
           />
         </div>
         <div
-          className={`box pl-3 pt-3 pr-3 border-double border-4 ${
+          className={`box pl-3 pt-3 pr-3 border border-8 ${
             isDarkMode
-              ? 'border-green-500 bg-green-300 text-gray-800'
+              ? 'border-green-500 bg-gray-300 text-gray-800'
               : 'bg-gray-800 border-green-500 text-gray-100'
           }`}
         >
           <BestBid bestBid={bestBid} bestBidSize={bestBidSize} />
         </div>
         <div
-          className={`box pl-3 pt-3 pr-3 border-double border-4 ${
+          className={`box pl-3 pt-3 pr-3 border border-8 ${
             isDarkMode
-              ? 'border-red-500 bg-red-300 text-gray-800'
+              ? 'border-red-500 bg-gray-300 text-gray-800'
               : 'bg-gray-800 border-red-500 text-gray-100'
           }`}
         >
@@ -453,7 +453,7 @@ function App() {
 
         <div
           className={`box row-start-2 row-end-7 col-start-3 col-end-3 ${
-            isDarkMode ? 'bg-gray-500' : 'bg-gray-800'
+            isDarkMode ? 'bg-gray-300' : 'bg-gray-800'
           }`}
         >
           <Orderbook
