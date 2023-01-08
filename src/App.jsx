@@ -6,13 +6,13 @@ import React, {
   useContext,
 } from 'react';
 import { ThemeContext } from './contexts/ThemeContext';
-import Chart from './components/Chart';
+import Chart from './components/Chart/Chart';
 import { formatData } from './utils/utils';
 import './index.css';
 import UserOptions from './components/UserOptions';
 import BestBid from './components/BestBid';
 import BestAsk from './components/BestAsk';
-import OrderBook from './components/OrderBook';
+import Orderbook from './components/Orderbook/Orderbook';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSocket } from './hooks/useSocket';
 
@@ -456,7 +456,7 @@ function App() {
             isDarkMode ? 'bg-gray-500' : 'bg-gray-800'
           }`}
         >
-          <OrderBook
+          <Orderbook
             aggregate={aggregate}
             handleAgg={handleAgg}
             ob={ob}

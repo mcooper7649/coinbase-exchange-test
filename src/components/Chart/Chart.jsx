@@ -1,7 +1,10 @@
 import { Line } from 'react-chartjs-2';
-import { USDollar } from '../utils/utils';
-import { ThemeContext } from '../contexts/ThemeContext';
+import { USDollar } from '../../utils/utils';
+import { ThemeContext } from '../../contexts/ThemeContext';
 import { useContext } from 'react';
+import { BsChevronDoubleDown } from 'react-icons/bs';
+import { IconContext } from 'react-icons';
+import './Chart.styles.css';
 
 function Chart({ price, data, pair, granularity }) {
   const { isDarkMode } = useContext(ThemeContext);
@@ -20,7 +23,7 @@ function Chart({ price, data, pair, granularity }) {
 
   const opts = {
     tooltips: {
-      intersect: false,
+      intersect: true,
       mode: 'index',
       titleFontSize: 12,
       bodyFontSize: 16,
@@ -62,8 +65,13 @@ function Chart({ price, data, pair, granularity }) {
   if (pair === 'Select') {
     return (
       <div className="flex flex-col justify-center items-center h-screen">
+        <IconContext.Provider
+          value={{ className: 'top-react-icons animate-bounce' }}
+        >
+          <BsChevronDoubleDown />
+        </IconContext.Provider>
         <h2
-          className={`text-3xl font-bold underline ${
+          className={`text-3xl font-bold  ${
             !isDarkMode ? 'text-gray-100' : 'text-gray-800'
           }`}
         >
@@ -75,10 +83,13 @@ function Chart({ price, data, pair, granularity }) {
   if (granularity === 'Granularity' || granularity === 'Minutes') {
     return (
       <div className="flex flex-col justify-center items-center h-screen">
+        <IconContext.Provider
+          value={{ className: 'top-react-icons animate-bounce' }}
+        >
+          <BsChevronDoubleDown />
+        </IconContext.Provider>
         <h2
-          className={`text-3xl font-bold underline ${
-            !isDarkMode ? 'text-gray-100' : ''
-          }`}
+          className={`text-3xl font-bold ${!isDarkMode ? 'text-gray-100' : ''}`}
         >
           Please Set Granularity
         </h2>
