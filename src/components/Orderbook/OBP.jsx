@@ -1,11 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
-
+import { useContext } from 'react';
 import { USDollar } from '../../utils/utils';
 import Loader from '../Loader';
 import './Orderbook.styles.css';
 import { Tooltip } from '../../utils/Tooltip/Tooltip';
+import { ThemeContext } from '../../contexts/ThemeContext';
 
 const OBP = ({ orders, type, viewSize = 14 }) => {
+  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
   return (
     <div className={type === 'ask' ? 'OBP OBP--ask' : 'OBP OBP--sell'}>
       {orders?.slice(0, viewSize).map((order, index) => {
@@ -18,7 +20,9 @@ const OBP = ({ orders, type, viewSize = 14 }) => {
 
           return (
             <div
-              className="OBP__order hover:text-yellow-300 hover:border-b-4 border-indigo-100 "
+              className={`OBP__order hover:text-yellow-300 hover:border-b-4 border-indigo-100 ${
+                !isDarkMode ? '' : 'test'
+              }`}
               index={index}
               key={uuidv4()}
             >
@@ -29,7 +33,9 @@ const OBP = ({ orders, type, viewSize = 14 }) => {
                   style={{ width: Math.min((order[1] / 3.5) * 25, 25) }}
                 ></div>
                 <Tooltip
-                  text={`Total Order  ${capitalizeFirstLetter(totalOrder)}`}
+                  text={`Total ${capitalizeFirstLetter(
+                    type
+                  )} Order  ${totalOrder}`}
                 >
                   {order[1]}
                 </Tooltip>
