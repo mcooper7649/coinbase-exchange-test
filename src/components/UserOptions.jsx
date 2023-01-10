@@ -1,5 +1,10 @@
 import { ThemeContext } from '../contexts/ThemeContext';
 import { useContext } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBitcoinSign } from '@fortawesome/free-solid-svg-icons';
+import TokenDropdown from './Dropdown/TokenDropdown';
+import ChartDropdown from './Dropdown/ChartDropdown';
+
 function UserOptions({
   pair,
   handleSelect,
@@ -9,20 +14,23 @@ function UserOptions({
 }) {
   const { isDarkMode } = useContext(ThemeContext);
   granularity = [
-    [60, '~5 Hours'],
-    [300, '~24 Hours'],
-    [900, '~3 Days'],
-    [3600, '~11 Days'],
-    [21600, '~2.5 Months'],
-    [86400, '~10 Months'],
+    [60, '5 Hours'],
+    [300, '24 Hours'],
+    [900, '3 Days'],
+    [3600, '11 Days'],
+    [21600, '2.5 Months'],
+    [86400, '10 Months'],
   ];
   function checkPair(pair) {
     if (pair === 'Select') {
       return true;
     } else return false;
   }
+
+  function findIcon(base_currency) {}
+
   return (
-    <div className="grid overflow-hidden grid-cols-2 grid-rows-2 gap-2.5 w-auto h-auto">
+    <div className="grid grid-cols-2 grid-rows-2 gap-2.5 w-auto h-auto ">
       <div className="row-start-1 row-span-1 col-start-1 col-end-3 text-xs md:text-lg">
         <h1
           className={`border-b-4  ${
@@ -34,12 +42,21 @@ function UserOptions({
       </div>
 
       <label
-        className="font-bold text-sm md:text-md hidden md:block"
+        className="col-start-1 col-end-1 row-start-2 row-span-2 font-bold text-sm md:text-md hidden md:block"
         htmlFor="cur-select"
       >
         Currency Pair
       </label>
-      <select
+      <div>
+        <TokenDropdown
+          className="z-10 col-start-2 col-end-2 row-start-2 row-span-2"
+          handleSelect={handleSelect}
+          currencies={currencies}
+          activePair={pair}
+        />
+      </div>
+
+      {/* <select
         id="cur-select"
         className={`cursor-pointer md:pl-2 text-gray-800 text-xs rounded border border-orange-500 focus:outline-none ${
           checkPair(pair) ? 'animate-bounce' : ''
@@ -50,21 +67,22 @@ function UserOptions({
       >
         <option defaultValue={true}>Select</option>
         {currencies.map((cur, idx) => {
+          let newIcon = findIcon(cur.base_currency);
           return (
             <option key={cur.id} value={cur.id}>
-              {cur.display_name}
+              {`${newIcon && newIcon}`}
             </option>
           );
         })}
-      </select>
+      </select> */}
 
       <label
-        className="font-bold text-sm md:text-md hidden md:inline"
+        className="row-start-3 row-span-3 col-start-1 col-end-1 font-bold text-sm md:text-md hidden md:block"
         htmlFor="chart-select"
       >
         Chart Granularity
       </label>
-      <select
+      {/* <select
         id="chart-select"
         className="py-1.5 cursor-pointer md:pl-2 text-gray-800 text-xs border-none rounded border focus:outline-none"
         name="chart"
@@ -79,7 +97,14 @@ function UserOptions({
             </option>
           );
         })}
-      </select>
+      </select> */}
+      <div className="row-start-3 row-span-3 col-start-2 col-end-2">
+        <ChartDropdown
+          handleChart={handleChart}
+          granularity={granularity}
+          activePair={pair}
+        />
+      </div>
     </div>
   );
 }

@@ -15,6 +15,7 @@ export const SocketProvider = (props) => {
     };
 
     ws.addEventListener('close', onClose);
+    console.log('adding event listener');
 
     return () => {
       ws.removeEventListener('close', onClose);
