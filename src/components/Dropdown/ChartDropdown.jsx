@@ -1,8 +1,9 @@
 import { Popover, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
-import { Fragment, useRef } from 'react';
+import { Fragment, useRef, useState } from 'react';
 import { FaBitcoin, FaEthereum } from 'react-icons/fa';
 import { SiLitecoin, SiBitcoincash } from 'react-icons/si';
+
 import './Dropdown.styles.css';
 
 const projects = [
@@ -35,13 +36,19 @@ const projects = [
 ];
 
 export default function ChartDropdown({
-  activePair,
   granularity,
   handleChart,
+  activeGranularity,
 }) {
   const buttonRef = useRef(null);
   const timeoutDuration = 200;
   let timeout;
+
+  function checkGran(gran) {
+    if (gran === 'Granularity') {
+      return true;
+    } else return false;
+  }
 
   const closePopover = () => {
     return buttonRef.current?.dispatchEvent(
@@ -75,11 +82,15 @@ export default function ChartDropdown({
                   ref={buttonRef}
                   className={`
                   ${open ? '' : 'text-opacity-90'}
-                  text-white group bg-gray-800  px-2 py-1 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+                  text-white group bg-gray-800  px-2 py-1 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 ${
+                    checkGran(granularity) ? 'animate-bounce' : ''
+                  }`}
                   onMouseEnter={onMouseEnter.bind(null, open)}
                   onMouseLeave={onMouseLeave.bind(null, open)}
                 >
-                  <span style={{ color: 'lightgray' }}>{`Granularity`}</span>
+                  <span
+                    style={{ color: 'lightgray' }}
+                  >{`${activeGranularity}`}</span>
                   <ChevronDownIcon
                     className={`${open ? '' : 'text-opacity-70'}
                     ml-2 h-5 w-5 text-orange-300 group-hover:text-opacity-80 transition ease-in-out duration-150`}

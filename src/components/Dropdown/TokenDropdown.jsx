@@ -34,6 +34,12 @@ const projects = [
   },
 ];
 
+function checkPair(pair) {
+  if (pair === 'Select') {
+    return true;
+  } else return false;
+}
+
 export default function TokenDropdown({
   currencies,
   activePair,
@@ -65,8 +71,8 @@ export default function TokenDropdown({
   };
 
   return (
-    <div className="w-full max-w-sm px-4 top-16">
-      <Popover className="relative">
+    <div className="w-full max-w-sm px-4 top-16 ">
+      <Popover className="relative ">
         {({ open }) => {
           return (
             <>
@@ -75,7 +81,9 @@ export default function TokenDropdown({
                   ref={buttonRef}
                   className={`
                   ${open ? '' : 'text-opacity-90'}
-                  text-white group bg-gray-800  px-2 py-1 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+                  text-white group bg-gray-800  px-2 py-1 rounded-md inline-flex items-center text-base font-medium ring-2 ring-orange-400  hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 ${
+                    checkPair(activePair) ? 'animate-bounce' : ''
+                  }`}
                   onMouseEnter={onMouseEnter.bind(null, open)}
                   onMouseLeave={onMouseLeave.bind(null, open)}
                 >
@@ -105,7 +113,7 @@ export default function TokenDropdown({
                         {' '}
                         <span className="flex items-center">
                           <span className="text-sm font-medium text-gray-900">
-                            Set Active Token
+                            Set Active Token (All Pairs in USD)
                           </span>
                         </span>
                       </div>
@@ -166,63 +174,68 @@ export default function TokenDropdown({
 
 function IconOne() {
   return (
-    <svg
-      width="48"
-      height="48"
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <rect width="48" height="48" rx="8" fill="#FFEDD5" />
-      <FaBitcoin />
-    </svg>
+    // <svg
+    //   width="48"
+    //   height="48"
+    //   viewBox="0 0 48 48"
+    //   fill="none"
+    //   xmlns="http://www.w3.org/2000/svg"
+    // >
+    <div>
+      <FaBitcoin
+        className="text-6xl"
+        width="48"
+        height="48"
+        rx="8"
+        fill="#f2a900"
+        xmlns="http://www.w3.org/2000/svg"
+      />
+    </div>
+    // </svg>
   );
 }
 
 function IconTwo() {
   return (
     <div>
-      <svg
+      <SiLitecoin
+        className="text-6xl"
         width="48"
         height="48"
-        viewBox="0 0 48 48"
-        fill="none"
+        rx="8"
+        fill="#00aeff"
         xmlns="http://www.w3.org/2000/svg"
-      >
-        <rect width="48" height="48" rx="8" fill="#FFEDD5" />
-
-        <SiLitecoin className="fill-gray-800" />
-      </svg>
+      />
     </div>
   );
 }
 
 function IconThree() {
   return (
-    <svg
-      width="48"
-      height="48"
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <rect width="48" height="48" rx="8" fill="#FFEDD5" />
-      <FaEthereum className="fill-gray-800 " />
-    </svg>
+    <div>
+      <FaEthereum
+        className="text-6xl"
+        width="48"
+        height="48"
+        rx="8"
+        fill="#3c3c3d"
+        xmlns="http://www.w3.org/2000/svg"
+      />
+    </div>
   );
 }
 
 function IconFour() {
   return (
-    <svg
-      width="48"
-      height="48"
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <rect width="48" height="48" rx="8" fill="#FFEDD5" />
-      <SiBitcoincash className="fill-gray-800" />
-    </svg>
+    <div>
+      <SiBitcoincash
+        className="text-6xl"
+        width="48"
+        height="48"
+        rx="8"
+        fill="#ee8c28"
+        xmlns="http://www.w3.org/2000/svg"
+      />
+    </div>
   );
 }

@@ -28,6 +28,7 @@ function App() {
   const aggregate = useSelector((state) => state.pairer.aggregate);
 
   const [currencies, setCurrencies] = useState([]);
+  const [activeGranularity, setActiveGranularity] = useState('Granularity');
 
   const [bestAsk, setBestAsk] = useState(null);
   const [bestBid, setBestBid] = useState(null);
@@ -408,8 +409,27 @@ function App() {
     socket.send(unsub);
   };
 
+  const convertGran = (e) => {
+    console.log(e);
+    if (e.target.value === '60') {
+      return '5 Hours';
+    } else if (e.target.value === '300') {
+      return '24 Hours';
+    } else if (e.target.value === '900') {
+      return '3 Days';
+    } else if (e.target.value === '3600') {
+      return '11 Days';
+    } else if (e.target.value === '21600') {
+      return '2.5 Months';
+    } else if (e.target.value === '86400') {
+      return '10 Months';
+    }
+  };
+
   const handleChart = (e) => {
+    console.log(e);
     dispatch(setGranularity(e.target.value));
+    setActiveGranularity(() => convertGran(e));
     if (e.target.value > 899) {
       setDay(0);
     } else {
@@ -441,6 +461,7 @@ function App() {
             handleSelect={handleSelect}
             currencies={currencies}
             granularity={granularity}
+            activeGranularity={activeGranularity}
           />
         </div>
 

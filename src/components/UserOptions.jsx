@@ -11,6 +11,7 @@ function UserOptions({
   currencies,
   granularity,
   handleChart,
+  activeGranularity,
 }) {
   const { isDarkMode } = useContext(ThemeContext);
   granularity = [
@@ -21,13 +22,6 @@ function UserOptions({
     [21600, '2.5 Months'],
     [86400, '10 Months'],
   ];
-  function checkPair(pair) {
-    if (pair === 'Select') {
-      return true;
-    } else return false;
-  }
-
-  function findIcon(base_currency) {}
 
   return (
     <div className="grid grid-cols-2 grid-rows-2 gap-2.5 w-auto h-auto ">
@@ -103,6 +97,7 @@ function UserOptions({
           handleChart={handleChart}
           granularity={granularity}
           activePair={pair}
+          activeGranularity={activeGranularity}
         />
       </div>
     </div>
