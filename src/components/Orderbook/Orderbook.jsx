@@ -40,9 +40,7 @@ function OrderBookWrapper({
               : 'text-gray-100 hover:text-gray-300'
           }`}
         >
-          <div className="OB__SL">
-            <Tooltip text="USD Spread">Spread: </Tooltip>
-          </div>
+          <div className="OB__SL">Spread:</div>
 
           <div className="OB__SP">{USDollar.format(spread)}</div>
         </div>

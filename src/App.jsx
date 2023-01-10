@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useSocket } from './hooks/useSocket';
 
 import { setActivePair, setGranularity, setAggregate } from './store/pairSlice';
+import { Tooltip } from './utils/Tooltip/Tooltip';
 
 function App() {
   const dispatch = useDispatch();
@@ -27,11 +28,16 @@ function App() {
   const aggregate = useSelector((state) => state.pairer.aggregate);
 
   const [currencies, setCurrencies] = useState([]);
+  const [activeGranularity, setActiveGranularity] = useState('Granularity');
 
   const [bestAsk, setBestAsk] = useState(null);
   const [bestBid, setBestBid] = useState(null);
   const [bestAskSize, setBestAskSize] = useState(null);
   const [bestBidSize, setBestBidSize] = useState(null);
+  const [daily, setDaily] = useState({
+    high: null,
+    low: null,
+  });
 
   const [price, setPrice] = useState(0);
   const [pastData, setPastData] = useState({});
@@ -52,6 +58,10 @@ function App() {
     setBestBid(Number(data.best_bid));
     setBestAsk(Number(data.best_ask));
     setPrice(Number(data.price));
+    setDaily({
+      high: data.high_24h,
+      low: data.low_24h,
+    });
   }, []);
 
   const handleUpdate = useCallback(
@@ -337,6 +347,7 @@ function App() {
     };
 
     console.log('useEffect2 render');
+    console.log(currencies);
 
     let historicalDataURL = `${url}/products/${
       activePair === 'Select' ? 'BTC/USD' : activePair
@@ -355,7 +366,7 @@ function App() {
     let jsonMsg = JSON.stringify(msg);
     if (!isOpen(socket)) return;
     socket.send(jsonMsg);
-  }, [activePair, granularity, socket, day]);
+  }, [activePair, granularity, currencies, socket, day]);
 
   useEffect(() => {
     socket.onmessage = (e) => {
@@ -374,7 +385,7 @@ function App() {
   // });
 
   const handleSelect = (e) => {
-    dispatch(setActivePair(e.target.value));
+    dispatch(setActivePair(e));
 
     let unsubMsg = {
       type: 'unsubscribe',
@@ -398,8 +409,27 @@ function App() {
     socket.send(unsub);
   };
 
+  const convertGran = (e) => {
+    console.log(e);
+    if (e.target.value === '60') {
+      return '5 Hours';
+    } else if (e.target.value === '300') {
+      return '24 Hours';
+    } else if (e.target.value === '900') {
+      return '3 Days';
+    } else if (e.target.value === '3600') {
+      return '11 Days';
+    } else if (e.target.value === '21600') {
+      return '2.5 Months';
+    } else if (e.target.value === '86400') {
+      return '10 Months';
+    }
+  };
+
   const handleChart = (e) => {
+    console.log(e);
     dispatch(setGranularity(e.target.value));
+    setActiveGranularity(() => convertGran(e));
     if (e.target.value > 899) {
       setDay(0);
     } else {
@@ -425,13 +455,16 @@ function App() {
           }`}
         >
           <UserOptions
+            className=""
             pair={activePair}
             handleChart={handleChart}
             handleSelect={handleSelect}
             currencies={currencies}
             granularity={granularity}
+            activeGranularity={activeGranularity}
           />
         </div>
+
         <div
           className={`box pl-3 pt-3 pr-3 border border-8 ${
             isDarkMode
@@ -439,8 +472,14 @@ function App() {
               : 'bg-gray-800 border-green-500 text-gray-100'
           }`}
         >
-          <BestBid bestBid={bestBid} bestBidSize={bestBidSize} />
+          <Tooltip
+            className="newtooltip"
+            text={`${activePair} Daily High | ${daily.high}  Low | ${daily.low}`}
+          >
+            <BestBid bestBid={bestBid} bestBidSize={bestBidSize} />
+          </Tooltip>
         </div>
+
         <div
           className={`box pl-3 pt-3 pr-3 border border-8 ${
             isDarkMode
@@ -448,7 +487,12 @@ function App() {
               : 'bg-gray-800 border-red-500 text-gray-100'
           }`}
         >
-          <BestAsk bestAsk={bestAsk} bestAskSize={bestAskSize} />
+          <Tooltip
+            className="newtooltip"
+            text={`${activePair} Daily High | ${daily.high}  Low | ${daily.low}`}
+          >
+            <BestAsk bestAsk={bestAsk} bestAskSize={bestAskSize} />
+          </Tooltip>
         </div>
 
         <div
