@@ -1,8 +1,6 @@
 import { Popover, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
 import { Fragment, useRef } from 'react';
-import { FaBitcoin, FaEthereum } from 'react-icons/fa';
-import { SiLitecoin, SiBitcoincash } from 'react-icons/si';
 
 import './Dropdown.styles.css';
 
