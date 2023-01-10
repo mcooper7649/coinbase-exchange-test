@@ -1,7 +1,5 @@
 import { ThemeContext } from '../contexts/ThemeContext';
 import { useContext } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBitcoinSign } from '@fortawesome/free-solid-svg-icons';
 import TokenDropdown from './Dropdown/TokenDropdown';
 import ChartDropdown from './Dropdown/ChartDropdown';
 

@@ -1,39 +1,10 @@
 import { Popover, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
-import { Fragment, useRef, useState } from 'react';
+import { Fragment, useRef } from 'react';
 import { FaBitcoin, FaEthereum } from 'react-icons/fa';
 import { SiLitecoin, SiBitcoincash } from 'react-icons/si';
 
 import './Dropdown.styles.css';
-
-const projects = [
-  {
-    name: 'Bitcoin',
-    description:
-      'The Original Crypto Project. Founded in 2009 by Satoshi Nakamoto.',
-    value: 'BTC-USD',
-    icon: IconOne,
-  },
-  {
-    name: 'Ethereum',
-    description: 'Industry Leader in Smart Contracts and ERC-20 Standard',
-    value: 'ETH-USD',
-    icon: IconThree,
-  },
-  {
-    name: 'Litecoin',
-    description: 'A Testbed for Bitcoin Development. A Charlie Lee Project.',
-    value: 'LTC-USD',
-    icon: IconTwo,
-  },
-  {
-    name: 'Bitcoin Cash',
-    description:
-      'Proof of Work, Cheaper and Faster alternative to Bitcoin for Everyday Transactions.',
-    value: 'BCH-USD',
-    icon: IconFour,
-  },
-];
 
 export default function ChartDropdown({
   granularity,
