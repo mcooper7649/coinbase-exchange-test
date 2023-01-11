@@ -5,6 +5,7 @@ import { FaBitcoin, FaEthereum } from 'react-icons/fa';
 import { SiLitecoin, SiBitcoincash } from 'react-icons/si';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import './Dropdown.styles.css';
 
 const projects = [
@@ -42,11 +43,8 @@ function checkPair(pair) {
   } else return false;
 }
 
-export default function TokenDropdown({
-  currencies,
-  activePair,
-  handleSelect,
-}) {
+export default function TokenDropdown({ handleSelect }) {
+  const activePair = useSelector((state) => state.pairer.activePair);
   const buttonRef = useRef(null);
   const timeoutDuration = 200;
   let timeout;

@@ -4,19 +4,22 @@ import { ThemeContext } from '../../contexts/ThemeContext';
 import { useContext } from 'react';
 import { BsChevronDoubleDown } from 'react-icons/bs';
 import { IconContext } from 'react-icons';
+import { useSelector } from 'react-redux';
 import './Chart.styles.css';
+import { act } from 'react-dom/test-utils';
 
-function Chart({ price, data, pair, granularity }) {
+function Chart({ price, data, granularity }) {
   const { isDarkMode } = useContext(ThemeContext);
+  const activePair = useSelector((state) => state.pairer.activePair);
 
   function findColor() {
-    return pair === 'ETH-USD'
+    return activePair === 'ETH-USD'
       ? 'rgb(67, 73, 83)'
-      : pair === 'BTC-USD'
+      : activePair === 'BTC-USD'
       ? 'rgb(242, 169, 0, 0.8)'
-      : pair === 'LTC-USD'
+      : activePair === 'LTC-USD'
       ? 'rgb(67, 73, 83)'
-      : pair === 'BCH-USD'
+      : activePair === 'BCH-USD'
       ? 'rgb(238, 140, 40, 0.8)'
       : 'rgb(238, 140, 40, 0.8)';
   }
@@ -34,7 +37,7 @@ function Chart({ price, data, pair, granularity }) {
       position: 'bottom',
       fontSize: 16,
       fontFamily: 'Verdana',
-      text: `${pair} ${granularity} minutes Chart`,
+      text: `${activePair} ${granularity} minutes Chart`,
     },
     elements: {
       point: {
@@ -60,7 +63,7 @@ function Chart({ price, data, pair, granularity }) {
     },
   };
 
-  if (pair === 'Select') {
+  if (activePair === 'Select') {
     return (
       <div className="flex flex-col justify-center items-center h-screen">
         <IconContext.Provider

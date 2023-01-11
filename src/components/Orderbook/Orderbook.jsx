@@ -6,14 +6,7 @@ import { Tooltip } from '../../utils/Tooltip/Tooltip';
 import './Orderbook.styles.css';
 import { USDollar } from '../../utils/utils';
 
-function OrderBookWrapper({
-  bestAsk,
-  bestBid,
-  ob,
-  handleAgg,
-  pair,
-  aggregate,
-}) {
+function OrderBookWrapper({ bestAsk, bestBid, ob, handleAgg, aggregate }) {
   const [spread, setSpread] = useState(0);
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
   let { bids, asks } = ob;
@@ -30,7 +23,7 @@ function OrderBookWrapper({
       (
       <>
         <div className="border-double border-4 border-red-500">
-          <OBP key={ob.asks} type="ask" orders={asks} pair={pair} />
+          <OBP key={ob.asks} type="ask" orders={asks} />
         </div>
 
         <div
@@ -46,7 +39,7 @@ function OrderBookWrapper({
         </div>
 
         <div className="border-double border-4 border-green-500">
-          <OBP key={ob.bids} type="bid" orders={bids} pair={pair} />
+          <OBP key={ob.bids} type="bid" orders={bids} />
         </div>
 
         <div
