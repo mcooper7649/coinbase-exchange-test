@@ -1,6 +1,8 @@
 import { Popover, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
 import { Fragment, useRef } from 'react';
+import { ThemeContext } from '../../contexts/ThemeContext';
+import { useContext } from 'react';
 
 import './Dropdown.styles.css';
 
@@ -40,6 +42,8 @@ export default function ChartDropdown({
     timeout = setTimeout(() => closePopover(), timeoutDuration);
   };
 
+  const { isDarkMode } = useContext(ThemeContext);
+
   return (
     <div className="w-full max-w-sm px-4 top-16">
       <Popover className="relative">
@@ -51,18 +55,22 @@ export default function ChartDropdown({
                   ref={buttonRef}
                   className={`
                   ${open ? '' : 'text-opacity-90'}
-                  text-white group bg-gray-800  px-2 py-1 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 ${
-                    checkGran(granularity) ? 'animate-bounce' : ''
-                  }`}
+                  group  px-2 rounded-md inline-flex items-center text-base ring-2 ring-orange-400 font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 ${
+                    checkGran(activeGranularity) ? 'animate-bounce' : ''
+                  }
+                  ${!isDarkMode ? 'bg-gray-800' : 'bg-gray-300'}
+                  `}
                   onMouseEnter={onMouseEnter.bind(null, open)}
                   onMouseLeave={onMouseLeave.bind(null, open)}
                 >
                   <span
-                    style={{ color: 'lightgray' }}
+                    className={`${!isDarkMode ? 'bg-gray-800' : 'bg-gray-300'}`}
                   >{`${activeGranularity}`}</span>
                   <ChevronDownIcon
                     className={`${open ? '' : 'text-opacity-70'}
-                    ml-2 h-5 w-5 text-orange-300 group-hover:text-opacity-80 transition ease-in-out duration-150`}
+                    ml-2 h-5 w-5 group-hover:text-opacity-80 transition ease-in-out duration-150
+                    ${!isDarkMode ? 'text-orange-300' : 'text-gray-800'}
+                    `}
                     aria-hidden="true"
                   />
                 </Popover.Button>

@@ -3,6 +3,8 @@ import { ChevronDownIcon } from '@heroicons/react/24/solid';
 import { Fragment, useRef } from 'react';
 import { FaBitcoin, FaEthereum } from 'react-icons/fa';
 import { SiLitecoin, SiBitcoincash } from 'react-icons/si';
+import { ThemeContext } from '../../contexts/ThemeContext';
+import { useContext } from 'react';
 import './Dropdown.styles.css';
 
 const projects = [
@@ -69,7 +71,7 @@ export default function TokenDropdown({
     if (!open) return;
     timeout = setTimeout(() => closePopover(), timeoutDuration);
   };
-
+  const { isDarkMode } = useContext(ThemeContext);
   return (
     <div className="w-full max-w-sm px-4 top-16 ">
       <Popover className="relative ">
@@ -81,16 +83,24 @@ export default function TokenDropdown({
                   ref={buttonRef}
                   className={`
                   ${open ? '' : 'text-opacity-90'}
-                  text-white group bg-gray-800  px-2 py-1 rounded-md inline-flex items-center text-base font-medium ring-2 ring-orange-400  hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 ${
-                    checkPair(activePair) ? 'animate-bounce' : ''
-                  }`}
+                   group px-2 my-1 rounded-md inline-flex items-center text-base font-medium ring-2 ring-orange-400  hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 ${
+                     checkPair(activePair) ? 'animate-bounce' : ''
+                   }
+                  ${!isDarkMode ? 'bg-gray-800' : 'bg-gray-300'}
+                  `}
                   onMouseEnter={onMouseEnter.bind(null, open)}
                   onMouseLeave={onMouseLeave.bind(null, open)}
                 >
-                  <span style={{ color: 'lightgray' }}>{activePair}</span>
+                  <span
+                    className={`${!isDarkMode ? 'bg-gray-800' : 'bg-gray-300'}`}
+                  >
+                    {activePair}
+                  </span>
                   <ChevronDownIcon
                     className={`${open ? '' : 'text-opacity-70'}
-                    ml-2 h-5 w-5 text-orange-300 group-hover:text-opacity-80 transition ease-in-out duration-150`}
+                    ml-2 h-5 w-5  group-hover:text-opacity-80 transition ease-in-out duration-150
+                    ${!isDarkMode ? 'text-orange-300' : 'text-gray-800'}
+                    `}
                     aria-hidden="true"
                   />
                 </Popover.Button>
