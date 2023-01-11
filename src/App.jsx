@@ -5,21 +5,19 @@ function App() {
   return (
     <div>
       <Helmet>
-        <meta charset="utf-8" data-react-helmet="true" />
+        <meta charset="utf-8" />
         <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
         <meta
           name="title"
           content="CoinRoutes | Coinbase API"
           property="og:title"
-          data-react-helmet="true"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="theme-color" data-react-helmet="true" />
+        <meta name="theme-color" />
         <meta
           name="image"
           property="og:image"
           content="https://img001.prntscr.com/file/img001/ontrNCaNTJuzACxq3cJUfw.png"
-          data-react-helmet="true"
         />
         <meta
           name="url"
@@ -30,7 +28,6 @@ function App() {
           name="description"
           property="og:description"
           content="CoinRoutes | An Dashboard for Viewing Realtime Coinbase Pro Crypto Transactions"
-          data-react-helmet="true"
         />
         <meta name="author" property="og:author" content="Michael Cooper" />
         <meta
