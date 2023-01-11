@@ -34,7 +34,7 @@ function UserOptions({
       </div>
 
       <label
-        className="col-start-1 col-end-1 row-start-2 row-span-2 font-bold text-sm md:text-md hidden md:block"
+        className="col-start-1 py-1 col-end-1 row-start-2 row-span-2 font-bold text-sm md:text-md hidden md:block"
         htmlFor="cur-select"
       >
         Currency Pair
@@ -69,7 +69,7 @@ function UserOptions({
       </select> */}
 
       <label
-        className="row-start-3 row-span-3 col-start-1 col-end-1 font-bold text-sm md:text-md hidden md:block"
+        className="row-start-3 py-1 row-span-3 col-start-1 col-end-1 font-bold text-sm md:text-md hidden md:block"
         htmlFor="chart-select"
       >
         Chart Granularity
