@@ -1,7 +1,7 @@
-import { ThemeContext } from '../contexts/ThemeContext';
+import { ThemeContext } from '../../contexts/ThemeContext';
 import { useContext } from 'react';
-import TokenDropdown from './Dropdown/TokenDropdown';
-import ChartDropdown from './Dropdown/ChartDropdown';
+import TokenDropdown from '../Dropdown/TokenDropdown';
+import ChartDropdown from '../Dropdown/ChartDropdown';
 
 function UserOptions({
   pair,
@@ -34,14 +34,14 @@ function UserOptions({
       </div>
 
       <label
-        className="col-start-1 py-1 col-end-1 row-start-2 row-span-2 font-bold text-sm md:text-md hidden md:block"
+        className="col-start-1 py-1 col-end-1 row-start-2 row-span-2 font-bold text-sm lg:text-md hidden lg:block"
         htmlFor="cur-select"
       >
         Currency Pair
       </label>
       <div>
         <TokenDropdown
-          className="z-10 col-start-2 col-end-2 row-start-2 row-span-2"
+          className="z-10 col-start-1 col-end-1 lg:col-start-2 lg:col-end-2 row-start-2 row-span-2"
           handleSelect={handleSelect}
           currencies={currencies}
           activePair={pair}
@@ -69,7 +69,7 @@ function UserOptions({
       </select> */}
 
       <label
-        className="row-start-3 py-1 row-span-3 col-start-1 col-end-1 font-bold text-sm md:text-md hidden md:block"
+        className="row-start-3 py-1 row-span-3 col-start-1 col-end-1 font-bold text-sm hidden lg:text-md lg:block"
         htmlFor="chart-select"
       >
         Chart Granularity
@@ -90,7 +90,7 @@ function UserOptions({
           );
         })}
       </select> */}
-      <div className="row-start-3 row-span-3 col-start-2 col-end-2">
+      <div className="row-start-3 row-span-3 col-start-1 col-end-1 lg:row-start-3 lg:row-span-3 lg:col-start-2 lg:col-end-2">
         <ChartDropdown
           handleChart={handleChart}
           granularity={granularity}

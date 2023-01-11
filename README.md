@@ -34,6 +34,8 @@ In the main App file we have stateful logic and the base layout of our applicati
    2. ternirary logic for choosing pair first time
    3. map through currencies, set a default value
    4. Style and make it responsive
+   5. Add HeadlessUI for Custom Dropdowns. Add SVGs for the Tokens
+   6. Create another Custom Dropdown for the Granularity and import logic
 
 ![Best-Bid](https://img001.prntscr.com/file/img001/k-qUqtQySFa_eRHKNWD_dw.png)
 
@@ -41,6 +43,8 @@ In the main App file we have stateful logic and the base layout of our applicati
    1. import utils for dollar conversion
    2. import props and destructure
    3. Style and make it responsive
+   4. Added Animations for new Price Updates
+   5. Integrated ToolTip feature to Relay High/Lows of Selected Token
 
 ![Best-Ask](https://img001.prntscr.com/file/img001/AMy_UHMHQQyGzZTMe5pYpw.png)
 
@@ -48,6 +52,8 @@ In the main App file we have stateful logic and the base layout of our applicati
    1. import utils for dollar conversion
    2. import props and destructure
    3. Style and make it responsive
+   4. Added Animations for new Price Updates
+   5. Integrated ToolTip feature to Relay High/Lows of Selected Token
 
 ![Chart](https://img001.prntscr.com/file/img001/1fbW8kEURhaXv9FSE0Pt6A.png)
 
@@ -56,6 +62,8 @@ In the main App file we have stateful logic and the base layout of our applicati
    2. import props and desctructure
    3. configure options
    4. add dynamic styles off project RGBA
+   5. Changed the Labels to Display hours or Data depending on Selection
+   6. Added Utils for Dollar Conversion
 
 ![OrderBook](https://img001.prntscr.com/file/img001/cayNCMaZRiKJbSnRZ38lzQ.png)
 
@@ -66,6 +74,9 @@ In the main App file we have stateful logic and the base layout of our applicati
       1. OBP component
       2. Format currency
    4. Create Loader
+   5. Created Aggregate Feature
+      1. Utilizing sub/unsub to trigger appropriate updates was the blocker
+   6. Added Dark Mode in Settings Area as addtional UI feature.
 
 ![RTK-Store](https://img001.prntscr.com/file/img001/MqkkjAlESde1Lw_ueCXXrw.png)
 
@@ -75,5 +86,11 @@ In the main App file we have stateful logic and the base layout of our applicati
       1. create setActivePair and setGranularity Actions
       2. create reduce
    3. Remove old useState and add actions with dispatch
+   4. Added setAggregate to state management system
 
 ![RTK-Slice](https://img001.prntscr.com/file/img001/PNZR84FKQaGQ9bfBdNGjug.png)
+
+1. Additional Features
+   1. ToolTip was added with slight delay for Best Ask/Bid Components and Orderbook
+   2. Utilizied useToggleState custom hook with DarkMode. Can be reutilized.
+   3. ThemeContext was the Context Provider created for Dark Mode Feature.

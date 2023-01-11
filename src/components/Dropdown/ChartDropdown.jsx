@@ -55,7 +55,7 @@ export default function ChartDropdown({
                   ref={buttonRef}
                   className={`
                   ${open ? '' : 'text-opacity-90'}
-                  group  px-2 rounded-md inline-flex items-center text-base ring-2 ring-orange-400 font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 ${
+                  group px-2 rounded-md inline-flex items-center text-base ring-2 ring-orange-400 font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 ${
                     checkGran(activeGranularity) ? 'animate-bounce' : ''
                   }
                   ${!isDarkMode ? 'bg-gray-800' : 'bg-gray-300'}
@@ -64,7 +64,9 @@ export default function ChartDropdown({
                   onMouseLeave={onMouseLeave.bind(null, open)}
                 >
                   <span
-                    className={`${!isDarkMode ? 'bg-gray-800' : 'bg-gray-300'}`}
+                    className={`text-xs ${
+                      !isDarkMode ? 'bg-gray-800' : 'bg-gray-300'
+                    }`}
                   >{`${activeGranularity}`}</span>
                   <ChevronDownIcon
                     className={`${open ? '' : 'text-opacity-70'}
@@ -83,7 +85,7 @@ export default function ChartDropdown({
                   leaveFrom="opacity-100 translate-y-0"
                   leaveTo="opacity-0 translate-y-1"
                 >
-                  <Popover.Panel className="absolute z-10 w-screen max-w-sm px-4 mt-0 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-3xl">
+                  <Popover.Panel className="absolute ml-[25vw] lg:ml-[5vw] z-1 w-screen max-w-sm px-4 mt-0 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-3xl">
                     <div
                       className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5"
                       onMouseEnter={onMouseEnter.bind(null, open)}
@@ -115,24 +117,19 @@ export default function ChartDropdown({
                       </div>
                       <div className="p-4 bg-gray-50">
                         <a
-                          href="##"
+                          href="https://www.coinbase.com/cloud"
+                          target="_blank"
+                          rel="noreferrer"
                           className="flow-root px-2 py-2 transition duration-150 ease-in-out rounded-md hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                         >
-                          {' '}
-                          <a
-                            href="https://www.coinbase.com/cloud"
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <span className="flex items-center">
-                              <span className="text-sm font-medium text-gray-900">
-                                Coinbase API Documentation
-                              </span>
+                          <span className="flex items-center">
+                            <span className="text-sm font-medium text-gray-900">
+                              Coinbase API Documentation
                             </span>
-                            <span className="block text-sm text-gray-500">
-                              Data Feed Currently Provided By Coinbase
-                            </span>
-                          </a>
+                          </span>
+                          <span className="block text-sm text-gray-500">
+                            Data Feed Currently Provided By Coinbase
+                          </span>
                         </a>
                       </div>
                     </div>

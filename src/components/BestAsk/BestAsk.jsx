@@ -1,7 +1,7 @@
-import { USDollar } from '../utils/utils';
-import { ThemeContext } from '../contexts/ThemeContext';
+import { USDollar } from '../../utils/utils';
+import { ThemeContext } from '../../contexts/ThemeContext';
 import { useContext } from 'react';
-import Loader from './Loader';
+import Loader from '../Loader';
 
 function BestAsk({ bestAsk, bestAskSize }) {
   const { isDarkMode } = useContext(ThemeContext);
@@ -17,15 +17,10 @@ function BestAsk({ bestAsk, bestAskSize }) {
             Best Ask: CoinBase Pro
           </h1>
         </div>
-
-        {/* {AskAmount} */}
-
         <p className="font-bold text-xs md:text-lg">Ask Price</p>
         <p key={bestAsk} className="roll-out">
           {USDollar.format(bestAsk)}
         </p>
-
-        {/* <h2>{AskQuantity}</h2> */}
         <p className="text-xs md:text-lg font-bold ">Ask Quantity</p>
         <p key={bestAskSize} className=" roll-out">
           {bestAskSize}
@@ -33,7 +28,11 @@ function BestAsk({ bestAsk, bestAskSize }) {
       </div>
     );
   } else {
-    return <Loader />;
+    return (
+      <div className="pt-5 mt-5">
+        <Loader />
+      </div>
+    );
   }
 }
 

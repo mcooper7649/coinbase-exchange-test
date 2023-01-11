@@ -9,9 +9,9 @@ import { ThemeContext } from './contexts/ThemeContext';
 import Chart from './components/Chart/Chart';
 import { formatData } from './utils/utils';
 import './index.css';
-import UserOptions from './components/UserOptions';
-import BestBid from './components/BestBid';
-import BestAsk from './components/BestAsk';
+import UserOptions from './components/UserOptions/UserOptions';
+import BestBid from './components/BestBid/BestBid';
+import BestAsk from './components/BestAsk/BestAsk';
 import Orderbook from './components/Orderbook/Orderbook';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSocket } from './hooks/useSocket';
@@ -347,10 +347,9 @@ function App() {
     };
 
     console.log('useEffect2 render');
-    console.log(currencies);
 
     let historicalDataURL = `${url}/products/${
-      activePair === 'Select' ? 'BTC/USD' : activePair
+      activePair === 'Select' ? 'BTC-USD' : activePair
     }/candles?granularity=${granularity === 'Minutes' ? 60 : granularity}`;
     const fetchHistoricalData = async () => {
       let dataArr = [];
