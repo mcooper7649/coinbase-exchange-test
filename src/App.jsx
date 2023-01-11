@@ -18,7 +18,7 @@ function App() {
         <meta
           name="image"
           property="og:image"
-          content="https://i.ibb.co/gTkzyFH/linkedin-shared-link-1.png"
+          content="https://img001.prntscr.com/file/img001/ontrNCaNTJuzACxq3cJUfw.png"
           data-react-helmet="true"
         />
         <meta
