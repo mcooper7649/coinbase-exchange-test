@@ -4,6 +4,7 @@ const initialState = {
   activePair: 'Select',
   granularity: 'Minutes',
   aggregate: 0.5,
+  activeGranularity: 'Granularity',
 };
 
 export const pairSlice = createSlice({

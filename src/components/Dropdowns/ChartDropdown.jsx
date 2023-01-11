@@ -45,7 +45,7 @@ export default function ChartDropdown({
   const { isDarkMode } = useContext(ThemeContext);
 
   return (
-    <div className="w-full max-w-sm px-4 top-16">
+    <div className="w-full max-w-sm font-sans px-4 top-16">
       <Popover className="relative">
         {({ open }) => {
           return (
