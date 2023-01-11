@@ -6,14 +6,13 @@ function App() {
     <div>
       <Helmet>
         <meta charset="utf-8" />
-        <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
         <meta
           name="title"
           content="CoinRoutes | Coinbase API"
           property="og:title"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="theme-color" />
+        <meta name="theme-color" content="#202A37" />
         <meta
           name="image"
           property="og:image"
