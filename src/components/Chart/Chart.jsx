@@ -6,7 +6,6 @@ import { BsChevronDoubleDown } from 'react-icons/bs';
 import { IconContext } from 'react-icons';
 import { useSelector } from 'react-redux';
 import './Chart.styles.css';
-import { act } from 'react-dom/test-utils';
 
 function Chart({ price, data, granularity }) {
   const { isDarkMode } = useContext(ThemeContext);
