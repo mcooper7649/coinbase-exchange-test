@@ -18,7 +18,7 @@ const Loader = () => {
           />
         </svg>
 
-        <div>Loading ...</div>
+        <div>Awaiting User Selection....</div>
       </div>
     </div>
   );

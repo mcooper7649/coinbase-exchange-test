@@ -69,7 +69,7 @@ function Chart({ price, data, pair, granularity }) {
           <BsChevronDoubleDown />
         </IconContext.Provider>
         <h2
-          className={`text-3xl font-bold  ${
+          className={`text-2xl font-bold center ${
             !isDarkMode ? 'text-gray-100' : 'text-gray-800'
           }`}
         >

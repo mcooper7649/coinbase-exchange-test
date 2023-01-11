@@ -1,7 +1,7 @@
-import { USDollar } from '../utils/utils';
-import { ThemeContext } from '../contexts/ThemeContext';
+import { USDollar } from '../../utils/utils';
+import { ThemeContext } from '../../contexts/ThemeContext';
 import { useContext } from 'react';
-import Loader from './Loader';
+import Loader from '../Loader';
 
 function BestBid({ bestBid, bestBidSize }) {
   const { isDarkMode } = useContext(ThemeContext);
@@ -17,14 +17,10 @@ function BestBid({ bestBid, bestBidSize }) {
             Best Bid: CoinBase Pro
           </h1>
         </div>
-
-        {/* {BidAmount} */}
         <p className="text-xs  md:text-lg font-bold">Bid Price</p>
         <p key={bestBid} className="roll-out">
           {USDollar.format(bestBid)}
         </p>
-
-        {/* <h2>{BidQuantity}</h2> */}
         <p className="text-xs  md:text-lg font-bold">Bid Quantity</p>
         <p key={bestBidSize} className="roll-out">
           {' '}
@@ -33,7 +29,11 @@ function BestBid({ bestBid, bestBidSize }) {
       </div>
     );
   } else {
-    return <Loader />;
+    return (
+      <div className="pt-5 mt-5">
+        <Loader />
+      </div>
+    );
   }
 }
 
